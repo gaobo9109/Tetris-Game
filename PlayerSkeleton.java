@@ -1,4 +1,4 @@
-import java.util.Scanner;
+
 
 public class PlayerSkeleton {
 
@@ -8,17 +8,15 @@ public class PlayerSkeleton {
 		int maxIndex = 0;
 		
 		for(int i=0; i<legalMoves.length; i++){
-			int rowsCleared = s.getRowsCleared();
-			s.makeMoveTemp(legalMoves[i]);
-			rowsCleared = s.getRowsCleared() - rowsCleared;
-			int score = analyser.calculateHeuristic(s.getField(),s.getTop());
+			int rowsCleared = analyser.genNextStateFromMove(s,legalMoves[i]);
+			int score = analyser.calculateHeuristic();
 			score += rowsCleared;
 			
 			if(score > maxScore){
 				maxScore = score;
 				maxIndex = i;
 			}
-			s.revertState();
+
 		}
 		
 		return maxIndex;
