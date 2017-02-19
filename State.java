@@ -14,8 +14,6 @@ public class State {
 	
 	
 	
-
-	
 	public TLabel label;
 	
 	//current turn
@@ -27,6 +25,11 @@ public class State {
 	//top row+1 of each column
 	//0 means empty
 	private int[] top = new int[COLS];
+	
+	//variables to hold old board state
+	private int[][] fieldPrev = new int[ROWS][COLS];
+	private int[] topPrev = new int[COLS];
+	private int clearedPrev = 0;
 	
 	
 	//number of next piece
@@ -187,9 +190,19 @@ public class State {
 		makeMove(move[ORIENT],move[SLOT]);
 	}
 	
+	public void makeMoveTemp(int[] move){
+		makeMoveBase(move[ORIENT],move[SLOT],false);
+	}
+
+	public boolean makeMove(int orient, int slot){
+		return makeMoveBase(orient,slot,true);
+	}
+	
 	//returns false if you lose - true otherwise
-	public boolean makeMove(int orient, int slot) {
-		turn++;
+	public boolean makeMoveBase(int orient, int slot, boolean isFinal) {
+		if(isFinal) turn++;
+		else saveState();
+		
 		//height if the first column makes contact
 		int height = top[slot]-pBottom[nextPiece][orient][0];
 		//for each column beyond the first in the piece
@@ -250,12 +263,11 @@ public class State {
 	
 
 		//pick a new piece
-		nextPiece = randomPiece();
-		
-
-		
+		if(isFinal) nextPiece = randomPiece();
+			
 		return true;
 	}
+	
 	
 	public void draw() {
 		label.clear();
@@ -293,6 +305,38 @@ public class State {
 		label.filledRectangleLL(c, r, 1, 1, brickCol);
 		label.rectangleLL(c, r, 1, 1);
 	}
+	
+	private void saveState(){
+		//make a deep copy of field, top, and cleared variable
+		for(int i=0; i<ROWS; i++){
+			for(int j=0; j<COLS; j++){
+				fieldPrev[i][j] = field[i][j];
+			}
+		}
+		
+		for(int i=0; i<COLS; i++){
+			topPrev[i] = top[i];
+		}
+		
+		clearedPrev = cleared;
+		
+	}
+	
+	public void revertState(){
+		
+		for(int i=0; i<ROWS; i++){
+			for(int j=0; j<COLS; j++){
+				field[i][j] = fieldPrev[i][j];
+			}
+		}
+		
+		for(int i=0; i<COLS; i++){
+			top[i] = topPrev[i];
+		}
+		
+		cleared = clearedPrev;
+	}
+	
 	
 	public void drawNext(int slot, int orient) {
 		for(int i = 0; i < pWidth[nextPiece][orient]; i++) {
