@@ -1,29 +1,19 @@
 
-public class StateAnalyser {
-
-	private int[] weight = new int[22];
-	private static final int OFFSET_COLUMN_HEIGHT = 1;
-	private static final int OFFSET_COLUMN_DIFF = 11;
-	private static final int OFFSET_MAX_COLUMN_HEIGHT = 20;
-	private static final int OFFSET_NUM_HOLES = 21;
-	
+public class NextState {
 	private int[][] field = new int[State.ROWS][State.COLS];
 	private int[] top = new int[State.COLS];
+	private static int rowsCleared = 0;
 	
-	public StateAnalyser(){
-		for(int i=0; i<weight.length; i++){
-			weight[i] = 1;
-		}
-	}
+	private int[][][] pBottom = State.getpBottom();
+	private int[][] pHeight = State.getpHeight();
+	private int[][] pWidth = State.getpWidth();
+	private int[][][] pTop = State.getpTop();
+
 	
-	public int genNextStateFromMove(State s, int[] legalMoves){
+	boolean genNextState(State s, int[] legalMoves){
 		int orient = legalMoves[0];
 		int slot = legalMoves[1];
 		int nextPiece = s.getNextPiece();
-		int[][][] pBottom = State.getpBottom();
-		int[][] pHeight = State.getpHeight();
-		int[][] pWidth = State.getpWidth();
-		int[][][] pTop = State.getpTop();
 		
 		copyState(s);
 		
@@ -36,7 +26,7 @@ public class StateAnalyser {
 		
 		//check if game ended
 		if(height+pHeight[nextPiece][orient] >= State.ROWS) {
-			return 0;
+			return false;
 		}
 
 		
@@ -54,7 +44,7 @@ public class StateAnalyser {
 			top[slot+c]=height+pTop[nextPiece][orient][c];
 		}
 		
-		int rowsCleared = 0;
+		rowsCleared = 0;
 		
 		//check for full rows - starting at the top
 		for(int r = height+pHeight[nextPiece][orient]-1; r >= height; r--) {
@@ -69,6 +59,7 @@ public class StateAnalyser {
 			//if the row was full - remove it and slide above stuff down
 			if(full) {
 				rowsCleared++;
+
 				//for each column
 				for(int c = 0; c < State.COLS; c++) {
 
@@ -82,8 +73,9 @@ public class StateAnalyser {
 				}
 			}
 		}
+	
 		
-		return rowsCleared;
+		return true;
 	}
 	
 	private void copyState(State s){
@@ -100,40 +92,15 @@ public class StateAnalyser {
 		}
 	}
 	
-	public int calculateHeuristic(){
-		int score = weight[0];
-		int maxHeight = 0;
-		
-		for(int i=0; i<top.length; i++){
-			score += weight[i+OFFSET_COLUMN_HEIGHT] * top[i];
-			if(top[i] > maxHeight) maxHeight = top[i];
-			if(i != top.length-1){
-				score += weight[i+OFFSET_COLUMN_DIFF] * Math.abs(top[i+1]-top[i]); 
-			}
-		}
-		
-		score += weight[OFFSET_MAX_COLUMN_HEIGHT] * maxHeight;
-		
-		int numHoles = 0;
-		
-//		for(int i=0; i<field.length; i++){
-//			for(int j=0; j<field[0].length; j++){
-//				boolean isHole = true;
-//				if(field[i][j]==0){
-//					//check four sides
-//					if(j-1 >=0 && field[i][j-1] == 0) isHole = false;
-//					else if(j+1 < top.length && field[i][j+1] == 0) isHole = false;
-//					else if(i-1 >=0 && field[i-1][j] == 0) isHole = false;
-//					else if(i+1 < field.length && field[i+1][j] == 0) isHole = false;
-//					
-//					if(isHole) numHoles++;
-//				}
-//			}
-//		}
-		
-		score += weight[OFFSET_NUM_HOLES] * numHoles;
-		
-		
-		return score;
+	public int getRowsCleared(){
+		return rowsCleared;
+	}
+	
+	public int[][] getField(){
+		return field;
+	}
+	
+	public int[] getTop(){
+		return top;
 	}
 }

@@ -3,16 +3,17 @@
 public class PlayerSkeleton {
 
 	//implement this function to have a working system
-	public int pickMove(State s, int[][] legalMoves, StateAnalyser analyser) {
-		int maxScore = 0;
+	public int pickMove(State s, int[][] legalMoves, NextState ns, Heuristics hs) {
+		int maxScore = 99999;
 		int maxIndex = 0;
 		
 		for(int i=0; i<legalMoves.length; i++){
-			int rowsCleared = analyser.genNextStateFromMove(s,legalMoves[i]);
-			int score = analyser.calculateHeuristic();
-			score += rowsCleared;
+			boolean notLost = ns.genNextState(s,legalMoves[i]);
+			if(!notLost) continue;
 			
-			if(score > maxScore){
+			int score = hs.calculateHeuristicScore(ns);
+			
+			if(score < maxScore){
 				maxScore = score;
 				maxIndex = i;
 			}
@@ -24,11 +25,12 @@ public class PlayerSkeleton {
 	
 	public static void main(String[] args) {
 		State s = new State();
-		StateAnalyser analyser = new StateAnalyser();
+		NextState ns = new NextState();
+		Heuristics hs = new Heuristics();
 		new TFrame(s);
 		PlayerSkeleton p = new PlayerSkeleton();
 		while(!s.hasLost()) {
-			s.makeMove(p.pickMove(s,s.legalMoves(),analyser));
+			s.makeMove(p.pickMove(s,s.legalMoves(),ns,hs));
 			s.draw();
 			s.drawNext(0,0);
 			try {
