@@ -1,9 +1,15 @@
+package com.cs3243.tetris;
 
-
+/**
+ * Player Skeleton
+ * Methods for playing game
+ * @author CS3243, our-group
+ *
+ */
 public class PlayerSkeleton {
 
 	//implement this function to have a working system
-	public int pickMove(State s, int[][] legalMoves, NextState ns, Heuristics hs) {
+	public int pickMove(State s, int[][] legalMoves, NextState ns, Heuristic hs) {
 		int maxScore = 99999;
 		int maxIndex = 0;
 		
@@ -23,7 +29,7 @@ public class PlayerSkeleton {
 		return maxIndex;
 	}
 	
-	public double playFullGame(Heuristics hs, boolean graphic){
+	public double playFullGame(Heuristic hs, boolean graphic){
 		State s = new State();
 		NextState ns = new NextState();
 //		Heuristics hs = new Heuristics();
@@ -51,7 +57,7 @@ public class PlayerSkeleton {
 	public static void main(String[] args) {
 		State s = new State();
 		NextState ns = new NextState();
-		Heuristics hs = new Heuristics();
+		Heuristic hs = new Heuristic();
 		new TFrame(s);
 		PlayerSkeleton p = new PlayerSkeleton();
 		while(!s.hasLost()) {

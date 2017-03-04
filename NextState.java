@@ -1,3 +1,11 @@
+package com.cs3243.tetris;
+
+/**
+ * Generates next state of the game
+ * Useful for calculating score of next state
+ * @author our-group
+ *
+ */
 
 public class NextState {
 	private int[][] field = new int[State.ROWS][State.COLS];

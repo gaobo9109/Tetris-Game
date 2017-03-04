@@ -1,3 +1,4 @@
+package com.cs3243.tetris;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -8,8 +9,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-
-
+/**
+ * Methods for drawing Tetris board
+ * @author CS3243
+ *
+ */
 public class TFrame extends JFrame implements KeyListener{
 	private static final long serialVersionUID = 1L;
 	public TLabel label = new TLabel(300,700);
