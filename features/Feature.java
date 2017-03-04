@@ -8,6 +8,9 @@ public class Feature {
 	protected double featureWeight;
 	private Random rand = new Random();
 	
+	/**
+	 * Initialize feature with random weight
+	 */
 	public Feature() {
 		featureWeight = 2 * rand.nextDouble() - 1;
 	}

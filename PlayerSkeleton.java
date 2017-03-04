@@ -3,7 +3,7 @@ package com.cs3243.tetris;
 /**
  * Player Skeleton
  * Methods for playing game
- * @author CS3243, gaobo
+ * @author CS3243, our-group
  *
  */
 public class PlayerSkeleton {
