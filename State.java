@@ -1,8 +1,16 @@
+package com.cs3243.tetris;
 import java.awt.Color;
 
 
 
-
+/**
+ * Current state of the game
+ * Methods to manipulate state of game board, e.g. make move
+ * Defines legal moves
+ * Draws current game board
+ * @author CS3243
+ *
+ */
 public class State {
 	public static final int COLS = 10;
 	public static final int ROWS = 21;

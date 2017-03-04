@@ -1,8 +1,4 @@
-
-
-
-
-
+package com.cs3243.tetris;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Container;
@@ -27,8 +23,11 @@ import java.awt.image.DataBuffer;
 
 import javax.swing.*;
 
-
-
+/**
+ * Methods for drawing Tetris board
+ * @author CS3243
+ *
+ */
 public class TLabel{
 	private static final long serialVersionUID = 1L;
 	
