@@ -29,6 +29,14 @@ public class PlayerSkeleton {
 
 		return maxIndex;
 	}
+	
+	/**
+	 * Play the game with or without displaying GUI
+	 * 
+	 * @param Heuristic hs
+	 * @param whether to display GUI
+	 * @return fitness value of this heuristic 
+	 */
 
 	public double playFullGame(Heuristic hs, boolean graphic) {
 		State s = new State();

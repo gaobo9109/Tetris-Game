@@ -1,20 +1,26 @@
 package com.cs3243.tetris;
 
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Evolution {
 
+	private static final String FILENAME = "feature_weight.csv";
 	private ArrayList<Heuristic> population;
 	private int popSize;
 	private PlayerSkeleton ps;
 	private int generation;
+	private StateStorage storage;
 
 	public Evolution(int popSize, int generation) {
 		this.popSize = popSize;
 		this.generation = generation;
-		population = new ArrayList<Heuristic>();
+		storage = new StateStorage();
+		population = storage.readStateFromFile(FILENAME);
 		ps = new PlayerSkeleton();
+		
 		initPopulation();
 	}
 
@@ -24,6 +30,7 @@ public class Evolution {
 			population.add(hs);
 		}
 	}
+	
 
 	private void createNextGen() {
 		double averageFitness = 0;
@@ -34,12 +41,12 @@ public class Evolution {
 			averageFitness += fitness;
 			System.out.println("player " + i + " has a fitness value of " + fitness);
 		}
-
 		System.out.println("average fitness of this generation is " + averageFitness / popSize);
-
+		storage.writeStateToFile(population,FILENAME);
+		
 		int cutoff = (int) (popSize * 0.3);
 		Collections.sort(population);
-
+		
 		// remove the bottom 30%
 		for (int i = 0; i < cutoff; i++) {
 			population.remove(0);
@@ -78,7 +85,7 @@ public class Evolution {
 	}
 
 	public static void main(String[] args) {
-		Evolution evo = new Evolution(20, 500);
+		Evolution evo = new Evolution(25, 500);
 		evo.runEvolution();
 		Heuristic hs = evo.getBestHeuristics();
 		PlayerSkeleton ps = new PlayerSkeleton();

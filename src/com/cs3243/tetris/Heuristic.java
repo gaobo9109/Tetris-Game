@@ -19,8 +19,9 @@ import com.cs3243.tetris.features.TotalColHeightDiff;
 public class Heuristic implements Comparable<Heuristic> {
 
 	public Feature[] features = new Feature[] { // Define included features
-			new RowsCleared(), new TotalColHeight(), new TotalColHeightDiff(), new HighestCol(), new NumWells(),
-			new DeepestWell(), new NumHoles(), new ColWithHole() };
+			new RowsCleared(), new TotalColHeight(), new TotalColHeightDiff(), 
+			new HighestCol(), new NumWells(),new DeepestWell(), new NumHoles(), 
+			new ColWithHole()};
 	public static final double MUTATION_PROB = 0.1;
 	public static final double PERTURBATION_RANGE = 0.05;
 	private double fitness;
@@ -78,8 +79,7 @@ public class Heuristic implements Comparable<Heuristic> {
 	public static Heuristic mix(Heuristic hs1, Heuristic hs2) {
 		double ft1 = hs1.getFitness();
 		double ft2 = hs2.getFitness();
-
-		double weightage = ft1 / (ft1 + ft2);
+		double weightage = (ft1 != 0 || ft2 != 0) ? ft1 / (ft1 + ft2) : 0.5;
 		Heuristic newHeuristics = new Heuristic();
 
 		for (int i = 0; i < hs1.features.length; i++) {
