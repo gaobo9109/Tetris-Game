@@ -19,7 +19,7 @@ public class DeepestWell extends Feature {
 				wellRow = top[i];
 			} else if (i == top.length - 1 && top[i - 1] > top[i]) {
 				wellRow = top[i];
-			} else if (top[i - 1] > top[i] && top[i + 1] > top[i]) {
+			} else if (i != 0 && i != top.length - 1 && top[i - 1] > top[i] && top[i + 1] > top[i]) {
 				wellRow = top[i];
 			}
 
