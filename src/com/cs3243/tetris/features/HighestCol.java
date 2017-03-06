@@ -2,6 +2,9 @@ package com.cs3243.tetris.features;
 
 import com.cs3243.tetris.NextState;
 
+/**
+ * This heuristic calculates the height of the highest column.
+ */
 public class HighestCol extends Feature {
 
 	@Override

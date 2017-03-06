@@ -2,8 +2,10 @@ package com.cs3243.tetris.features;
 
 import com.cs3243.tetris.NextState;
 
+/**
+ * This heuristic calculates the height of the lowest column.
+ */
 public class DeepestWell extends Feature {
-
 	@Override
 	public double getScore(NextState s) {
 		int[] top = s.getTop();
