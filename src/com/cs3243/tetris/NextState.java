@@ -1,7 +1,7 @@
 package com.cs3243.tetris;
 
 /**
- * Generates next state of the game Useful for calculating score of next state
+ * Generates next state of the game. Useful for calculating score of next state
  * 
  * @author Advay Pal, Chang Chu-Ming, Gao Bo, Herbert Ilhan Tanujaya, Varun
  *         Gupta
@@ -17,7 +17,7 @@ public class NextState {
 	private int[][] pWidth = State.getpWidth();
 	private int[][][] pTop = State.getpTop();
 
-	boolean genNextState(State s, int[] legalMoves) {
+	public boolean generateNextState(State s, int[] legalMoves) {
 		int orient = legalMoves[0];
 		int slot = legalMoves[1];
 		int nextPiece = s.getNextPiece();
@@ -85,7 +85,6 @@ public class NextState {
 	}
 
 	private void copyState(State s) {
-
 		for (int i = 0; i < State.ROWS; i++) {
 			for (int j = 0; j < State.COLS; j++) {
 				field[i][j] = s.getField()[i][j];

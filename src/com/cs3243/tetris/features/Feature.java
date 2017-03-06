@@ -48,7 +48,7 @@ public abstract class Feature {
 	}
 
 	/**
-	 * Calculate score of feature Should be overridden with proper
+	 * Calculate score of feature. Should be overridden with proper
 	 * implementation of scoring
 	 * 
 	 * @param s

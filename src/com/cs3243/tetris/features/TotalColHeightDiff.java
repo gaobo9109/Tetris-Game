@@ -2,12 +2,13 @@ package com.cs3243.tetris.features;
 
 import com.cs3243.tetris.NextState;
 
+/**
+ * This heuristic calculates the total height difference between adjacent
+ * columns.
+ */
 public class TotalColHeightDiff extends Feature {
-
 	@Override
 	public double getScore(NextState s) {
-
-		int[][] field = s.getField();
 		int[] top = s.getTop();
 
 		int sum = 0;

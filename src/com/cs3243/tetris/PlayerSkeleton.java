@@ -14,7 +14,7 @@ public class PlayerSkeleton {
 		int maxIndex = 0;
 
 		for (int i = 0; i < legalMoves.length; i++) {
-			boolean notLost = ns.genNextState(s, legalMoves[i]);
+			boolean notLost = ns.generateNextState(s, legalMoves[i]);
 			if (!notLost) {
 				continue;
 			}

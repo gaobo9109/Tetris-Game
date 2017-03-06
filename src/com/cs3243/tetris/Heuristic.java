@@ -11,8 +11,7 @@ import com.cs3243.tetris.features.TotalColHeight;
 import com.cs3243.tetris.features.TotalColHeightDiff;
 
 /**
- * Defines features Performs linear mix of feature to generate final score
- * Implements comparable
+ * Defines features. Performs linear mix of features to generate final score.
  * 
  * @author Advay Pal, Chang Chu-Ming, Gao Bo, Herbert Ilhan Tanujaya, Varun
  *         Gupta

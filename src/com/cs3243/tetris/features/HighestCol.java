@@ -6,8 +6,6 @@ public class HighestCol extends Feature {
 
 	@Override
 	public double getScore(NextState s) {
-
-		int[][] field = s.getField();
 		int[] top = s.getTop();
 
 		int maxCol = 0;

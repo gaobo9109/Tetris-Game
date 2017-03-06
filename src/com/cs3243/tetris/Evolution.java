@@ -70,7 +70,6 @@ public class Evolution {
 			System.out.println("generation " + i);
 			createNextGen();
 		}
-
 	}
 
 	public Heuristic getBestHeuristics() {
@@ -85,5 +84,4 @@ public class Evolution {
 		PlayerSkeleton ps = new PlayerSkeleton();
 		ps.playFullGame(hs, true);
 	}
-
 }
