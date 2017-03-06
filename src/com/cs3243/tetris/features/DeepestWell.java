@@ -13,10 +13,9 @@ public class DeepestWell extends Feature {
 		for (int i = 0; i < top.length; i++) {
 			int wellRow = 0;
 
-			if (i == 0 && top[i + 1] > top[i]) {
-				wellRow = top[i];
-			} else if (i == top.length - 1 && top[i - 1] > top[i]) {
-				wellRow = top[i];
+			if (i == 0 || i == top.length - 1) {
+				if(i == 0 && top[i + 1] > top[i]) wellRow = top[i];
+				else if(i == top.length -1 && top[i-1] > top[i]) wellRow = top[i];
 			} else if (top[i - 1] > top[i] && top[i + 1] > top[i]) {
 				wellRow = top[i];
 			}
