@@ -23,7 +23,7 @@ public class DeepestWell extends Feature {
 				wellDepth = Math.min(top[i-1], top[i+1]) - top[i]; 
 			}
 
-			maxWellDepth = Math.min(maxWellDepth, wellDepth);
+			maxWellDepth = Math.max(maxWellDepth, wellDepth);
 		}
 
 		return featureWeight * maxWellDepth;
