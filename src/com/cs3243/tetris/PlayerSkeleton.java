@@ -10,7 +10,7 @@ public class PlayerSkeleton {
 
 	// implement this function to have a working system
 	public int pickMove(State s, int[][] legalMoves, NextState ns, Heuristic hs) {
-		int maxScore = 99999;
+		int maxScore = 0;
 		int maxIndex = 0;
 
 		for (int i = 0; i < legalMoves.length; i++) {
@@ -21,7 +21,7 @@ public class PlayerSkeleton {
 
 			int score = hs.calculateHeuristicScore(ns);
 
-			if (score < maxScore) {
+			if (score > maxScore) {
 				maxScore = score;
 				maxIndex = i;
 			}
