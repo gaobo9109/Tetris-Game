@@ -1,14 +1,19 @@
 package com.cs3243.tetris;
 
+import com.cs3243.tetris.features.AltitudeDiff;
+import com.cs3243.tetris.features.ColTransition;
 import com.cs3243.tetris.features.ColWithHole;
 import com.cs3243.tetris.features.DeepestWell;
 import com.cs3243.tetris.features.Feature;
 import com.cs3243.tetris.features.HighestCol;
 import com.cs3243.tetris.features.NumHoles;
 import com.cs3243.tetris.features.NumWells;
+import com.cs3243.tetris.features.RowTransition;
 import com.cs3243.tetris.features.RowsCleared;
 import com.cs3243.tetris.features.TotalColHeight;
 import com.cs3243.tetris.features.TotalColHeightDiff;
+import com.cs3243.tetris.features.WeightedBlock;
+import com.cs3243.tetris.features.WellSum;
 
 /**
  * Defines features. Performs linear mix of features to generate final score.
@@ -19,11 +24,18 @@ import com.cs3243.tetris.features.TotalColHeightDiff;
 public class Heuristic implements Comparable<Heuristic> {
 
 	public Feature[] features = new Feature[] { // Define included features
-			new RowsCleared(), new TotalColHeight(), new TotalColHeightDiff(), 
-			new HighestCol(), new NumWells(),new DeepestWell(), new NumHoles(), 
-			new ColWithHole()};
+			new RowsCleared(), new HighestCol(), new NumWells(),new WellSum(),
+			new DeepestWell(), new NumHoles(), new WeightedBlock(), new AltitudeDiff(),
+			new ColTransition(), new RowTransition()};
+//	
+//	public Feature[] features = new Feature[] { // Define included features
+//			new RowsCleared(), new TotalColHeight(), new TotalColHeightDiff(), 
+//			new HighestCol(), new NumWells(),new DeepestWell(), new NumHoles(), 
+//			new ColWithHole()};
+	
 	public static final double MUTATION_PROB = 0.1;
-	public static final double PERTURBATION_RANGE = 0.05;
+	public static final double MUTATION_MEAN = 1;
+	public static final double MUTATION_STD = 15;
 	private double fitness;
 
 	/**
@@ -32,7 +44,7 @@ public class Heuristic implements Comparable<Heuristic> {
 	 * @param s
 	 * @return total score
 	 */
-	public int calculateHeuristicScore(NextState s) {
+	public double calculateHeuristicScore(NextState s) {
 		int score = 0;
 
 		for (Feature feature : features) {
@@ -65,7 +77,7 @@ public class Heuristic implements Comparable<Heuristic> {
 	 */
 	public void mutateAll() {
 		for (Feature feature : features) {
-			feature.mutate(MUTATION_PROB, PERTURBATION_RANGE);
+			feature.mutate(MUTATION_PROB, MUTATION_MEAN, MUTATION_STD);
 		}
 	}
 

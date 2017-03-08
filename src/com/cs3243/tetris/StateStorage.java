@@ -50,15 +50,15 @@ public class StateStorage {
 	 * @return ArrayList of Heuristic
 	 */
 	
-	public ArrayList<Heuristic> readStateFromFile(String fileName){
-		ArrayList<Heuristic> population = new ArrayList<Heuristic>();
-		String line = "";
-		boolean isFile = new File(fileName).isFile();
-		if(!isFile){
+	public boolean readStateFromFile(String fileName,ArrayList<Heuristic> population){
+		
+		boolean fileExist = new File(fileName).isFile();
+		if(!fileExist){
 			System.out.println("File not found, creating new heuristic sets");
-			return population;
+			return false;
 		}
 		
+		String line = "";
 		try{
 			System.out.println("Loading heuristic from file...");
 			fr = new BufferedReader(new FileReader(fileName));
@@ -75,7 +75,7 @@ public class StateStorage {
 			}
 			System.out.println("Number of heuristic is " + population.size());
 		} catch(Exception e) {
-        	System.out.println("Error in Csv FileReader!");
+        	System.out.println("Error in csv FileReader!");
             e.printStackTrace();
 		} finally {
 			try {
@@ -85,7 +85,6 @@ public class StateStorage {
                 e.printStackTrace();
             }
 		}
-		Collections.sort(population);
-		return population;
+		return true;
 	}
 }
