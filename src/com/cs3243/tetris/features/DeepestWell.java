@@ -10,22 +10,22 @@ public class DeepestWell extends Feature {
 	public double getScore(NextState s) {
 		int[] top = s.getTop();
 
-		int minWellRow = top[0];
+		int maxWellDepth = 0;
 
 		for (int i = 0; i < top.length; i++) {
-			int wellRow = 0;
+			int wellDepth = 0;
 
-			if (i == 0 && top[i + 1] > top[i]) {
-				wellRow = top[i];
-			} else if (i == top.length - 1 && top[i - 1] > top[i]) {
-				wellRow = top[i];
+      if (i == 0 && top[i + 1] > top[i]) {
+        wellDepth = top[i + 1] - top[i];
+      } else if (i == top.length - 1 && top[i - 1] > top[i]) {
+        wellDepth = top[i - 1] - top[i];
 			} else if (i != 0 && i != top.length - 1 && top[i - 1] > top[i] && top[i + 1] > top[i]) {
-				wellRow = top[i];
+				wellDepth = Math.min(top[i - 1], top[i + 1]) - top[i]; 
 			}
 
-			minWellRow = Math.min(minWellRow, wellRow);
+			maxWellDepth = Math.max(maxWellDepth, wellDepth);
 		}
 
-		return featureWeight * minWellRow;
+		return featureWeight * maxWellDepth;
 	}
 }

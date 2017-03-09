@@ -12,7 +12,7 @@ public abstract class Feature {
 	 * Initialize feature with random weight
 	 */
 	public Feature() {
-		featureWeight = 2 * rand.nextDouble() - 1;
+		featureWeight = 2 * rand.nextDouble() - 100;
 	}
 
 	/**
@@ -40,10 +40,10 @@ public abstract class Feature {
 	 * @param mutationProb
 	 * @param perturbationRange
 	 */
-	public void mutate(double mutationProb, double perturbationRange) {
+	public void mutate(double mutationProb, double mean, double std) {
 		boolean mutate = rand.nextDouble() < mutationProb;
 		if (mutate) {
-			featureWeight += rand.nextGaussian() * perturbationRange - perturbationRange;
+			featureWeight *= rand.nextGaussian() * std + mean;
 		}
 	}
 
