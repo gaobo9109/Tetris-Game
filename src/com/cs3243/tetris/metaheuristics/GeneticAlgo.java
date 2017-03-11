@@ -14,6 +14,10 @@ public class GeneticAlgo extends Metaheuristic {
 	private static final double MUTATION_STD = 15;
 
 	@Override
+	/*
+	 * Keep the top few percent of the population
+	 * The rest go through recombination by roulette wheel selection
+	 */
 	public void createNextGen(Cluster cluster) {
 		int popSize = cluster.getPopSize();
 		ArrayList<Heuristic> population = cluster.getPopulation();

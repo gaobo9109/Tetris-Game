@@ -16,6 +16,7 @@ public class Island implements Runnable {
 	
 	public void runOneGen() {
 		metaheuristic.createNextGen(cluster);
+		cluster.writeStateToFile();
 	}
 	
 	public void run() {

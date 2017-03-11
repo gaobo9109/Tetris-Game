@@ -2,22 +2,19 @@ package com.cs3243.tetris.cluster;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 import com.cs3243.tetris.Heuristic;
 import com.cs3243.tetris.PlayerSkeleton;
 import com.cs3243.tetris.StateStorage;
 
-public class Cluster implements Runnable {
+public class Cluster {
 
 	private String clusterName;
 	private String fileName;
 	private ArrayList<Heuristic> population;
 	private int popSize;
 	private PlayerSkeleton ps;
-	private int generation = 30;
 	private StateStorage storage;
-	private Random rand = new Random();
 
 	public Cluster(String clusterName, int popSize) {
 		this.clusterName = clusterName;
@@ -77,65 +74,12 @@ public class Cluster implements Runnable {
 		return fitnessSum;
 	}
 	
-	/*
-	 * Keep the top few percent of the population
-	 * The rest go through recombination by roulette wheel selection
-	 */
-	
-	private void createNextGen(double fitnessSum){
-		int numKept = (int)(popSize * 0.1);
-		int numCrossOver = popSize - numKept;
-		
-		ArrayList<Heuristic> newPopulation = new ArrayList<Heuristic>();
-		for(int i=0; i<numKept; i++){
-			newPopulation.add(population.remove(0));
-		}
-		
-		//finite possibility that same parent get picked twice
-		Collections.shuffle(population);
-		for(int i=0; i<numCrossOver; i++){
-			ArrayList<Heuristic> parents = new ArrayList<Heuristic>();
-			for(int j=0; j<2; j++){
-				double partialSum = 0;
-				double cutoff = rand.nextDouble() * fitnessSum;
-				int k = 0;
-				while(partialSum < cutoff){
-					partialSum += population.get(k).getFitness();
-					k++;
-				}
-				parents.add(population.get(k-1));
-			}
-			Heuristic child = Heuristic.mix(parents.get(0), parents.get(1));
-			newPopulation.add(child);
-		}
-		population = newPopulation;
-	}
-
-	private void runEvolution() {
-		for (int i = 0; i < generation; i++) {
-//			System.out.println("generation " + i);
-			storage.writeStateToFile(population,fileName);
-			double fitnessSum = evaluateFitness();
-			createNextGen(fitnessSum);
-		}
+	public void writeStateToFile() {
+		storage.writeStateToFile(population, fileName);
 	}
 
 	public Heuristic getBestHeuristics() {
 		Collections.sort(population, Collections.reverseOrder());
 		return population.get(0);
-	}
-
-	@Override
-	public void run() {
-//		createNextGen();
-		runEvolution();
-	}
-
-	public static void main(String[] args) {
-		Cluster cluster = new Cluster("cluster",25);
-		cluster.runEvolution();
-		Heuristic hs = cluster.getBestHeuristics();
-		PlayerSkeleton ps = new PlayerSkeleton();
-		ps.playFullGame(hs, true);
 	}
 }
