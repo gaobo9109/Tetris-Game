@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.cs3243.tetris.features.Feature;
+
 public class StateStorage {
 	private BufferedWriter fw;
 	private BufferedReader fr;
@@ -15,14 +17,17 @@ public class StateStorage {
 	public void writeStateToFile(ArrayList<Heuristic> population, String fileName){
 		try{
 			fw = new BufferedWriter(new FileWriter(fileName));
+			Feature[] features;
 			for(Heuristic hs : population){
 				String line = "";
-				for(int i=0; i<hs.features.length; i++){
-					double weight = hs.features[i].getFeatureWeight();
+				features = hs.getFeatures();
+				for (int i = 0; i < features.length; i++){
+					double weight = features[i].getFeatureWeight();
 					line += String.valueOf(weight);
-					if(i == hs.features.length-1){
+					
+					if (i == features.length-1) {
 						line += "\n";
-					}else{
+					} else {
 						line += ",";
 					}
 				}
@@ -62,13 +67,17 @@ public class StateStorage {
 		try{
 			System.out.println("Loading heuristic from file...");
 			fr = new BufferedReader(new FileReader(fileName));
+			Feature[] features;
+			
 			while((line = fr.readLine()) != null){
 				String[] tokens = line.split(",");
 				Heuristic hs = new Heuristic();
-				if(tokens.length == hs.features.length){					
-					for(int i=0; i<hs.features.length; i++){
+				features = hs.getFeatures();
+				
+				if(tokens.length == features.length){					
+					for (int i = 0; i < features.length; i++){
 						double weight = Double.parseDouble(tokens[i]);
-						hs.features[i].setFeatureWeight(weight);
+						features[i].setFeatureWeight(weight);
 					}
 					population.add(hs);
 				}

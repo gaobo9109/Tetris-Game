@@ -23,10 +23,11 @@ import com.cs3243.tetris.features.WellSum;
  */
 public class Heuristic implements Comparable<Heuristic> {
 
-	public Feature[] features = new Feature[] { // Define included features
+	private Feature[] features = new Feature[] { // Define included features
 			new RowsCleared(), new HighestCol(), new NumWells(),new WellSum(),
 			new DeepestWell(), new NumHoles(), new WeightedBlock(), new AltitudeDiff(),
-			new ColTransition(), new RowTransition()};
+			new ColTransition(), new RowTransition()
+		};
 //	
 //	public Feature[] features = new Feature[] { // Define included features
 //			new RowsCleared(), new TotalColHeight(), new TotalColHeightDiff(), 
@@ -37,6 +38,10 @@ public class Heuristic implements Comparable<Heuristic> {
 	public static final double MUTATION_MEAN = 1;
 	public static final double MUTATION_STD = 15;
 	private double fitness;
+	
+	public Feature[] getFeatures() {
+		return features;
+	}
 
 	/**
 	 * Calculate score of heuristic using linear sum of features

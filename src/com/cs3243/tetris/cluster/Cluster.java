@@ -1,8 +1,12 @@
-package com.cs3243.tetris;
+package com.cs3243.tetris.cluster;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+
+import com.cs3243.tetris.Heuristic;
+import com.cs3243.tetris.PlayerSkeleton;
+import com.cs3243.tetris.StateStorage;
 
 public class Cluster implements Runnable {
 
@@ -24,6 +28,18 @@ public class Cluster implements Runnable {
 		if(!storage.readStateFromFile(fileName,population)) initPopulation();
 		ps = new PlayerSkeleton();
 	}
+	
+	public int getPopSize() {
+		return popSize;
+	}
+	
+	public ArrayList<Heuristic> getPopulation() {
+		return population;
+	}
+	
+	public void updatePopulation(ArrayList<Heuristic> population) {
+		this.population = population;
+	}
 
 	private void initPopulation() {
 		for (int i = 0; i < popSize; i++) {
@@ -33,7 +49,7 @@ public class Cluster implements Runnable {
 	}
 	
 
-	private double evaluateFitness() {
+	public double evaluateFitness() {
 		
 		double fitnessSum = 0;
 		double maxFitness = 0;

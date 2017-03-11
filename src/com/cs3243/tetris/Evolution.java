@@ -1,5 +1,7 @@
 package com.cs3243.tetris;
 
+import com.cs3243.tetris.cluster.Cluster;
+
 public class Evolution {
 		
 	private Thread c1;
