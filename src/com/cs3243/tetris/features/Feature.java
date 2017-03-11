@@ -33,18 +33,19 @@ public abstract class Feature {
 	public void setFeatureWeight(double weight) {
 		featureWeight = weight;
 	}
-
-	/**
-	 * Mutate weight
-	 * 
-	 * @param mutationProb
-	 * @param perturbationRange
-	 */
-	public void mutate(double mutationProb, double mean, double std) {
-		boolean mutate = rand.nextDouble() < mutationProb;
-		if (mutate) {
-			featureWeight *= rand.nextGaussian() * std + mean;
+	
+	public Feature clone() {
+		try {
+			Feature cloneFeature = this.getClass().newInstance();
+			System.out.println(this.getClass().toString());
+			cloneFeature.setFeatureWeight(this.featureWeight);
+			return cloneFeature;
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 
 	/**

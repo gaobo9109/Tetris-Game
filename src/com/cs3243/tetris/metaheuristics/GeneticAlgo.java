@@ -57,9 +57,18 @@ public class GeneticAlgo extends Metaheuristic {
 	/**
 	 * Mutate all features of heuristic
 	 */
-	public void mutate(Heuristic heuristic) {
+	private void mutate(Heuristic heuristic) {
 		for (Feature feature : heuristic.getFeatures()) {
-			feature.mutate(MUTATION_PROB, MUTATION_MEAN, MUTATION_STD);
+			mutateFeature(feature);
+		}
+	}
+	
+	private void mutateFeature(Feature feature) {
+		boolean mutate = rand.nextDouble() < MUTATION_PROB;
+		if (mutate) {
+			feature.setFeatureWeight(
+					feature.getFeatureWeight() * rand.nextGaussian() * MUTATION_STD + MUTATION_MEAN
+				);
 		}
 	}
 	

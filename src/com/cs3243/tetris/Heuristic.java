@@ -31,6 +31,22 @@ public class Heuristic implements Comparable<Heuristic> {
 	public Feature[] getFeatures() {
 		return features;
 	}
+	
+	public void setFeatures(Feature[] features) {
+		this.features = features;
+	}
+	
+	public Heuristic clone() {
+		Feature[] newFeatures = new Feature[this.features.length];
+		for (int i = 0; i < newFeatures.length; i++) {
+			newFeatures[i] = this.features[i].clone();
+		}
+		
+		Heuristic newHeuristic = new Heuristic();
+		newHeuristic.features = newFeatures;
+		newHeuristic.fitness = this.fitness;
+		return newHeuristic;
+	}
 
 	/**
 	 * Calculate score of heuristic using linear sum of features
