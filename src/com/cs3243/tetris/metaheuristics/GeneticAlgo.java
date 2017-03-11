@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.cs3243.tetris.Heuristic;
-import com.cs3243.tetris.cluster.Cluster;
 import com.cs3243.tetris.features.Feature;
 
 public class GeneticAlgo extends Metaheuristic {
-	
+
 	private static final double MUTATION_PROB = 0.02;
 	private static final double MUTATION_MEAN = 1;
 	private static final double MUTATION_STD = 15;
@@ -18,7 +17,9 @@ public class GeneticAlgo extends Metaheuristic {
 	 * Keep the top few percent of the population
 	 * The rest go through recombination by roulette wheel selection
 	 */
-	public void createNextGen(Cluster cluster) {
+	public void createNextGen() {
+		if (cluster == null) return;
+		
 		int popSize = cluster.getPopSize();
 		ArrayList<Heuristic> population = cluster.getPopulation();
 		double fitnessSum = cluster.evaluateFitness();

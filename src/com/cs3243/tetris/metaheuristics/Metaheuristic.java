@@ -6,6 +6,15 @@ import com.cs3243.tetris.cluster.Cluster;
 
 public abstract class Metaheuristic {
 	protected Random rand = new Random();
+	protected Cluster cluster = null;
 	
-	abstract public void createNextGen(Cluster cluster);
+	public void setCluster(Cluster cluster) {
+		this.cluster = cluster;
+	}
+	
+	public Cluster getCluster() {
+		return cluster;
+	}
+	
+	abstract public void createNextGen();
 }
