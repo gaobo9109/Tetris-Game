@@ -128,7 +128,7 @@ public class PSOAlgo extends Metaheuristic {
 		
 		// Update personal and global bests
 		for (int i = 0; i < popSize; i++) {
-			updateBests(population.get(i), i);
+			updateBests(i, population.get(i));
 		}
 	}
 }
