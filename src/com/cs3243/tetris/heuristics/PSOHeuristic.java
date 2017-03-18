@@ -23,8 +23,11 @@ public class PSOHeuristic extends Heuristic {
 	}
 
 	public PSOHeuristic(Heuristic heuristic) {
-		personalBestWeights = getWeights(heuristic.features);
-		personalBestFitness = heuristic.fitness;
+		this.features = heuristic.features;
+		this.fitness = heuristic.fitness;
+		
+		personalBestWeights = getWeights(this.features);
+		personalBestFitness = this.fitness;
 		initVels();
 	}
 	

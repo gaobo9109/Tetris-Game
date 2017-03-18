@@ -2,6 +2,7 @@ package com.cs3243.tetris.cluster;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import com.cs3243.tetris.PlayerSkeleton;
 import com.cs3243.tetris.StateStorage;
@@ -79,8 +80,17 @@ public class Cluster {
 		storage.writeStateToFile(population, fileName);
 	}
 
-	public Heuristic getBestHeuristics() {
+	public List<Heuristic> getBestHeuristics(int numToGet) {
 		Collections.sort(population, Collections.reverseOrder());
-		return population.get(0);
+		return population.subList(0, numToGet);
+	}
+	
+	public void extraditeWorstHeuristics(int numToRemove) {
+		Collections.sort(population);
+		population.removeAll(population.subList(0, numToRemove));
+	}
+	
+	public void immigrateHeuristics(List<Heuristic> heuristics) {
+		population.addAll(heuristics);
 	}
 }

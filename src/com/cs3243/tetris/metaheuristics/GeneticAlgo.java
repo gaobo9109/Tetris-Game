@@ -2,9 +2,13 @@ package com.cs3243.tetris.metaheuristics;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.cs3243.tetris.features.Feature;
+import com.cs3243.tetris.heuristics.GeneticHeuristic;
 import com.cs3243.tetris.heuristics.Heuristic;
+import com.cs3243.tetris.heuristics.PSOHeuristic;
 
 public class GeneticAlgo extends Metaheuristic {
 
@@ -94,5 +98,12 @@ public class GeneticAlgo extends Metaheuristic {
 
 		return newHeuristics;
 
+	}
+
+	@Override
+	public void immmigrate(List<Heuristic> newHeuristics) {
+		cluster.extraditeWorstHeuristics(newHeuristics.size());
+		List<Heuristic> newPSOHeuristics = newHeuristics.stream().map(newHeuristic -> new GeneticHeuristic(newHeuristic)).collect(Collectors.toList());
+		cluster.immigrateHeuristics(newPSOHeuristics);
 	}
 }
