@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.cs3243.tetris.features.Feature;
+import com.cs3243.tetris.heuristics.Heuristic;
 
 public class StateStorage {
 	private BufferedWriter fw;

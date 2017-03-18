@@ -3,9 +3,10 @@ package com.cs3243.tetris.cluster;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.cs3243.tetris.Heuristic;
 import com.cs3243.tetris.PlayerSkeleton;
 import com.cs3243.tetris.StateStorage;
+import com.cs3243.tetris.heuristics.Heuristic;
+import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
 
 public class Cluster {
 
@@ -16,13 +17,13 @@ public class Cluster {
 	private PlayerSkeleton ps;
 	private StateStorage storage;
 
-	public Cluster(String clusterName, int popSize) {
+	public Cluster(String clusterName, int popSize, MetaheuristicTypes metaheuristicType) throws InstantiationException, IllegalAccessException {
 		this.clusterName = clusterName;
 		this.fileName = clusterName + ".csv";
 		this.popSize = popSize;
 		storage = new StateStorage();
 		population = new ArrayList<Heuristic>();
-		if(!storage.readStateFromFile(fileName,population)) initPopulation();
+		if(!storage.readStateFromFile(fileName,population)) initPopulation(metaheuristicType);
 		ps = new PlayerSkeleton();
 	}
 	
@@ -38,9 +39,9 @@ public class Cluster {
 		this.population = population;
 	}
 
-	private void initPopulation() {
+	private void initPopulation(MetaheuristicTypes metaheuristicType) throws InstantiationException, IllegalAccessException {
 		for (int i = 0; i < popSize; i++) {
-			Heuristic hs = new Heuristic();
+			Heuristic hs = (Heuristic) Heuristic.clazzFactory(metaheuristicType).newInstance();
 			population.add(hs);
 		}
 	}

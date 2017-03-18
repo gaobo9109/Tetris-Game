@@ -8,6 +8,10 @@ public abstract class Metaheuristic {
 	protected Random rand = new Random();
 	protected Cluster cluster = null;
 	
+	public enum MetaheuristicTypes {
+		GENETIC, PSO
+	}
+	
 	public void setCluster(Cluster cluster) {
 		this.cluster = cluster;
 	}

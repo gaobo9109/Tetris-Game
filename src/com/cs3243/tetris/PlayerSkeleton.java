@@ -1,5 +1,7 @@
 package com.cs3243.tetris;
 
+import com.cs3243.tetris.heuristics.Heuristic;
+
 /**
  * Player Skeleton Methods for playing game
  *

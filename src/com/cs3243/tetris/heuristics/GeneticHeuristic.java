@@ -1,4 +1,4 @@
-package com.cs3243.tetris;
+package com.cs3243.tetris.heuristics;
 
 public class GeneticHeuristic extends Heuristic {
 	

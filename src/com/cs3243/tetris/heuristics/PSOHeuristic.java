@@ -1,4 +1,4 @@
-package com.cs3243.tetris;
+package com.cs3243.tetris.heuristics;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -18,7 +18,7 @@ public class PSOHeuristic extends Heuristic {
 	public PSOHeuristic() {
 		super();
 		personalBestWeights = getWeights(this.features);
-		personalBestFitness = fitness;
+		personalBestFitness = 0;
 		initVels();
 	}
 
@@ -32,19 +32,29 @@ public class PSOHeuristic extends Heuristic {
 		return (Double[]) Arrays.stream(features).map(feature -> feature.getFeatureWeight()).toArray();
 	}
 
+	/**
+	 * Initialize velocity: vi ~ U(-BOUND_RANGE, BOUND_RANGE)
+	 */
 	private void initVels() {
 		for (int i = 0; i < numFeatures; i++) {				
 			vel[i] = rand.nextDouble() * BOUND_RANGE * 2 - BOUND_RANGE;
 		}
 	}
 	
+	/**
+	 * Update position of particle by adding its velocity
+	 */
 	public void updatePos() {
 		for (int i = 0; i < numFeatures; i++) {
 			features[i].setFeatureWeight(features[i].getFeatureWeight() + vel[i]);
 		}
 	}
 	
-	public void updateVel(double omega, double rhop, double rhog, Feature[] globalBest) {
+	/**
+	 * Update a particles velocity taking into account its personal best and the global best
+	 */
+	public void updateVel(double omega, double rhop, double rhog, Heuristic globalBest) {
+		Feature[] globalBestFeatures = globalBest.features;
 		double rp, rg;
 		
 		for (int i = 0; i < numFeatures; i++) {
@@ -54,7 +64,7 @@ public class PSOHeuristic extends Heuristic {
 			vel[i] = 
 				omega * vel[i] + 
 				rhop * rp * (personalBestWeights[i] - features[i].getFeatureWeight()) + 
-				rhog * rg * (globalBest[i].getFeatureWeight() - features[i].getFeatureWeight());
+				rhog * rg * (globalBestFeatures[i].getFeatureWeight() - features[i].getFeatureWeight());
 		}
 	}
 	

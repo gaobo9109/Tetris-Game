@@ -1,5 +1,6 @@
-package com.cs3243.tetris;
+package com.cs3243.tetris.heuristics;
 
+import com.cs3243.tetris.NextState;
 import com.cs3243.tetris.features.AltitudeDiff;
 import com.cs3243.tetris.features.ColTransition;
 import com.cs3243.tetris.features.DeepestWell;
@@ -11,6 +12,7 @@ import com.cs3243.tetris.features.RowTransition;
 import com.cs3243.tetris.features.RowsCleared;
 import com.cs3243.tetris.features.WeightedBlock;
 import com.cs3243.tetris.features.WellSum;
+import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
 
 /**
  * Defines features. Performs linear mix of features to generate final score.
@@ -93,5 +95,16 @@ public class Heuristic implements Comparable<Heuristic> {
 
 	public int getNumFeatures() {
 		return numFeatures;
+	}
+	
+	public static Class<?> clazzFactory(MetaheuristicTypes metaheuristicType) {
+		switch (metaheuristicType) {
+		case GENETIC:
+			return GeneticHeuristic.class;
+		case PSO:
+			return PSOHeuristic.class;
+		default:
+			throw new IllegalArgumentException();
+		}
 	}
 }
