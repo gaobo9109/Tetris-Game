@@ -1,8 +1,8 @@
-package com.cs3243.tetris;
+package com.cs3243.tetris.heuristics;
 
+import com.cs3243.tetris.NextState;
 import com.cs3243.tetris.features.AltitudeDiff;
 import com.cs3243.tetris.features.ColTransition;
-import com.cs3243.tetris.features.ColWithHole;
 import com.cs3243.tetris.features.DeepestWell;
 import com.cs3243.tetris.features.Feature;
 import com.cs3243.tetris.features.HighestCol;
@@ -10,10 +10,9 @@ import com.cs3243.tetris.features.NumHoles;
 import com.cs3243.tetris.features.NumWells;
 import com.cs3243.tetris.features.RowTransition;
 import com.cs3243.tetris.features.RowsCleared;
-import com.cs3243.tetris.features.TotalColHeight;
-import com.cs3243.tetris.features.TotalColHeightDiff;
 import com.cs3243.tetris.features.WeightedBlock;
 import com.cs3243.tetris.features.WellSum;
+import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
 
 /**
  * Defines features. Performs linear mix of features to generate final score.
@@ -23,20 +22,34 @@ import com.cs3243.tetris.features.WellSum;
  */
 public class Heuristic implements Comparable<Heuristic> {
 
-	public Feature[] features = new Feature[] { // Define included features
+	protected Feature[] features = new Feature[] { // Define included features
 			new RowsCleared(), new HighestCol(), new NumWells(),new WellSum(),
 			new DeepestWell(), new NumHoles(), new WeightedBlock(), new AltitudeDiff(),
-			new ColTransition(), new RowTransition()};
-//	
-//	public Feature[] features = new Feature[] { // Define included features
-//			new RowsCleared(), new TotalColHeight(), new TotalColHeightDiff(), 
-//			new HighestCol(), new NumWells(),new DeepestWell(), new NumHoles(), 
-//			new ColWithHole()};
+			new ColTransition(), new RowTransition()
+		};
+	protected int numFeatures = features.length;
 	
-	public static final double MUTATION_PROB = 0.1;
-	public static final double MUTATION_MEAN = 1;
-	public static final double MUTATION_STD = 15;
-	private double fitness;
+	protected double fitness;
+	
+	public Feature[] getFeatures() {
+		return features;
+	}
+	
+	public void setFeatures(Feature[] features) {
+		this.features = features;
+	}
+	
+	public Heuristic clone() {
+		Feature[] newFeatures = new Feature[numFeatures];
+		for (int i = 0; i < numFeatures; i++) {
+			newFeatures[i] = this.features[i].clone();
+		}
+		
+		Heuristic newHeuristic = new Heuristic();
+		newHeuristic.features = newFeatures;
+		newHeuristic.fitness = this.fitness;
+		return newHeuristic;
+	}
 
 	/**
 	 * Calculate score of heuristic using linear sum of features
@@ -73,39 +86,6 @@ public class Heuristic implements Comparable<Heuristic> {
 	}
 
 	/**
-	 * Mutate all features of heuristic
-	 */
-	public void mutateAll() {
-		for (Feature feature : features) {
-			feature.mutate(MUTATION_PROB, MUTATION_MEAN, MUTATION_STD);
-		}
-	}
-
-	/**
-	 * Cross-over two heuristics
-	 * 
-	 * @param hs1
-	 * @param hs2
-	 * @return new heuristic as a result of cross-over
-	 */
-	public static Heuristic mix(Heuristic hs1, Heuristic hs2) {
-		double ft1 = hs1.getFitness();
-		double ft2 = hs2.getFitness();
-		double weightage = (ft1 != 0 || ft2 != 0) ? ft1 / (ft1 + ft2) : 0.5;
-		Heuristic newHeuristics = new Heuristic();
-
-		for (int i = 0; i < hs1.features.length; i++) {
-			double hs1Weight = hs1.features[i].getFeatureWeight();
-			double hs2Weight = hs2.features[i].getFeatureWeight();
-			double newWeight = weightage * hs1Weight + (1 - weightage) * hs2Weight;
-			newHeuristics.features[i].setFeatureWeight(newWeight);
-		}
-
-		return newHeuristics;
-
-	}
-
-	/**
 	 * Compare two heuristics' fitness scores
 	 */
 	@Override
@@ -113,4 +93,18 @@ public class Heuristic implements Comparable<Heuristic> {
 		return (int) (this.fitness - other.getFitness());
 	}
 
+	public int getNumFeatures() {
+		return numFeatures;
+	}
+	
+	public static Class<?> clazzFactory(MetaheuristicTypes metaheuristicType) {
+		switch (metaheuristicType) {
+		case GENETIC:
+			return GeneticHeuristic.class;
+		case PSO:
+			return PSOHeuristic.class;
+		default:
+			throw new IllegalArgumentException();
+		}
+	}
 }
