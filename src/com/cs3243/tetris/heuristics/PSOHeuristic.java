@@ -10,9 +10,9 @@ public class PSOHeuristic extends Heuristic {
 	private final double BOUND_LOW = 1;
 	private final double BOUND_RANGE = BOUND_HIGH - BOUND_LOW;
 	
-	private Double[] personalBestWeights;
+	private double[] personalBestWeights;
 	private double personalBestFitness;
-	private Double[] vel;
+	private double[] vel = new double[numFeatures];
 	private Random rand = new Random();
 	
 	public PSOHeuristic() {
@@ -31,15 +31,16 @@ public class PSOHeuristic extends Heuristic {
 		initVels();
 	}
 	
-	private Double[] getWeights(Feature[] features) {
-		return (Double[]) Arrays.stream(features).map(feature -> feature.getFeatureWeight()).toArray();
+	private double[] getWeights(Feature[] features) {
+		double[] weights = Arrays.stream(features).mapToDouble(feature -> feature.getFeatureWeight()).toArray();
+		return weights;
 	}
 
 	/**
 	 * Initialize velocity: vi ~ U(-BOUND_RANGE, BOUND_RANGE)
 	 */
 	private void initVels() {
-		for (int i = 0; i < numFeatures; i++) {				
+		for (int i = 0; i < numFeatures; i++) {	
 			vel[i] = rand.nextDouble() * BOUND_RANGE * 2 - BOUND_RANGE;
 		}
 	}
@@ -81,7 +82,7 @@ public class PSOHeuristic extends Heuristic {
 		}
 	}
 	
-	public Double[] getPersonalBestWeights() {
+	public double[] getPersonalBestWeights() {
 		return this.personalBestWeights;
 	}
 }

@@ -3,6 +3,7 @@ package com.cs3243.tetris.islands;
 import com.cs3243.tetris.metaheuristics.GeneticAlgo;
 import com.cs3243.tetris.metaheuristics.Metaheuristic;
 import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
+import com.cs3243.tetris.metaheuristics.PSOAlgo;
 
 public class Archipelago {
 	private Thread c1;
@@ -13,12 +14,10 @@ public class Archipelago {
 	public Archipelago(int totalPopulation) throws InstantiationException, IllegalAccessException{
 		int islandPopulation = totalPopulation / 4;
 		
-		Metaheuristic geneticAlgo = new GeneticAlgo();
-		
-		c1 = new Thread(new Island(geneticAlgo, "c1", islandPopulation, 30, MetaheuristicTypes.GENETIC),"t1");
-		c2 = new Thread(new Island(geneticAlgo, "c2", islandPopulation, 30, MetaheuristicTypes.GENETIC),"t2");
-		c3 = new Thread(new Island(geneticAlgo, "c3", islandPopulation, 30, MetaheuristicTypes.PSO),"t3");
-		c4 = new Thread(new Island(geneticAlgo, "c4", islandPopulation, 30, MetaheuristicTypes.PSO),"t4");
+		c1 = new Thread(new Island(new GeneticAlgo(), "c1", islandPopulation, 30, MetaheuristicTypes.GENETIC),"t1");
+		c2 = new Thread(new Island(new GeneticAlgo(), "c2", islandPopulation, 30, MetaheuristicTypes.GENETIC),"t2");
+		c3 = new Thread(new Island(new PSOAlgo(), "c3", islandPopulation, 30, MetaheuristicTypes.PSO),"t3");
+		c4 = new Thread(new Island(new PSOAlgo(), "c4", islandPopulation, 30, MetaheuristicTypes.PSO),"t4");
 	}
 
 	public void runAlgorithm(){
