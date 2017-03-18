@@ -20,13 +20,14 @@ import com.cs3243.tetris.features.WellSum;
  */
 public class Heuristic implements Comparable<Heuristic> {
 
-	private Feature[] features = new Feature[] { // Define included features
+	protected Feature[] features = new Feature[] { // Define included features
 			new RowsCleared(), new HighestCol(), new NumWells(),new WellSum(),
 			new DeepestWell(), new NumHoles(), new WeightedBlock(), new AltitudeDiff(),
 			new ColTransition(), new RowTransition()
 		};
+	protected int numFeatures = features.length;
 	
-	private double fitness;
+	protected double fitness;
 	
 	public Feature[] getFeatures() {
 		return features;
@@ -37,8 +38,8 @@ public class Heuristic implements Comparable<Heuristic> {
 	}
 	
 	public Heuristic clone() {
-		Feature[] newFeatures = new Feature[this.features.length];
-		for (int i = 0; i < newFeatures.length; i++) {
+		Feature[] newFeatures = new Feature[numFeatures];
+		for (int i = 0; i < numFeatures; i++) {
 			newFeatures[i] = this.features[i].clone();
 		}
 		
@@ -90,4 +91,7 @@ public class Heuristic implements Comparable<Heuristic> {
 		return (int) (this.fitness - other.getFitness());
 	}
 
+	public int getNumFeatures() {
+		return numFeatures;
+	}
 }
