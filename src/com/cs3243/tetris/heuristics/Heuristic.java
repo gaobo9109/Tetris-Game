@@ -28,14 +28,14 @@ public class Heuristic implements Comparable<Heuristic> {
     //Very hacky
     private int[] type1Features = {1, 2, 3, 4, 5, 6, 7};
     //WHAT ABOUT 12?
-    private int[] type2Features = {8, 9};
-    private int[] type3Features = {10, 11};
+    private int[] type2Features = {8, 9, 10};
+    private int[] type3Features = {11, 12};
 
 	protected Feature[] features = new Feature[] { // Define included features
 	        new RowsCleared(), new AltitudeDiff(), new DeepestWell(), new HighestCol(), 
 	        new NumWells(), new TotalColHeight(), new TotalColHeightDiff(), new WellSum(), 
-	        new ColTransition(), new NumHoles(), new RowTransition(), 
-	        new WeightedBlock(), new ColWithHole()
+	        new ColTransition(), new NumHoles(), new ColWithHole(), new RowTransition(), 
+	        new WeightedBlock()
 		};
 	
 	protected int numFeatures = features.length;
@@ -74,6 +74,8 @@ public class Heuristic implements Comparable<Heuristic> {
 		int[][] field = s.getField();
 		int numRows = field.length;
 		int numCols = field[0].length;
+		//YAH: Yet another hack.
+		features[12] = new ColWithHole(numCols);
 		for (int col = 0; col < numCols; col++) {
 		    //O(1) time loop
             for (int index : type1Features) {

@@ -7,26 +7,15 @@ import com.cs3243.tetris.NextState;
  */
 public class ColWithHole extends Feature {
     private int count = 0;
-    /*
-	@Override
-	public double getScore(NextState s) {
-		int[][] field = s.getField();
-		int[] top = s.getTop();
-
-		int count = 0;
-		for (int i = 0; i < top.length; i++) {
-			int colHeight = top[i];
-			for (int j = 0; j < colHeight - 1; j++) {
-				if (field[j][i] == 0) {
-					count++;
-					break;
-				}
-			}
-		}
-
-		return featureWeight * count;
-	}
-	*/
+    private boolean[] hasHole;
+    
+    public ColWithHole() {
+        hasHole = null;
+    }
+    
+    public ColWithHole(int numCols) {
+        hasHole = new boolean[numCols];
+    }
 
     @Override
     public double getScore() {
@@ -35,13 +24,17 @@ public class ColWithHole extends Feature {
 
     @Override
     public void updateScore(NextState s, int row, int col) {
-        //TODO
-        
+        int[][] field = s.getField();
+        if (!hasHole[col]) {
+            if (field[row][col] == 0) {
+                hasHole[col] = true;
+                count++;
+            }
+        }        
     }
 
     @Override
     public void resetScore() {
         count = 0;
-        
     }
 }
