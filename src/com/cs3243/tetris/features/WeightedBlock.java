@@ -2,8 +2,9 @@ package com.cs3243.tetris.features;
 
 import com.cs3243.tetris.NextState;
 
-public class WeightedBlock extends Feature{
-
+public class WeightedBlock extends Feature {
+    private int sum = 0;
+    /*
 	@Override
 	public double getScore(NextState s) {
 		int[][] field = s.getField();
@@ -20,4 +21,21 @@ public class WeightedBlock extends Feature{
 		return sum;
 		
 	}
+	*/
+    //NOT USING FEATURE WEIGHT EARLIER?
+    @Override
+    public double getScore() {
+        return featureWeight * sum;
+    }
+
+    @Override
+    public void updateScore(NextState s, int row, int col) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void resetScore() {
+        sum = 0;
+    }
 }

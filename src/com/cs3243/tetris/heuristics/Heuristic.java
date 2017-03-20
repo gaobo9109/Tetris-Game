@@ -59,10 +59,17 @@ public class Heuristic implements Comparable<Heuristic> {
 	 */
 	public double calculateHeuristicScore(NextState s) {
 		int score = 0;
-
+		int[] top = s.getTop();
+		int[][] field = s.getField();
+		
+		
+		/**
 		for (Feature feature : features) {
-			score += feature.getScore(s);
+		    //THIS IS WHAT I NEED TO SPEED UP
+			score + = feature.getScore(s);
+			
 		}
+		**/
 
 		return score;
 	}

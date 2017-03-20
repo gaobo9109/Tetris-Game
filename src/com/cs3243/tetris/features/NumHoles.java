@@ -7,6 +7,8 @@ import com.cs3243.tetris.NextState;
  * lower than the highest column.
  */
 public class NumHoles extends Feature {
+    private int holes = 0;
+    /*
 	@Override
 	public double getScore(NextState s) {
 		int[][] field = s.getField();
@@ -25,4 +27,21 @@ public class NumHoles extends Feature {
 
 		return featureWeight * holes;
 	}
+	*/
+
+    @Override
+    public double getScore() {
+        return featureWeight * holes;
+    }
+
+    @Override
+    public void updateScore(NextState s, int row, int col) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void resetScore() {
+        holes = 0;     
+    }
 }

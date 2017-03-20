@@ -55,5 +55,9 @@ public abstract class Feature {
 	 * @param s
 	 * @return
 	 */
-	public abstract double getScore(NextState s);
+	public abstract double getScore();
+	
+	public abstract void updateScore(NextState s, int row, int col);
+	
+	public abstract void resetScore();
 }
