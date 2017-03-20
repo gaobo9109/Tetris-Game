@@ -103,7 +103,7 @@ public class GeneticAlgo extends Metaheuristic {
 	@Override
 	public void immmigrate(List<Heuristic> newHeuristics) {
 		cluster.extraditeWorstHeuristics(newHeuristics.size());
-		List<Heuristic> newPSOHeuristics = newHeuristics.stream().map(newHeuristic -> new GeneticHeuristic(newHeuristic)).collect(Collectors.toList());
-		cluster.immigrateHeuristics(newPSOHeuristics);
+		List<Heuristic> newGeneticHeuristics = newHeuristics.stream().map(newHeuristic -> new GeneticHeuristic(newHeuristic)).collect(Collectors.toList());
+		cluster.immigrateHeuristics(newGeneticHeuristics);
 	}
 }

@@ -38,12 +38,7 @@ public class PSOAlgo extends Metaheuristic {
 	 */
 	private void initPositions() {
 		globalBest.setFitness(0);
-		
-		for (Heuristic heuristic : population) {
-			if (heuristic.getFitness() > globalBest.getFitness()) {
-				globalBest = heuristic.clone();
-			}
-		}
+		updateGlobalBest();
 	}
 	
 	/**
