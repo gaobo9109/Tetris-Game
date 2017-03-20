@@ -8,22 +8,7 @@ import com.cs3243.tetris.NextState;
 
 public class RowTransition extends Feature{
 	private int count = 0;
-    /*
-	@Override
-	public double getScore(NextState s) {
-
-				
-		for(int i=0; i<rows; i++){
-			for(int j=0; j<cols; j++){				
-				// left wall and right wall considered occupied
-			    
-			
-			}
-		}
-		return count;
-	}
-	*/
-	//NOT USING FEATURE WEIGHT EARLIER?
+	
     @Override
     public double getScore() {
         return featureWeight * count;
@@ -32,8 +17,6 @@ public class RowTransition extends Feature{
     @Override
     public void updateScore(NextState s, int row, int col) {
         int[][] field = s.getField();
-        int count = 0;
-        int rows = field.length;
         int cols = field[0].length;
         
         if(col == 0 && field[row][col] == 0) count ++;

@@ -8,26 +8,6 @@ import com.cs3243.tetris.NextState;
  */
 public class NumHoles extends Feature {
     private int holes = 0;
-    /*
-	@Override
-	public double getScore(NextState s) {
-		int[][] field = s.getField();
-		int[] top = s.getTop();
-
-		int holes = 0;
-		for (int i = 0; i < top.length; i++) {
-			int colHeight = top[i];
-			for (int j = 0; j < colHeight - 1; j++) {
-				// any empty cell beneath the top row cell in that col is a hole
-				if (field[j][i] == 0) {
-					holes++;
-				}
-			}
-		}
-
-		return featureWeight * holes;
-	}
-	*/
 
     @Override
     public double getScore() {
@@ -36,7 +16,10 @@ public class NumHoles extends Feature {
 
     @Override
     public void updateScore(NextState s, int row, int col) {
-        // TODO Auto-generated method stub
+        int[][] field = s.getField();
+        if (field[row][col] == 0) {
+            holes++;
+        }
         
     }
 

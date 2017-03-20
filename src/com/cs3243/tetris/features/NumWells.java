@@ -8,19 +8,6 @@ import com.cs3243.tetris.NextState;
  */
 public class NumWells extends Feature {
     private int count = 0;
-    /*
-	@Override
-	public double getScore(NextState s) {
-		int[] top = s.getTop();
-
-		int count = 0;
-		for (int i = 0; i < top.length; i++) {
-
-		}
-
-		return featureWeight * count;
-	}
-	*/
 
     @Override
     public double getScore() {

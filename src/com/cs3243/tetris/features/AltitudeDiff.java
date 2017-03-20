@@ -8,7 +8,6 @@ public class AltitudeDiff extends Feature {
     private int maxHeight = Integer.MIN_VALUE;
 	
     @Override
-    //EARLIER WAS NOT USING FEATURE WEIGHT?
     public double getScore() {
         return featureWeight * (maxHeight - minHeight);
     }

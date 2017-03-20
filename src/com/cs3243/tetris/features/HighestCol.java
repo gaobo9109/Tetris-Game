@@ -7,19 +7,6 @@ import com.cs3243.tetris.NextState;
  */
 public class HighestCol extends Feature {
     private int maxCol = 0;
-    /*
-	@Override
-	public double getScore(NextState s) {
-		int[] top = s.getTop();
-
-		int maxCol = 0;
-		for (int colHeight : top) {
-			maxCol = Math.max(maxCol, colHeight);
-		}
-
-		return featureWeight * maxCol;
-	}
-	*/
 
     @Override
     public double getScore() {
@@ -28,7 +15,6 @@ public class HighestCol extends Feature {
 
     @Override
     public void updateScore(NextState s, int row, int col) {
-        // TODO Auto-generated method stub
         int[] top = s.getTop();
         maxCol = Math.max(maxCol, top[col]);
         

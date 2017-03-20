@@ -10,7 +10,6 @@ public class RowsCleared extends Feature {
 
     @Override
     public double getScore() {
-        // TODO Auto-generated method stub
         return featureWeight * rowsCleared;
     }
 

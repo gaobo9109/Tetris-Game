@@ -1,7 +1,5 @@
 package com.cs3243.tetris.features;
 
-import javax.swing.text.TabStop;
-
 import com.cs3243.tetris.NextState;
 
 /**
@@ -10,22 +8,9 @@ import com.cs3243.tetris.NextState;
 public class TotalColHeight extends Feature {
     
     private int sum = 0;
-    /*
-	@Override
-	public double getScore(NextState s) {
-
-		int sum = 0;
-		for (int i : top) {
-			sum += i;
-		}
-
-		return featureWeight * sum;
-	}
-	*/
 
     @Override
     public double getScore() {
-        // TODO Auto-generated method stub
         return featureWeight * sum;
     }
 

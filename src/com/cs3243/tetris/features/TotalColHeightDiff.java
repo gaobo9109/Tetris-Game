@@ -8,19 +8,6 @@ import com.cs3243.tetris.NextState;
  */
 public class TotalColHeightDiff extends Feature {
     private int sum = 0;
-    /*
-	@Override
-	public double getScore(NextState s) {
-		int[] top = s.getTop();
-
-		int sum = 0;
-		for (int i = 0; i < top.length - 1; i++) {
-			sum += Math.abs(top[i + 1] - top[i]);
-		}
-
-		return featureWeight * sum;
-	}
-	*/
 
     @Override
     public double getScore() {

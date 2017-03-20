@@ -35,8 +35,7 @@ public class ColWithHole extends Feature {
 
     @Override
     public void updateScore(NextState s, int row, int col) {
-        int[][] field = s.getField();
-        int[] top = s.getTop();
+        //TODO
         
     }
 
