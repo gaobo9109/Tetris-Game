@@ -80,7 +80,7 @@ public class Cluster {
 		storage.writeStateToFile(population, fileName);
 	}
 
-	public List<Heuristic> getBestHeuristics(int numToGet) {
+	public List<Heuristic> emigrateHeuristics(int numToGet) {
 		Collections.sort(population, Collections.reverseOrder());
 		return population.subList(0, numToGet);
 	}
