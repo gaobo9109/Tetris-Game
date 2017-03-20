@@ -1,7 +1,6 @@
 package com.cs3243.tetris.islands;
 
 import com.cs3243.tetris.metaheuristics.GeneticAlgo;
-import com.cs3243.tetris.metaheuristics.Metaheuristic;
 import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
 import com.cs3243.tetris.metaheuristics.PSOAlgo;
 
