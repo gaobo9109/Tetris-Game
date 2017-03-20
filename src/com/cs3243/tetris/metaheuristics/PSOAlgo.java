@@ -14,7 +14,7 @@ public class PSOAlgo extends Metaheuristic {
 	private final double RHOG = 2.0;
 	
 	Heuristic globalBest;
-	ArrayList<Heuristic> population = this.cluster.getPopulation();
+	ArrayList<Heuristic> population;
 	
 	int popSize;
 	int numFeatures;
@@ -23,11 +23,13 @@ public class PSOAlgo extends Metaheuristic {
 	public void setCluster(Cluster cluster) {
 		this.cluster = cluster;
 		
+		population = this.cluster.getPopulation();
 		popSize = this.cluster.getPopSize();
 		numFeatures = this.cluster.getPopulation().get(0).getNumFeatures();
 		
-		cluster.evaluateFitness();
-		initPositions();
+		// Cannot evaluate fitness here because setCluster is called during instantiation of Island and it will delay the main thread
+		// cluster.evaluateFitness(); 
+		// initPositions();
 	}
 	
 	/**
@@ -58,6 +60,12 @@ public class PSOAlgo extends Metaheuristic {
 	@Override
 	public void createNextGen() {
 		PSOHeuristic psoHeuristic;
+		
+		// Evaluate fitness and initialize positions if first generation
+		if (globalBest == null) {
+			 cluster.evaluateFitness(); 
+			 initPositions();
+		}
 		
 		// Move every particle
 		for (Heuristic heuristic : population) {
