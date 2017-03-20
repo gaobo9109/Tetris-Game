@@ -97,12 +97,16 @@ public class Heuristic implements Comparable<Heuristic> {
 		return numFeatures;
 	}
 	
-	public static Class<?> clazzFactory(MetaheuristicTypes metaheuristicType) {
+	public Heuristic convertHeuristic() {
+		throw new UnsupportedOperationException("Override in subclass");
+	}
+	
+	public static Heuristic heuristicFactory(MetaheuristicTypes metaheuristicType) {
 		switch (metaheuristicType) {
 		case GENETIC:
-			return GeneticHeuristic.class;
+			return new GeneticHeuristic();
 		case PSO:
-			return PSOHeuristic.class;
+			return new PSOHeuristic();
 		default:
 			throw new IllegalArgumentException();
 		}
