@@ -27,21 +27,9 @@ public class PSOAlgo extends Metaheuristic {
 		numFeatures = this.cluster.getPopulation().get(0).getNumFeatures();
 		
 		cluster.evaluateFitness();
-		initPositions();
-	}
-	
-	/**
-	 * Initialize personal bests with current fitness for each heuristic
-	 * Update global best to be best over all the current personal bests 
-	 */
-	private void initPositions() {
-		globalBest.setFitness(0);
 		
-		for (Heuristic heuristic : population) {
-			if (heuristic.getFitness() > globalBest.getFitness()) {
-				globalBest = heuristic.clone();
-			}
-		}
+		globalBest.setFitness(0);
+		updateGlobalBest();
 	}
 	
 	/**
@@ -74,7 +62,7 @@ public class PSOAlgo extends Metaheuristic {
 	@Override
 	public void immmigrate(List<Heuristic> newHeuristics) {
 		cluster.extraditeWorstHeuristics(newHeuristics.size());
-		List<Heuristic> newPSOHeuristics = newHeuristics.stream().map(newHeuristic -> new PSOHeuristic(newHeuristic)).collect(Collectors.toList());
-		cluster.immigrateHeuristics(newPSOHeuristics);
+		List<Heuristic> psoHeuristics = newHeuristics.stream().map(newHeuristic -> new PSOHeuristic(newHeuristic)).collect(Collectors.toList());
+		cluster.immigrateHeuristics(psoHeuristics);
 	}
 }
