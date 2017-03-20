@@ -3,28 +3,33 @@ package com.cs3243.tetris.features;
 import com.cs3243.tetris.NextState;
 
 public class WellSum extends Feature{
+	private int wellSum = 0;
 	
-	@Override
-	public double getScore(NextState s) {
-		int[] top = s.getTop();
+    @Override
+    public double getScore() {
+        return featureWeight * wellSum ;
+    }
 
-		int wellSum = 0;
+    @Override
+    public void updateScore(NextState s, int row, int col) {
+        int[] top = s.getTop();
 
-		for (int i = 0; i < top.length; i++) {
+        if (col == 0 || col == top.length - 1) {
+            if(col == 0 && top[col + 1] > top[col]){
+                wellSum += top[col+1] - top[col];
+            } else if(col == top.length -1 && top[col-1] > top[col]){
+                wellSum += top[col-1] - top[col];
+            }
+        } else if (top[col - 1] > top[col] && top[col + 1] > top[col]) {
+            wellSum += Math.min(top[col-1], top[col+1]) - top[col]; 
+        }
+        
+    }
 
-			if (i == 0 || i == top.length - 1) {
-				if(i == 0 && top[i + 1] > top[i]){
-					wellSum += top[i+1] - top[i];
-				} else if(i == top.length -1 && top[i-1] > top[i]){
-					wellSum += top[i-1] - top[i];
-				}
-			} else if (top[i - 1] > top[i] && top[i + 1] > top[i]) {
-				wellSum += Math.min(top[i-1], top[i+1]) - top[i]; 
-			}
-
-			
-		}
-		return wellSum;
-	}
+    @Override
+    public void resetScore() {
+        wellSum = 0;
+        
+    }
 
 }

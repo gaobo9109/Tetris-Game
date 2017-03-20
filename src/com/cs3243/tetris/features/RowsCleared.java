@@ -6,8 +6,22 @@ import com.cs3243.tetris.NextState;
  * This heuristic calculates the number of rows cleared.
  */
 public class RowsCleared extends Feature {
-	@Override
-	public double getScore(NextState s) {
-		return featureWeight * s.getRowsCleared();
-	}
+    private double rowsCleared = 0;
+
+    @Override
+    public double getScore() {
+        return featureWeight * rowsCleared;
+    }
+
+    @Override
+    public void updateScore(NextState s, int row, int col) {
+        rowsCleared = featureWeight * s.getRowsCleared();
+        
+    }
+
+    @Override
+    public void resetScore() {
+       rowsCleared = 0;
+        
+    }
 }

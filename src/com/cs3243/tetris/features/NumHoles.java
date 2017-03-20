@@ -7,22 +7,24 @@ import com.cs3243.tetris.NextState;
  * lower than the highest column.
  */
 public class NumHoles extends Feature {
-	@Override
-	public double getScore(NextState s) {
-		int[][] field = s.getField();
-		int[] top = s.getTop();
+    private int holes = 0;
 
-		int holes = 0;
-		for (int i = 0; i < top.length; i++) {
-			int colHeight = top[i];
-			for (int j = 0; j < colHeight - 1; j++) {
-				// any empty cell beneath the top row cell in that col is a hole
-				if (field[j][i] == 0) {
-					holes++;
-				}
-			}
-		}
+    @Override
+    public double getScore() {
+        return featureWeight * holes;
+    }
 
-		return featureWeight * holes;
-	}
+    @Override
+    public void updateScore(NextState s, int row, int col) {
+        int[][] field = s.getField();
+        if (field[row][col] == 0) {
+            holes++;
+        }
+        
+    }
+
+    @Override
+    public void resetScore() {
+        holes = 0;     
+    }
 }

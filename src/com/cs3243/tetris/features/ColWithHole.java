@@ -6,22 +6,35 @@ import com.cs3243.tetris.NextState;
  * This heuristic calculates the number of columns with holes.
  */
 public class ColWithHole extends Feature {
-	@Override
-	public double getScore(NextState s) {
-		int[][] field = s.getField();
-		int[] top = s.getTop();
+    private int count = 0;
+    private boolean[] hasHole;
+    
+    public ColWithHole() {
+        hasHole = null;
+    }
+    
+    public ColWithHole(int numCols) {
+        hasHole = new boolean[numCols];
+    }
 
-		int count = 0;
-		for (int i = 0; i < top.length; i++) {
-			int colHeight = top[i];
-			for (int j = 0; j < colHeight - 1; j++) {
-				if (field[j][i] == 0) {
-					count++;
-					break;
-				}
-			}
-		}
+    @Override
+    public double getScore() {
+        return featureWeight * count;
+    }
 
-		return featureWeight * count;
-	}
+    @Override
+    public void updateScore(NextState s, int row, int col) {
+        int[][] field = s.getField();
+        if (!hasHole[col]) {
+            if (field[row][col] == 0) {
+                hasHole[col] = true;
+                count++;
+            }
+        }        
+    }
+
+    @Override
+    public void resetScore() {
+        count = 0;
+    }
 }

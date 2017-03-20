@@ -6,16 +6,23 @@ import com.cs3243.tetris.NextState;
  * This heuristic calculates the height of the highest column.
  */
 public class HighestCol extends Feature {
+    private int maxCol = 0;
 
-	@Override
-	public double getScore(NextState s) {
-		int[] top = s.getTop();
+    @Override
+    public double getScore() {
+        return featureWeight * maxCol;
+    }
 
-		int maxCol = 0;
-		for (int colHeight : top) {
-			maxCol = Math.max(maxCol, colHeight);
-		}
+    @Override
+    public void updateScore(NextState s, int row, int col) {
+        int[] top = s.getTop();
+        maxCol = Math.max(maxCol, top[col]);
+        
+    }
 
-		return featureWeight * maxCol;
-	}
+    @Override
+    public void resetScore() {
+        maxCol = 0;
+        
+    }
 }

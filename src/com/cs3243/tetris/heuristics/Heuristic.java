@@ -3,6 +3,7 @@ package com.cs3243.tetris.heuristics;
 import com.cs3243.tetris.NextState;
 import com.cs3243.tetris.features.AltitudeDiff;
 import com.cs3243.tetris.features.ColTransition;
+import com.cs3243.tetris.features.ColWithHole;
 import com.cs3243.tetris.features.DeepestWell;
 import com.cs3243.tetris.features.Feature;
 import com.cs3243.tetris.features.HighestCol;
@@ -10,6 +11,8 @@ import com.cs3243.tetris.features.NumHoles;
 import com.cs3243.tetris.features.NumWells;
 import com.cs3243.tetris.features.RowTransition;
 import com.cs3243.tetris.features.RowsCleared;
+import com.cs3243.tetris.features.TotalColHeight;
+import com.cs3243.tetris.features.TotalColHeightDiff;
 import com.cs3243.tetris.features.WeightedBlock;
 import com.cs3243.tetris.features.WellSum;
 import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
@@ -21,12 +24,20 @@ import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
  *         Gupta
  */
 public class Heuristic implements Comparable<Heuristic> {
+    
+    //Very hacky
+    private int[] type1Features = {1, 2, 3, 4, 5, 6, 7};
+    //WHAT ABOUT 12?
+    private int[] type2Features = {8, 9, 10};
+    private int[] type3Features = {11, 12};
 
 	protected Feature[] features = new Feature[] { // Define included features
-			new RowsCleared(), new HighestCol(), new NumWells(),new WellSum(),
-			new DeepestWell(), new NumHoles(), new WeightedBlock(), new AltitudeDiff(),
-			new ColTransition(), new RowTransition()
+	        new RowsCleared(), new AltitudeDiff(), new DeepestWell(), new HighestCol(), 
+	        new NumWells(), new TotalColHeight(), new TotalColHeightDiff(), new WellSum(), 
+	        new ColTransition(), new NumHoles(), new ColWithHole(), new RowTransition(), 
+	        new WeightedBlock()
 		};
+	
 	protected int numFeatures = features.length;
 	
 	protected double fitness;
@@ -59,9 +70,37 @@ public class Heuristic implements Comparable<Heuristic> {
 	 */
 	public double calculateHeuristicScore(NextState s) {
 		int score = 0;
-
+		int[] top = s.getTop();
+		int[][] field = s.getField();
+		int numRows = field.length;
+		int numCols = field[0].length;
+		//YAH: Yet another hack.
+		features[10] = new ColWithHole(numCols);
+		for (int col = 0; col < numCols; col++) {
+		    //O(1) time loop
+            for (int index : type1Features) {
+                features[index].updateScore(s, 0, col);
+            }
+		    for (int row = 0; row < numRows; row ++) {
+		        if (row < top[col] - 1) {
+		            //O(1) time loop
+		            for (int index : type2Features) {
+		                features[index].updateScore(s, row, col);
+		            }
+		        }
+		        //O(1) time loop
+                for (int index : type3Features) {
+                    features[index].updateScore(s, row, col);
+                }
+		    }
+		}
+		
+		//1st feature needs no iterations.
+		features[0].updateScore(s, 0, 0);
+		score += features[0].getScore();
+		
 		for (Feature feature : features) {
-			score += feature.getScore(s);
+			feature.resetScore();		
 		}
 
 		return score;

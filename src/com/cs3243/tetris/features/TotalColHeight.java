@@ -6,15 +6,24 @@ import com.cs3243.tetris.NextState;
  * This heuristic calculates the total height of all columns.
  */
 public class TotalColHeight extends Feature {
-	@Override
-	public double getScore(NextState s) {
-		int[] top = s.getTop();
+    
+    private int sum = 0;
 
-		int sum = 0;
-		for (int i : top) {
-			sum += i;
-		}
+    @Override
+    public double getScore() {
+        return featureWeight * sum;
+    }
 
-		return featureWeight * sum;
-	}
+    @Override
+    public void updateScore(NextState s, int row, int col) {
+        int[] top = s.getTop();
+        sum += top[col];
+        
+    }
+
+    @Override
+    public void resetScore() {
+        sum = 0;
+        
+    }
 }

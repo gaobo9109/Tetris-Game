@@ -50,10 +50,22 @@ public abstract class Feature {
 
 	/**
 	 * Calculate score of feature. Should be overridden with proper
-	 * implementation of scoring
-	 * 
+	 * implementation of scoring 
 	 * @param s
-	 * @return
+	 * @return double score
 	 */
-	public abstract double getScore(NextState s);
+	public abstract double getScore();
+	
+	/**
+     * Updates score of feature. Should be overridden with proper
+     * implementation of scoring 
+     * @param s, row, col
+     */
+	public abstract void updateScore(NextState s, int row, int col);
+	
+	/**
+     * Resets. Should be overridden with proper
+     * implementation of scoring
+     */
+	public abstract void resetScore();
 }
