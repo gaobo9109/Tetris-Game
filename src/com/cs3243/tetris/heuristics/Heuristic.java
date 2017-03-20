@@ -75,7 +75,7 @@ public class Heuristic implements Comparable<Heuristic> {
 		int numRows = field.length;
 		int numCols = field[0].length;
 		//YAH: Yet another hack.
-		features[12] = new ColWithHole(numCols);
+		features[10] = new ColWithHole(numCols);
 		for (int col = 0; col < numCols; col++) {
 		    //O(1) time loop
             for (int index : type1Features) {
