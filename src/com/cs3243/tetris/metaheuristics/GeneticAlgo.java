@@ -14,7 +14,7 @@ public class GeneticAlgo extends Metaheuristic {
 
 	private static final double MUTATION_PROB = 0.02;
 	private static final double MUTATION_MEAN = 1;
-	private static final double MUTATION_STD = 15;
+	private static final double MUTATION_STD = 1;
 
 	@Override
 	/*
@@ -71,7 +71,7 @@ public class GeneticAlgo extends Metaheuristic {
 		boolean mutate = rand.nextDouble() < MUTATION_PROB;
 		if (mutate) {
 			feature.setFeatureWeight(
-					feature.getFeatureWeight() * rand.nextGaussian() * MUTATION_STD + MUTATION_MEAN
+					feature.getFeatureWeight() * (rand.nextGaussian() * MUTATION_STD + MUTATION_MEAN)
 				);
 		}
 	}

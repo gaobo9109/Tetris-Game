@@ -12,7 +12,7 @@ public abstract class Feature {
 	 * Initialize feature with random weight
 	 */
 	public Feature() {
-		featureWeight = 2 * rand.nextDouble() - 100;
+		featureWeight = 2 * 100 * rand.nextDouble() - 100;
 	}
 
 	/**
