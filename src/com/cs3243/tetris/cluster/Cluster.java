@@ -11,7 +11,7 @@ import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
 
 public class Cluster {
 
-	private String clusterName;
+	public String clusterName;
 	private String fileName;
 	private ArrayList<Heuristic> population;
 	private int popSize;
@@ -66,13 +66,13 @@ public class Cluster {
 		}
 		
 		System.out.println("========================");
+		System.out.println("Cluster:" + clusterName);
 		System.out.println("Population Statistics");
 		System.out.println("Max fitness: " + maxFitness);
 		System.out.println("Min fitness: " + minFitness);
 		System.out.println("Average fitness: " + fitnessSum / popSize);
 		System.out.println("========================");
 		
-		Collections.sort(population);
 		return fitnessSum;
 	}
 	

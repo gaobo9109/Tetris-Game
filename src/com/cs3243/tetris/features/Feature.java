@@ -37,7 +37,6 @@ public abstract class Feature {
 	public Feature clone() {
 		try {
 			Feature cloneFeature = this.getClass().newInstance();
-			System.out.println(this.getClass().toString());
 			cloneFeature.setFeatureWeight(this.featureWeight);
 			return cloneFeature;
 		} catch (InstantiationException e) {

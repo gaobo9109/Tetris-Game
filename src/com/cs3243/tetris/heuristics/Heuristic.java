@@ -129,7 +129,7 @@ public class Heuristic implements Comparable<Heuristic> {
 	 */
 	@Override
 	public int compareTo(Heuristic other) {
-		return (int) (this.fitness - other.getFitness());
+		return (int) Math.signum(this.fitness - other.fitness);
 	}
 
 	public int getNumFeatures() {

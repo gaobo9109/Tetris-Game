@@ -26,6 +26,7 @@ public class PSOAlgo extends Metaheuristic {
 		population = this.cluster.getPopulation();
 		popSize = this.cluster.getPopSize();
 		numFeatures = this.cluster.getPopulation().get(0).getNumFeatures();
+		globalBest = new Heuristic();
 		
 		// Cannot evaluate fitness here because setCluster is called during instantiation of Island and it will delay the main thread
 		// cluster.evaluateFitness(); 
@@ -72,6 +73,7 @@ public class PSOAlgo extends Metaheuristic {
 		cluster.evaluateFitness();
 		
 		updateGlobalBest();
+		System.out.println("Global best for " + cluster.clusterName + ": " + globalBest.getFitness());
 	}
 	
 	@Override
