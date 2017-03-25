@@ -12,11 +12,12 @@ public class Archipelago {
 	
 	public Archipelago(int totalPopulation) throws InstantiationException, IllegalAccessException{
 		int islandPopulation = totalPopulation / 4;
+		int numGens = 1000;
 		
-		c1 = new Thread(new Island(new GeneticAlgo(), "c1", islandPopulation, 30, MetaheuristicTypes.GENETIC),"t1");
-		c2 = new Thread(new Island(new GeneticAlgo(), "c2", islandPopulation, 30, MetaheuristicTypes.GENETIC),"t2");
-		c3 = new Thread(new Island(new PSOAlgo(), "c3", islandPopulation, 30, MetaheuristicTypes.PSO),"t3");
-		c4 = new Thread(new Island(new PSOAlgo(), "c4", islandPopulation, 30, MetaheuristicTypes.PSO),"t4");
+		c1 = new Thread(new Island(new GeneticAlgo(), "c1", islandPopulation, numGens, MetaheuristicTypes.GENETIC), "t1");
+		c2 = new Thread(new Island(new GeneticAlgo(), "c2", islandPopulation, numGens, MetaheuristicTypes.GENETIC), "t2");
+		c3 = new Thread(new Island(new PSOAlgo(),     "c3", islandPopulation, numGens, MetaheuristicTypes.PSO),     "t3");
+		c4 = new Thread(new Island(new PSOAlgo(),     "c4", islandPopulation, numGens, MetaheuristicTypes.PSO),     "t4");
 	}
 
 	public void runAlgorithm(){
@@ -27,7 +28,7 @@ public class Archipelago {
 	}
 	
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException{
-		Archipelago archipelago = new Archipelago(100);
+		Archipelago archipelago = new Archipelago(400);
 		archipelago.runAlgorithm();
 	}
 }

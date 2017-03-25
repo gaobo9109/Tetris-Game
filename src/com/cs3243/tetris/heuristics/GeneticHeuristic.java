@@ -44,10 +44,16 @@ public class GeneticHeuristic extends Heuristic {
 	 */
 	public static GeneticHeuristic crossover(GeneticHeuristic hs1, GeneticHeuristic hs2) {
 		GeneticHeuristic newHeuristics = new GeneticHeuristic();
+		
+//		double ft1 = hs1.getFitness();
+//		double ft2 = hs2.getFitness();
+//		double weightage = (ft1 != 0 || ft2 != 0) ? ft1 / (ft1 + ft2) : 0.5;
 
 		for (int i = 0; i < hs1.getFeatures().length; i++) {
 			double hs1Weight = hs1.getFeatures()[i].getFeatureWeight();
-			double hs2Weight = hs2.getFeatures()[i].getFeatureWeight();
+  			double hs2Weight = hs2.getFeatures()[i].getFeatureWeight();
+//			double newWeight = weightage * hs1Weight + (1 - weightage) * hs2Weight;
+//			newHeuristics.getFeatures()[i].setFeatureWeight(newWeight);
 			newHeuristics.getFeatures()[i].setFeatureWeight(random.nextDouble() < 0.5 ? hs1Weight : hs2Weight);
 		}
 

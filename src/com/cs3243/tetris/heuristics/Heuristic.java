@@ -73,7 +73,7 @@ public class Heuristic implements Comparable<Heuristic> {
 	 * @return total score
 	 */
 	public double calculateHeuristicScore(NextState s) {
-		int score = 0;
+		double score = 0;
 		int[] top = s.getTop();
 		int[][] field = s.getField();
 		int numRows = field.length;
@@ -101,7 +101,10 @@ public class Heuristic implements Comparable<Heuristic> {
 		
 		//1st feature needs no iterations.
 		features[0].updateScore(s, 0, 0);
-		score += features[0].getScore();
+		
+		for (Feature feature : features) {
+			score += feature.getScore();
+		}
 		
 		for (Feature feature : features) {
 			feature.resetScore();		

@@ -17,6 +17,8 @@ public class Cluster {
 	private int popSize;
 	private PlayerSkeleton ps;
 	private StateStorage storage;
+	
+	private static final int NUM_GAMES = 4;
 
 	public Cluster(String clusterName, int popSize, MetaheuristicTypes metaheuristicType) throws InstantiationException, IllegalAccessException {
 		this.clusterName = clusterName;
@@ -55,10 +57,15 @@ public class Cluster {
 		double minFitness = Double.POSITIVE_INFINITY;
 		for (int i = 0; i < popSize; i++) {
 			Heuristic hs = population.get(i);
-			double fitness = ps.playFullGame(hs, false);
+			double fitness = 0;
+			
+			for (int j = 0; j < NUM_GAMES; j++) {
+				fitness += ps.playFullGame(hs, false);
+			}
+			fitness = fitness / NUM_GAMES;
 			hs.setFitness(fitness);
 			
-			System.out.println("Player fitness: " + fitness);
+//			System.out.println("Player fitness: " + fitness);
 //			System.out.println("Player heuristics: " + hs.toString());
 			
 			fitnessSum += fitness;
@@ -66,7 +73,6 @@ public class Cluster {
 			else if(fitness < minFitness) minFitness = fitness;
 		}
 		
-		System.out.println("========================");
 		System.out.println("Cluster:" + clusterName);
 		System.out.println("Population Statistics");
 		System.out.println("Max fitness: " + maxFitness);
