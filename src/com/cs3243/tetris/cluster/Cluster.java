@@ -59,6 +59,7 @@ public class Cluster {
 			hs.setFitness(fitness);
 			
 			System.out.println("Player fitness: " + fitness);
+//			System.out.println("Player heuristics: " + hs.toString());
 			
 			fitnessSum += fitness;
 			if(fitness > maxFitness) maxFitness = fitness;

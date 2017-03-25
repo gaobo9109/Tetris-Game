@@ -1,6 +1,7 @@
 package com.cs3243.tetris.metaheuristics;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,7 @@ public class GeneticAlgo extends Metaheuristic {
 		int numCrossOver = popSize - numKept;
 		
 		ArrayList<Heuristic> newPopulation = new ArrayList<Heuristic>();
+		Collections.shuffle(population);
 		newPopulation.addAll(cluster.getBestHeuristics(numKept));
 		
 		Heuristic parent1 = null, parent2 = null;

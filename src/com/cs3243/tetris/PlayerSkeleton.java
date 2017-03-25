@@ -62,14 +62,14 @@ public class PlayerSkeleton {
 			}
 
 		}
-		return s.getRowsCleared();
+		return s.getRowsCleared() + 1;
 	}
 
 	public static void main(String[] args) {
 		State s = new State();
 		NextState ns = new NextState();
 		Heuristic hs = new Heuristic();
-		 new TFrame(s);
+		new TFrame(s);
 		PlayerSkeleton p = new PlayerSkeleton();
 		while (!s.hasLost()) {
 			s.makeMove(p.pickMove(s, s.legalMoves(), ns, hs));

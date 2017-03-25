@@ -1,7 +1,6 @@
 package com.cs3243.tetris.heuristics;
 
 import java.util.Arrays;
-import java.util.Random;
 
 import com.cs3243.tetris.features.Feature;
 
@@ -13,7 +12,6 @@ public class PSOHeuristic extends Heuristic {
 	private double[] personalBestWeights;
 	private double personalBestFitness;
 	private double[] vel = new double[numFeatures];
-	private Random rand = new Random();
 	
 	public PSOHeuristic() {
 		super();
@@ -41,7 +39,7 @@ public class PSOHeuristic extends Heuristic {
 	 */
 	private void initVels() {
 		for (int i = 0; i < numFeatures; i++) {	
-			vel[i] = rand.nextDouble() * BOUND_RANGE * 2 - BOUND_RANGE;
+			vel[i] = random.nextDouble() * BOUND_RANGE * 2 - BOUND_RANGE;
 		}
 	}
 	
@@ -62,8 +60,8 @@ public class PSOHeuristic extends Heuristic {
 		double rp, rg;
 		
 		for (int i = 0; i < numFeatures; i++) {
-			rp = rand.nextDouble();
-			rg = rand.nextDouble();
+			rp = random.nextDouble();
+			rg = random.nextDouble();
 			
 			vel[i] = 
 				omega * vel[i] + 

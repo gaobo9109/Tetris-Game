@@ -1,15 +1,11 @@
 package com.cs3243.tetris.heuristics;
 
-import java.util.Random;
-
 import com.cs3243.tetris.features.Feature;
 
 public class GeneticHeuristic extends Heuristic {
 	private static final double MUTATION_PROB = 0.02;
 	private static final double MUTATION_MEAN = 1;
 	private static final double MUTATION_STD = 1;
-	
-	private Random rand = new Random();
 	
 	public GeneticHeuristic() {
 		super();
@@ -31,10 +27,10 @@ public class GeneticHeuristic extends Heuristic {
 	}
 	
 	private void mutateFeature(Feature feature) {
-		boolean mutate = rand.nextDouble() < MUTATION_PROB;
+		boolean mutate = random.nextDouble() < MUTATION_PROB;
 		if (mutate) {
 			feature.setFeatureWeight(
-					feature.getFeatureWeight() * (rand.nextGaussian() * MUTATION_STD + MUTATION_MEAN)
+					feature.getFeatureWeight() * (random.nextGaussian() * MUTATION_STD + MUTATION_MEAN)
 				);
 		}
 	}
@@ -47,16 +43,12 @@ public class GeneticHeuristic extends Heuristic {
 	 * @return new heuristic as a result of cross-over
 	 */
 	public static GeneticHeuristic crossover(GeneticHeuristic hs1, GeneticHeuristic hs2) {
-		double ft1 = hs1.getFitness();
-		double ft2 = hs2.getFitness();
-		double weightage = (ft1 != 0 || ft2 != 0) ? ft1 / (ft1 + ft2) : 0.5;
 		GeneticHeuristic newHeuristics = new GeneticHeuristic();
 
 		for (int i = 0; i < hs1.getFeatures().length; i++) {
 			double hs1Weight = hs1.getFeatures()[i].getFeatureWeight();
 			double hs2Weight = hs2.getFeatures()[i].getFeatureWeight();
-			double newWeight = weightage * hs1Weight + (1 - weightage) * hs2Weight;
-			newHeuristics.getFeatures()[i].setFeatureWeight(newWeight);
+			newHeuristics.getFeatures()[i].setFeatureWeight(random.nextDouble() < 0.5 ? hs1Weight : hs2Weight);
 		}
 
 		return newHeuristics;

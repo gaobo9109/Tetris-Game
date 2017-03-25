@@ -1,5 +1,7 @@
 package com.cs3243.tetris.heuristics;
 
+import java.util.Random;
+
 import com.cs3243.tetris.NextState;
 import com.cs3243.tetris.features.AltitudeDiff;
 import com.cs3243.tetris.features.ColTransition;
@@ -41,6 +43,8 @@ public class Heuristic implements Comparable<Heuristic> {
 	protected int numFeatures = features.length;
 	
 	protected double fitness;
+	
+	protected static Random random = new Random();
 	
 	public Feature[] getFeatures() {
 		return features;
@@ -145,5 +149,24 @@ public class Heuristic implements Comparable<Heuristic> {
 		default:
 			throw new IllegalArgumentException();
 		}
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder line = new StringBuilder();
+		double weight;
+		
+		for (int i = 0; i < features.length; i++){
+			weight = features[i].getFeatureWeight();
+			line.append(weight);
+			
+			if (i == features.length-1) {
+				line.append("\n");
+			} else {
+				line.append(",");
+			}
+		}
+		
+		return line.toString();
 	}
 }
