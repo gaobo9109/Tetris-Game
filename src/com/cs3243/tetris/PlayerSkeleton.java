@@ -51,15 +51,15 @@ public class PlayerSkeleton {
 		PlayerSkeleton p = new PlayerSkeleton();
 		while (!s.hasLost()) {
 			s.makeMove(p.pickMove(s, s.legalMoves(), ns, hs));
-			if (graphic) {
-				s.draw();
-				s.drawNext(0, 0);
-			}
-			try {
-				Thread.sleep(300);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+//			if (graphic) {
+//				s.draw();
+//				s.drawNext(0, 0);
+//			}
+//			try {
+//				Thread.sleep(300);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
 
 		}
 		return s.getRowsCleared();
