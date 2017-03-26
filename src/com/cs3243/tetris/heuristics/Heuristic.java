@@ -26,40 +26,38 @@ import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
  *         Gupta
  */
 public class Heuristic implements Comparable<Heuristic> {
-    
-    //Very hacky
-    private int[] type1Features = {1, 2, 3, 4, 5, 6, 7};
-    //WHAT ABOUT 12?
-    private int[] type2Features = {8, 9, 10};
-    private int[] type3Features = {11, 12};
+
+	// Very hacky
+	private int[] type1Features = { 1, 2, 3, 4, 5, 6, 7 };
+	// WHAT ABOUT 12?
+	private int[] type2Features = { 8, 9, 10 };
+	private int[] type3Features = { 11, 12 };
 
 	protected Feature[] features = new Feature[] { // Define included features
-	        new RowsCleared(), new AltitudeDiff(), new DeepestWell(), new HighestCol(), 
-	        new NumWells(), new TotalColHeight(), new TotalColHeightDiff(), new WellSum(), 
-	        new ColTransition(), new NumHoles(), new ColWithHole(), new RowTransition(), 
-	        new WeightedBlock()
-		};
-	
+			new RowsCleared(), new AltitudeDiff(), new DeepestWell(), new HighestCol(), new NumWells(),
+			new TotalColHeight(), new TotalColHeightDiff(), new WellSum(), new ColTransition(), new NumHoles(),
+			new ColWithHole(), new RowTransition(), new WeightedBlock() };
+
 	protected int numFeatures = features.length;
-	
+
 	protected double fitness;
-	
+
 	protected static Random random = new Random();
-	
+
 	public Feature[] getFeatures() {
 		return features;
 	}
-	
+
 	public void setFeatures(Feature[] features) {
 		this.features = features;
 	}
-	
+
 	public Heuristic clone() {
 		Feature[] newFeatures = new Feature[numFeatures];
 		for (int i = 0; i < numFeatures; i++) {
 			newFeatures[i] = this.features[i].clone();
 		}
-		
+
 		Heuristic newHeuristic = new Heuristic();
 		newHeuristic.features = newFeatures;
 		newHeuristic.fitness = this.fitness;
@@ -78,36 +76,36 @@ public class Heuristic implements Comparable<Heuristic> {
 		int[][] field = s.getField();
 		int numRows = field.length;
 		int numCols = field[0].length;
-		//YAH: Yet another hack.
+		// YAH: Yet another hack.
 		features[10] = new ColWithHole(numCols);
 		for (int col = 0; col < numCols; col++) {
-		    //O(1) time loop
-            for (int index : type1Features) {
-                features[index].updateScore(s, 0, col);
-            }
-		    for (int row = 0; row < numRows; row ++) {
-		        if (row < top[col] - 1) {
-		            //O(1) time loop
-		            for (int index : type2Features) {
-		                features[index].updateScore(s, row, col);
-		            }
-		        }
-		        //O(1) time loop
-                for (int index : type3Features) {
-                    features[index].updateScore(s, row, col);
-                }
-		    }
+			// O(1) time loop
+			for (int index : type1Features) {
+				features[index].updateScore(s, 0, col);
+			}
+			for (int row = 0; row < numRows; row++) {
+				if (row < top[col] - 1) {
+					// O(1) time loop
+					for (int index : type2Features) {
+						features[index].updateScore(s, row, col);
+					}
+				}
+				// O(1) time loop
+				for (int index : type3Features) {
+					features[index].updateScore(s, row, col);
+				}
+			}
 		}
-		
-		//1st feature needs no iterations.
+
+		// 1st feature needs no iterations.
 		features[0].updateScore(s, 0, 0);
-		
+
 		for (Feature feature : features) {
 			score += feature.getScore();
 		}
-		
+
 		for (Feature feature : features) {
-			feature.resetScore();		
+			feature.resetScore();
 		}
 
 		return score;
@@ -142,11 +140,11 @@ public class Heuristic implements Comparable<Heuristic> {
 	public int getNumFeatures() {
 		return numFeatures;
 	}
-	
+
 	public Heuristic convertHeuristic() {
 		throw new UnsupportedOperationException("Override in subclass");
 	}
-	
+
 	public static Heuristic heuristicFactory(MetaheuristicTypes metaheuristicType) {
 		switch (metaheuristicType) {
 		case GENETIC:
@@ -157,23 +155,23 @@ public class Heuristic implements Comparable<Heuristic> {
 			throw new IllegalArgumentException();
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder line = new StringBuilder();
 		double weight;
-		
-		for (int i = 0; i < features.length; i++){
+
+		for (int i = 0; i < features.length; i++) {
 			weight = features[i].getFeatureWeight();
 			line.append(weight);
-			
-			if (i == features.length-1) {
+
+			if (i == features.length - 1) {
 				line.append("\n");
 			} else {
 				line.append(",");
 			}
 		}
-		
+
 		return line.toString();
 	}
 }
