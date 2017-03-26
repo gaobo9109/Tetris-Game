@@ -28,7 +28,7 @@ public class GeneticAlgo extends Metaheuristic {
 		
 		ArrayList<Heuristic> newPopulation = new ArrayList<Heuristic>();
 		Collections.shuffle(population);
-		newPopulation.addAll(cluster.getBestHeuristics(numKept));
+		newPopulation.addAll(cluster.emigrateHeuristics(numKept));
 		
 		Heuristic parent1 = null, parent2 = null;
 		
