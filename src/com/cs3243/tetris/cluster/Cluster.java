@@ -3,6 +3,7 @@ package com.cs3243.tetris.cluster;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.cs3243.tetris.PlayerSkeleton;
 import com.cs3243.tetris.StateStorage;
@@ -42,14 +43,13 @@ public class Cluster {
 
 	private void initPopulation(MetaheuristicTypes metaheuristicType) throws InstantiationException, IllegalAccessException {
 		for (int i = 0; i < popSize; i++) {
-			Heuristic hs = (Heuristic) Heuristic.clazzFactory(metaheuristicType).newInstance();
+			Heuristic hs = Heuristic.heuristicFactory(metaheuristicType);
 			population.add(hs);
 		}
 	}
 	
 
 	public double evaluateFitness() {
-		
 		double fitnessSum = 0;
 		double maxFitness = 0;
 		double minFitness = Double.POSITIVE_INFINITY;
@@ -81,9 +81,9 @@ public class Cluster {
 		storage.writeStateToFile(population, fileName);
 	}
 
-	public List<Heuristic> getBestHeuristics(int numToGet) {
+	public List<Heuristic> emigrateHeuristics(int numToGet) {
 		Collections.sort(population, Collections.reverseOrder());
-		return population.subList(0, numToGet);
+		return population.subList(0, numToGet).stream().map(heuristic -> heuristic.convertHeuristic()).collect(Collectors.toList());
 	}
 	
 	public void extraditeWorstHeuristics(int numToRemove) {

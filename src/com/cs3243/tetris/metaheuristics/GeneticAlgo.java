@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import com.cs3243.tetris.features.Feature;
 import com.cs3243.tetris.heuristics.GeneticHeuristic;
 import com.cs3243.tetris.heuristics.Heuristic;
-import com.cs3243.tetris.heuristics.PSOHeuristic;
 
 public class GeneticAlgo extends Metaheuristic {
 

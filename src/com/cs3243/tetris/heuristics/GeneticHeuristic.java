@@ -1,5 +1,6 @@
 package com.cs3243.tetris.heuristics;
 
+
 public class GeneticHeuristic extends Heuristic {
 	public GeneticHeuristic() {
 		super();
@@ -9,5 +10,10 @@ public class GeneticHeuristic extends Heuristic {
 		super();
 		this.features = heuristic.features;
 		this.fitness = heuristic.fitness;
+	}
+	
+	@Override
+	public Heuristic convertHeuristic() {
+		return this;
 	}
 }
