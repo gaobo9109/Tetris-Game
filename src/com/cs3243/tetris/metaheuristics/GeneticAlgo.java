@@ -13,57 +13,60 @@ public class GeneticAlgo extends Metaheuristic {
 
 	@Override
 	/*
-	 * Keep the top few percent of the population
-	 * The rest go through recombination by roulette wheel selection
+	 * Keep the top few percent of the population The rest go through
+	 * recombination by roulette wheel selection
 	 */
 	public void createNextGen() {
-		if (cluster == null) return;
-		
+		if (cluster == null)
+			return;
+
 		int popSize = cluster.getPopSize();
 		ArrayList<Heuristic> population = cluster.getPopulation();
 		double fitnessSum = cluster.evaluateFitness();
-		
-		int numKept = (int)(popSize * FRAC_PARENTS_KEPT);
+
+		int numKept = (int) (popSize * FRAC_PARENTS_KEPT);
 		int numCrossOver = popSize - numKept;
-		
+
 		ArrayList<Heuristic> newPopulation = new ArrayList<Heuristic>();
 		Collections.shuffle(population);
 		newPopulation.addAll(cluster.emigrateHeuristics(numKept));
-		
+
 		Heuristic parent1 = null, parent2 = null;
-		
-		for(int i=0; i<numCrossOver; i++){
-			for(int j=0; j<2; j++){
+
+		for (int i = 0; i < numCrossOver; i++) {
+			for (int j = 0; j < 2; j++) {
 				double partialSum = 0;
 				double cutoff = rand.nextDouble() * fitnessSum;
 				int k = 0;
-				
+
 				// If rand.nextDouble is so close to 1 that cutoff rounds
-				// off to fitnessSum, k will become popSize, hence the k < popSize check  
-				while(partialSum <= cutoff & k < popSize){
+				// off to fitnessSum, k will become popSize, hence the k <
+				// popSize check
+				while (partialSum <= cutoff & k < popSize) {
 					partialSum += population.get(k).getFitness();
 					k++;
 				}
-				
+
 				if (j == 0) {
 					parent1 = population.get(k - 1);
 				} else {
 					parent2 = population.get(k - 1);
 				}
 			}
-			
+
 			GeneticHeuristic child = GeneticHeuristic.crossover((GeneticHeuristic) parent1, (GeneticHeuristic) parent2);
 			child.mutate();
 			newPopulation.add(child);
 		}
-		
+
 		cluster.updatePopulation(newPopulation);
 	}
 
 	@Override
 	public void immmigrate(List<Heuristic> newHeuristics) {
 		cluster.extraditeWorstHeuristics(newHeuristics.size());
-		List<Heuristic> newGeneticHeuristics = newHeuristics.stream().map(newHeuristic -> new GeneticHeuristic(newHeuristic)).collect(Collectors.toList());
+		List<Heuristic> newGeneticHeuristics = newHeuristics.stream()
+				.map(newHeuristic -> new GeneticHeuristic(newHeuristic)).collect(Collectors.toList());
 		cluster.immigrateHeuristics(newGeneticHeuristics);
 	}
 }
