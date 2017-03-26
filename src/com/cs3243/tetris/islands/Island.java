@@ -22,6 +22,8 @@ public class Island implements Runnable {
 	
 	public void run() {
 		for (int i = 0; i < numGens; i++) {
+			System.out.println("========================");
+			System.out.println("Generation " + i);
 			runOneGen();
 		}
 	}

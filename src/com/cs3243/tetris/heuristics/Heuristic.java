@@ -1,5 +1,7 @@
 package com.cs3243.tetris.heuristics;
 
+import java.util.Random;
+
 import com.cs3243.tetris.NextState;
 import com.cs3243.tetris.features.AltitudeDiff;
 import com.cs3243.tetris.features.ColTransition;
@@ -42,6 +44,8 @@ public class Heuristic implements Comparable<Heuristic> {
 	
 	protected double fitness;
 	
+	protected static Random random = new Random();
+	
 	public Feature[] getFeatures() {
 		return features;
 	}
@@ -69,7 +73,7 @@ public class Heuristic implements Comparable<Heuristic> {
 	 * @return total score
 	 */
 	public double calculateHeuristicScore(NextState s) {
-		int score = 0;
+		double score = 0;
 		int[] top = s.getTop();
 		int[][] field = s.getField();
 		int numRows = field.length;
@@ -97,7 +101,10 @@ public class Heuristic implements Comparable<Heuristic> {
 		
 		//1st feature needs no iterations.
 		features[0].updateScore(s, 0, 0);
-		score += features[0].getScore();
+		
+		for (Feature feature : features) {
+			score += feature.getScore();
+		}
 		
 		for (Feature feature : features) {
 			feature.resetScore();		
@@ -129,7 +136,7 @@ public class Heuristic implements Comparable<Heuristic> {
 	 */
 	@Override
 	public int compareTo(Heuristic other) {
-		return (int) (this.fitness - other.getFitness());
+		return (int) Math.signum(this.fitness - other.fitness);
 	}
 
 	public int getNumFeatures() {
@@ -149,5 +156,24 @@ public class Heuristic implements Comparable<Heuristic> {
 		default:
 			throw new IllegalArgumentException();
 		}
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder line = new StringBuilder();
+		double weight;
+		
+		for (int i = 0; i < features.length; i++){
+			weight = features[i].getFeatureWeight();
+			line.append(weight);
+			
+			if (i == features.length-1) {
+				line.append("\n");
+			} else {
+				line.append(",");
+			}
+		}
+		
+		return line.toString();
 	}
 }

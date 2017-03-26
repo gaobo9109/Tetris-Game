@@ -12,7 +12,7 @@ public abstract class Feature {
 	 * Initialize feature with random weight
 	 */
 	public Feature() {
-		featureWeight = 2 * rand.nextDouble() - 100;
+		featureWeight = 2 * 100 * rand.nextDouble() - 100;
 	}
 
 	/**
@@ -37,7 +37,6 @@ public abstract class Feature {
 	public Feature clone() {
 		try {
 			Feature cloneFeature = this.getClass().newInstance();
-			System.out.println(this.getClass().toString());
 			cloneFeature.setFeatureWeight(this.featureWeight);
 			return cloneFeature;
 		} catch (InstantiationException e) {

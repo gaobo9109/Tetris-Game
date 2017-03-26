@@ -18,21 +18,8 @@ public class StateStorage {
 	public void writeStateToFile(ArrayList<Heuristic> population, String fileName){
 		try{
 			fw = new BufferedWriter(new FileWriter(fileName));
-			Feature[] features;
 			for(Heuristic hs : population){
-				String line = "";
-				features = hs.getFeatures();
-				for (int i = 0; i < features.length; i++){
-					double weight = features[i].getFeatureWeight();
-					line += String.valueOf(weight);
-					
-					if (i == features.length-1) {
-						line += "\n";
-					} else {
-						line += ",";
-					}
-				}
-				fw.write(line);
+				fw.write(hs.toString());
 			}
 		} catch (Exception e){
 			System.out.println("Error in CsvFileWriter!");

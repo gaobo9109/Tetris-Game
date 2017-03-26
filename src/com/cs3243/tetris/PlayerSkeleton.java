@@ -51,16 +51,6 @@ public class PlayerSkeleton {
 		PlayerSkeleton p = new PlayerSkeleton();
 		while (!s.hasLost()) {
 			s.makeMove(p.pickMove(s, s.legalMoves(), ns, hs));
-//			if (graphic) {
-//				s.draw();
-//				s.drawNext(0, 0);
-//			}
-//			try {
-//				Thread.sleep(300);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-
 		}
 		return s.getRowsCleared();
 	}
@@ -69,7 +59,7 @@ public class PlayerSkeleton {
 		State s = new State();
 		NextState ns = new NextState();
 		Heuristic hs = new Heuristic();
-		 new TFrame(s);
+		new TFrame(s);
 		PlayerSkeleton p = new PlayerSkeleton();
 		while (!s.hasLost()) {
 			s.makeMove(p.pickMove(s, s.legalMoves(), ns, hs));
@@ -80,7 +70,6 @@ public class PlayerSkeleton {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
 		}
 		System.out.println("You have completed " + s.getRowsCleared() + " rows.");
 	}
