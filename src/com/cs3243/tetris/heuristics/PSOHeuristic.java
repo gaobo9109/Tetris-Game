@@ -82,13 +82,4 @@ public class PSOHeuristic extends Heuristic {
 	public double[] getPersonalBestWeights() {
 		return this.personalBestWeights;
 	}
-
-	@Override
-	public Heuristic convertHeuristic() {
-		Heuristic newHeuristic = new Heuristic();
-		for (int i = 0; i < numFeatures; i++) {
-			newHeuristic.features[i].setFeatureWeight(features[i].getFeatureWeight());
-		}
-		return newHeuristic;
-	}
 }

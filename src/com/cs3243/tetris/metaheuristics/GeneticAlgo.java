@@ -28,8 +28,8 @@ public class GeneticAlgo extends Metaheuristic {
 		int numCrossOver = popSize - numKept;
 
 		ArrayList<Heuristic> newPopulation = new ArrayList<Heuristic>();
-		Collections.shuffle(population);
-		newPopulation.addAll(cluster.emigrateHeuristics(numKept));
+		Collections.sort(population, Collections.reverseOrder());
+		newPopulation.addAll(population.subList(0, numKept));
 
 		Heuristic parent1 = null, parent2 = null;
 
@@ -60,13 +60,5 @@ public class GeneticAlgo extends Metaheuristic {
 		}
 
 		cluster.updatePopulation(newPopulation);
-	}
-
-	@Override
-	public void immmigrate(List<Heuristic> newHeuristics) {
-		cluster.extraditeWorstHeuristics(newHeuristics.size());
-		List<Heuristic> newGeneticHeuristics = newHeuristics.stream()
-				.map(newHeuristic -> new GeneticHeuristic(newHeuristic)).collect(Collectors.toList());
-		cluster.immigrateHeuristics(newGeneticHeuristics);
 	}
 }

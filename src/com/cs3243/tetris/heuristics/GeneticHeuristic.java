@@ -59,9 +59,4 @@ public class GeneticHeuristic extends Heuristic {
 
 		return newHeuristics;
 	}
-
-	@Override
-	public Heuristic convertHeuristic() {
-		return this;
-	}
 }

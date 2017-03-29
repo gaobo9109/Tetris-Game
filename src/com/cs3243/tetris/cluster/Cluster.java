@@ -18,6 +18,7 @@ public class Cluster {
 	private int popSize;
 	private PlayerSkeleton ps;
 	private StateStorage storage;
+	private MetaheuristicTypes metaheuristicType;
 
 	private static final int NUM_GAMES = 4;
 
@@ -26,6 +27,7 @@ public class Cluster {
 		this.clusterName = clusterName;
 		this.fileName = clusterName + ".csv";
 		this.popSize = popSize;
+		this.metaheuristicType = metaheuristicType;
 		storage = new StateStorage();
 		population = new ArrayList<Heuristic>();
 		if (!storage.readStateFromFile(fileName, population))
@@ -47,8 +49,9 @@ public class Cluster {
 
 	private void initPopulation(MetaheuristicTypes metaheuristicType)
 			throws InstantiationException, IllegalAccessException {
+		Heuristic hs;
 		for (int i = 0; i < popSize; i++) {
-			Heuristic hs = Heuristic.heuristicFactory(metaheuristicType);
+			hs = Heuristic.heuristicFactory(metaheuristicType);
 			population.add(hs);
 		}
 	}
@@ -66,9 +69,6 @@ public class Cluster {
 			}
 			fitness = fitness / NUM_GAMES;
 			hs.setFitness(fitness);
-
-			// System.out.println("Player fitness: " + fitness);
-			// System.out.println("Player heuristics: " + hs.toString());
 
 			fitnessSum += fitness;
 			if (fitness > maxFitness)
@@ -93,7 +93,7 @@ public class Cluster {
 
 	public List<Heuristic> emigrateHeuristics(int numToGet) {
 		Collections.sort(population, Collections.reverseOrder());
-		return population.subList(0, numToGet).stream().map(heuristic -> heuristic.convertHeuristic())
+		return population.subList(0, numToGet).stream().map(heuristic -> heuristic.clone())
 				.collect(Collectors.toList());
 	}
 
@@ -103,6 +103,6 @@ public class Cluster {
 	}
 
 	public void immigrateHeuristics(List<Heuristic> heuristics) {
-		population.addAll(heuristics);
+		population.addAll(heuristics.stream().map(heuristic -> Heuristic.heuristicFactory(metaheuristicType, heuristic)).collect(Collectors.toList()));
 	}
 }

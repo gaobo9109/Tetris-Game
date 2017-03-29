@@ -73,13 +73,5 @@ public class PSOAlgo extends Metaheuristic {
 		cluster.evaluateFitness();
 		
 		updateGlobalBest();
-		System.out.println("Global best for " + cluster.clusterName + ": " + globalBest.getFitness());
-	}
-	
-	@Override
-	public void immmigrate(List<Heuristic> newHeuristics) {
-		cluster.extraditeWorstHeuristics(newHeuristics.size());
-		List<Heuristic> newPSOHeuristics = newHeuristics.stream().map(newHeuristic -> new PSOHeuristic(newHeuristic)).collect(Collectors.toList());
-		cluster.immigrateHeuristics(newPSOHeuristics);
 	}
 }
