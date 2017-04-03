@@ -29,7 +29,6 @@ public class Archipelago {
 		int numGens = 1000;
 		
 		for (int i = 0; i < numGens; i++) {
-			System.out.println("========================");
 			System.out.println("Generation " + i);
 			
 			ExecutorService executor = Executors.newFixedThreadPool(4);
@@ -43,13 +42,11 @@ public class Archipelago {
 			executor.awaitTermination(1000, TimeUnit.MINUTES);
 			
 			c1.exchangeHeuristics(c3, islandPopulation / 10);
-			
-			System.out.println("Finished all threads");
 		}
 	}
 	
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, InterruptedException{
-		Archipelago archipelago = new Archipelago(100);
+		Archipelago archipelago = new Archipelago(400);
 		archipelago.runAlgorithm();
 	}
 }

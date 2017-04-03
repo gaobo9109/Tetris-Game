@@ -3,7 +3,6 @@ package com.cs3243.tetris.metaheuristics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.cs3243.tetris.heuristics.GeneticHeuristic;
 import com.cs3243.tetris.heuristics.Heuristic;
@@ -60,5 +59,20 @@ public class GeneticAlgo extends Metaheuristic {
 		}
 
 		cluster.updatePopulation(newPopulation);
+	}
+
+	@Override
+	public List<Heuristic> emigrateHeuristics(int numToGet) {
+		return cluster.emigrateHeuristics(numToGet);
+	}
+
+	@Override
+	public void extraditeWorstHeuristics(int numToRemove) {
+		cluster.extraditeWorstHeuristics(numToRemove);
+	}
+
+	@Override
+	public void immigrateHeuristics(List<Heuristic> heuristics) {
+		cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.GENETIC);
 	}
 }

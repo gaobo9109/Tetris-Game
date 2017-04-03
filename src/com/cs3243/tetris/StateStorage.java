@@ -1,15 +1,15 @@
 package com.cs3243.tetris;
-import java.io.BufferedWriter;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import com.cs3243.tetris.features.Feature;
 import com.cs3243.tetris.heuristics.Heuristic;
+import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
 
 public class StateStorage {
 	private BufferedWriter fw;
@@ -43,7 +43,7 @@ public class StateStorage {
 	 * @return ArrayList of Heuristic
 	 */
 	
-	public boolean readStateFromFile(String fileName,ArrayList<Heuristic> population){
+	public boolean readStateFromFile(String fileName,ArrayList<Heuristic> population, MetaheuristicTypes metaheuristicType){
 		
 		boolean fileExist = new File(fileName).isFile();
 		if(!fileExist){
@@ -67,7 +67,7 @@ public class StateStorage {
 						double weight = Double.parseDouble(tokens[i]);
 						features[i].setFeatureWeight(weight);
 					}
-					population.add(hs);
+					population.add(Heuristic.heuristicFactory(metaheuristicType, hs));
 				}
 			}
 			System.out.println("Number of heuristic is " + population.size());

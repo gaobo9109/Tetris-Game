@@ -9,13 +9,11 @@ import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
 
 public class Island implements Runnable {
 	private Metaheuristic metaheuristic;
-	private Cluster cluster;
 
 	public Island(Metaheuristic metaheuristic, String clusterName, int populationSize,
 			      MetaheuristicTypes metaheuristicType) throws InstantiationException, IllegalAccessException {
-		cluster = new Cluster(clusterName, populationSize, metaheuristicType);
 		this.metaheuristic = metaheuristic;
-		this.metaheuristic.setCluster(cluster);
+		this.metaheuristic.setCluster(new Cluster(clusterName, populationSize, metaheuristicType));
 	}
 
 	public void runOneGen() {
@@ -24,14 +22,14 @@ public class Island implements Runnable {
 	}
 	
 	public void exchangeHeuristics(Island island, int numToExchange) {
-		List<Heuristic> thisBestHeuristics  = this.cluster.emigrateHeuristics(numToExchange);
-		List<Heuristic> otherBestHeuristics = island.cluster.emigrateHeuristics(numToExchange);
+		List<Heuristic> thisBestHeuristics  = this.metaheuristic.emigrateHeuristics(numToExchange);
+		List<Heuristic> otherBestHeuristics = island.metaheuristic.emigrateHeuristics(numToExchange);
 		
-		this.cluster.extraditeWorstHeuristics(numToExchange);
-		island.cluster.extraditeWorstHeuristics(numToExchange);
+		this.metaheuristic.extraditeWorstHeuristics(numToExchange);
+		island.metaheuristic.extraditeWorstHeuristics(numToExchange);
 		
-		this.cluster.immigrateHeuristics(otherBestHeuristics);
-		island.cluster.immigrateHeuristics(thisBestHeuristics);
+		this.metaheuristic.immigrateHeuristics(otherBestHeuristics);
+		island.metaheuristic.immigrateHeuristics(thisBestHeuristics);
 	}
 
 	public void run() {

@@ -3,6 +3,7 @@ package com.cs3243.tetris.heuristics;
 import java.util.Random;
 
 import com.cs3243.tetris.NextState;
+import com.cs3243.tetris.State;
 import com.cs3243.tetris.features.AltitudeDiff;
 import com.cs3243.tetris.features.ColTransition;
 import com.cs3243.tetris.features.ColWithHole;
@@ -67,13 +68,13 @@ public class Heuristic implements Comparable<Heuristic> {
 	/**
 	 * Calculate score of heuristic using linear sum of features
 	 * 
-	 * @param s
+	 * @param ns
 	 * @return total score
 	 */
-	public double calculateHeuristicScore(NextState s) {
+	public double calculateHeuristicScore(State s, NextState ns) {
 		double score = 0;
-		int[] top = s.getTop();
-		int[][] field = s.getField();
+		int[] top = ns.getTop();
+		int[][] field = ns.getField();
 		int numRows = field.length;
 		int numCols = field[0].length;
 		// YAH: Yet another hack.
@@ -81,24 +82,24 @@ public class Heuristic implements Comparable<Heuristic> {
 		for (int col = 0; col < numCols; col++) {
 			// O(1) time loop
 			for (int index : type1Features) {
-				features[index].updateScore(s, 0, col);
+				features[index].updateScore(ns, 0, col);
 			}
 			for (int row = 0; row < numRows; row++) {
 				if (row < top[col] - 1) {
 					// O(1) time loop
 					for (int index : type2Features) {
-						features[index].updateScore(s, row, col);
+						features[index].updateScore(ns, row, col);
 					}
 				}
 				// O(1) time loop
 				for (int index : type3Features) {
-					features[index].updateScore(s, row, col);
+					features[index].updateScore(ns, row, col);
 				}
 			}
 		}
 
 		// 1st feature needs no iterations.
-		features[0].updateScore(s, 0, 0);
+		features[0].updateScore(s, ns, 0, 0);
 
 		for (Feature feature : features) {
 			score += feature.getScore();

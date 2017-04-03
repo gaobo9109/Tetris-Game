@@ -21,7 +21,7 @@ public class PlayerSkeleton {
 				continue;
 			}
 
-			double score = hs.calculateHeuristicScore(ns);
+			double score = hs.calculateHeuristicScore(s, ns);
 
 			if (score > maxScore) {
 				maxScore = score;

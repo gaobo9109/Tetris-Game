@@ -18,19 +18,18 @@ public class Cluster {
 	private int popSize;
 	private PlayerSkeleton ps;
 	private StateStorage storage;
-	private MetaheuristicTypes metaheuristicType;
 
-	private static final int NUM_GAMES = 4;
+	private static final int NUM_GAMES = 1;
+	private static final int NUM_GAMES_TEST_BEST = 5; // Test best heuristic over say 5 games
 
 	public Cluster(String clusterName, int popSize, MetaheuristicTypes metaheuristicType)
 			throws InstantiationException, IllegalAccessException {
 		this.clusterName = clusterName;
 		this.fileName = clusterName + ".csv";
 		this.popSize = popSize;
-		this.metaheuristicType = metaheuristicType;
 		storage = new StateStorage();
 		population = new ArrayList<Heuristic>();
-		if (!storage.readStateFromFile(fileName, population))
+		if (!storage.readStateFromFile(fileName, population, metaheuristicType))
 			initPopulation(metaheuristicType);
 		ps = new PlayerSkeleton();
 	}
@@ -76,12 +75,21 @@ public class Cluster {
 			else if (fitness < minFitness)
 				minFitness = fitness;
 		}
+		
+		Collections.sort(population, Collections.reverseOrder());
+		Heuristic bestHeuristic = population.get(0);
+//		double bestFitness = 0;
+//		for (int j = 0; j < NUM_GAMES_TEST_BEST; j++) {
+//			bestFitness += ps.playFullGame(bestHeuristic, false);
+//		}
 
 		System.out.println("Cluster:" + clusterName);
 		System.out.println("Population Statistics");
 		System.out.println("Max fitness: " + maxFitness);
 		System.out.println("Min fitness: " + minFitness);
 		System.out.println("Average fitness: " + fitnessSum / popSize);
+//		System.out.println("Best Heuristic, over " + NUM_GAMES_TEST_BEST + " games: " + bestFitness / NUM_GAMES_TEST_BEST);
+		System.out.println("Best Heuristic: " + bestHeuristic.toString());
 		System.out.println("========================");
 
 		return fitnessSum;
@@ -102,7 +110,7 @@ public class Cluster {
 		population.removeAll(population.subList(0, numToRemove));
 	}
 
-	public void immigrateHeuristics(List<Heuristic> heuristics) {
+	public void immigrateHeuristics(List<Heuristic> heuristics, MetaheuristicTypes metaheuristicType) {
 		population.addAll(heuristics.stream().map(heuristic -> Heuristic.heuristicFactory(metaheuristicType, heuristic)).collect(Collectors.toList()));
 	}
 }
