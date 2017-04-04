@@ -61,18 +61,18 @@ public class GeneticAlgo extends Metaheuristic {
 		cluster.updatePopulation(newPopulation);
 	}
 
-	@Override
-	public List<Heuristic> emigrateHeuristics(int numToGet) {
-		return cluster.emigrateHeuristics(numToGet);
-	}
-
-	@Override
-	public void extraditeWorstHeuristics(int numToRemove) {
-		cluster.extraditeWorstHeuristics(numToRemove);
-	}
-
-	@Override
-	public void immigrateHeuristics(List<Heuristic> heuristics) {
-		cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.GENETIC);
-	}
+//	@Override
+//	public List<Heuristic> emigrateHeuristics(int numToGet) {
+//		return cluster.emigrateHeuristics(numToGet);
+//	}
+//
+//	@Override
+//	public void extraditeWorstHeuristics(int numToRemove) {
+//		cluster.extraditeWorstHeuristics(numToRemove);
+//	}
+//
+//	@Override
+//	public void immigrateHeuristics(List<Heuristic> heuristics) {
+//		cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.GENETIC);
+//	}
 }

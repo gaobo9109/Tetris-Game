@@ -74,19 +74,19 @@ public class PSOAlgo extends Metaheuristic {
 		updateGlobalBest();
 	}
 
-	@Override
-	public List<Heuristic> emigrateHeuristics(int numToGet) {
-		return cluster.emigrateHeuristics(numToGet);
-	}
-
-	@Override
-	public void extraditeWorstHeuristics(int numToRemove) {
-		cluster.extraditeWorstHeuristics(numToRemove);
-	}
-
-	@Override
-	public void immigrateHeuristics(List<Heuristic> heuristics) {
-		cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.PSO);
-		updateGlobalBest();
-	}
+//	@Override
+//	public List<Heuristic> emigrateHeuristics(int numToGet) {
+//		return cluster.emigrateHeuristics(numToGet);
+//	}
+//
+//	@Override
+//	public void extraditeWorstHeuristics(int numToRemove) {
+//		cluster.extraditeWorstHeuristics(numToRemove);
+//	}
+//
+//	@Override
+//	public void immigrateHeuristics(List<Heuristic> heuristics) {
+//		cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.PSO);
+//		updateGlobalBest();
+//	}
 }

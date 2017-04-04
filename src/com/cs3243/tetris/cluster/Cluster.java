@@ -15,6 +15,7 @@ public class Cluster {
 	public String clusterName;
 	private String fileName;
 	private ArrayList<Heuristic> population;
+	private MetaheuristicTypes metaheuristicType;
 	private int popSize;
 	private PlayerSkeleton ps;
 	private StateStorage storage;
@@ -29,6 +30,7 @@ public class Cluster {
 		this.popSize = popSize;
 		storage = new StateStorage();
 		population = new ArrayList<Heuristic>();
+		this.metaheuristicType = metaheuristicType;
 		if (!storage.readStateFromFile(fileName, population, metaheuristicType))
 			initPopulation(metaheuristicType);
 		ps = new PlayerSkeleton();
@@ -110,7 +112,7 @@ public class Cluster {
 		population.removeAll(population.subList(0, numToRemove));
 	}
 
-	public void immigrateHeuristics(List<Heuristic> heuristics, MetaheuristicTypes metaheuristicType) {
+	public void immigrateHeuristics(List<Heuristic> heuristics) {
 		population.addAll(heuristics.stream().map(heuristic -> Heuristic.heuristicFactory(metaheuristicType, heuristic)).collect(Collectors.toList()));
 	}
 }
