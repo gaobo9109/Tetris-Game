@@ -20,6 +20,7 @@ public class Island implements Runnable {
 
 	public void runOneGen() {
 		metaheuristic.createNextGen();
+		metaheuristic.getCluster().writeStateToFile();
 	}
 	
 	public void exchangeHeuristics(Island island, int numToExchange) {

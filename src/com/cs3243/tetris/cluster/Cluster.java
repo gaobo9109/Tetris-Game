@@ -93,8 +93,6 @@ public class Cluster {
 //		System.out.println("Best Heuristic, over " + NUM_GAMES_TEST_BEST + " games: " + bestFitness / NUM_GAMES_TEST_BEST);
 		System.out.println("Best Heuristic: " + bestHeuristic.toString());
 		System.out.println("========================");
-		
-		writeStateToFile();
 
 		return fitnessSum;
 	}
