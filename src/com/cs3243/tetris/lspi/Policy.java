@@ -7,20 +7,23 @@ import com.cs3243.tetris.features.Feature;
 import com.cs3243.tetris.heuristics.Heuristic;
 
 public class Policy {
-	Feature[] features;
+	Heuristic heuristic;
 
-	Policy(Feature[] fs) {
-		features = fs;
+	Policy(Heuristic heuristic) {
+		this.heuristic = heuristic;
 	}
 
 	public int[] getAction(State state) {
 		int[][] legalMoves = state.legalMoves();
-		Heuristic heuristic = new Heuristic();
-		heuristic.setFeatures(features);
 
 		int legalIndex = (new PlayerSkeleton())
 				.pickMove(state, legalMoves, new NextState(), heuristic);
 		
 		return legalMoves[legalIndex];
 	}
+	
+	public double[] getFeatureScores(NextState s) {
+		return heuristic.getFeatureScores(s);
+	}
+	
 }

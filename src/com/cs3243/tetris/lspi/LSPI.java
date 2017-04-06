@@ -13,28 +13,17 @@ public class LSPI {
 	}
 	
 	public void nextIteration() {
-		double[][] samplesArray = new double[samples.length][policy.features.length];
-		double[][] policyArray = new double[samples.length][policy.features.length];
+		double[][] samplesArray = new double[samples.length][policy.heuristic.features.length];
+		double[][] policyArray = new double[samples.length][policy.heuristic.features.length];
 		double[][] rewardsArray = new double[samples.length][1];
 
 		for (int i = 0; i < samples.length; i++) {
 			Sample sample = samples[i];
 			int[] policyAction = policy.getAction(sample.state);
-
-			for (int j = 0; j < policy.features.length; j++) {
-				Feature feature = policy.features[j];
-
-				NextState nsSample = sample.nextState;
-				
-				// TODO: this should be the score of feature acting on nsSample
-				samplesArray[i][j] = feature.getScore();
-				
-				NextState nsPolicy = new NextState();
-				nsPolicy.generateNextState(sample.state, policyAction);
-				
-				// TODO: this should be the score of feature acting on nsPolicy
-				policyArray[i][j] = feature.getScore();
-			}
+			NextState nsPolicy = new NextState();
+			nsPolicy.generateNextState(sample.state, policyAction);
+			samplesArray[i] = policy.getFeatureScores(sample.nextState);
+			policyArray[i] = policy.getFeatureScores(nsPolicy);
 			
 			rewardsArray[i][0] = sample.reward;
 		}
@@ -48,8 +37,8 @@ public class LSPI {
 		
 		Matrix weightsMatrix = LHSMatrix.solve(RHSMatrix);
 		
-		for (int i = 0; i < policy.features.length; i++) {
-			policy.features[i].setFeatureWeight(weightsMatrix.get(i, 0));
+		for (int i = 0; i < policy.heuristic.features.length; i++) {
+			policy.heuristic.features[i].setFeatureWeight(weightsMatrix.get(i, 0));
 		}
 	}
 }

@@ -33,7 +33,7 @@ public class Heuristic implements Comparable<Heuristic> {
 	private int[] type2Features = { 8, 9, 10 };
 	private int[] type3Features = { 11, 12 };
 
-	protected Feature[] features = new Feature[] { // Define included features
+	public Feature[] features = new Feature[] { // Define included features
 			new RowsCleared(), new AltitudeDiff(), new DeepestWell(), new HighestCol(), new NumWells(),
 			new TotalColHeight(), new TotalColHeightDiff(), new WellSum(), new ColTransition(), new NumHoles(),
 			new ColWithHole(), new RowTransition(), new WeightedBlock() };
@@ -109,6 +109,45 @@ public class Heuristic implements Comparable<Heuristic> {
 		}
 
 		return score;
+	}
+	
+	public double[] getFeatureScores(NextState s) {
+		double score = 0;
+		int[] top = s.getTop();
+		int[][] field = s.getField();
+		int numRows = field.length;
+		int numCols = field[0].length;
+		// YAH: Yet another hack.
+		features[10] = new ColWithHole(numCols);
+		for (int col = 0; col < numCols; col++) {
+			// O(1) time loop
+			for (int index : type1Features) {
+				features[index].updateScore(s, 0, col);
+			}
+			for (int row = 0; row < numRows; row++) {
+				if (row < top[col] - 1) {
+					// O(1) time loop
+					for (int index : type2Features) {
+						features[index].updateScore(s, row, col);
+					}
+				}
+				// O(1) time loop
+				for (int index : type3Features) {
+					features[index].updateScore(s, row, col);
+				}
+			}
+		}
+
+		// 1st feature needs no iterations.
+		features[0].updateScore(s, 0, 0);
+		double[] scores = new double[features.length];
+		int i = 0;
+		for(Feature f: features) {
+			scores[i++] = f.getScore();
+			f.resetScore();
+		}
+		
+		return scores;
 	}
 
 	/**
