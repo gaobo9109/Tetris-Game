@@ -1,5 +1,8 @@
 package com.cs3243.tetris.lspi;
 
+import com.cs3243.tetris.NextState;
+import com.cs3243.tetris.features.Feature;
+
 public class LSPI {
 	public Sample[] samples;
 	public Policy policy;
@@ -16,16 +19,22 @@ public class LSPI {
 
 		for (int i = 0; i < samples.length; i++) {
 			Sample sample = samples[i];
-			int policyAction = policy.getAction(sample.state);
+			int[] policyAction = policy.getAction(sample.state);
 
+			// TODO
 			for (int j = 0; j < policy.features.length; j++) {
-				LSPIFeature feature = policy.features[j];
+				Feature feature = policy.features[j];
 
-				samplesArray[i][j] = feature.getValue(sample.state, sample.action);
-				policyArray[i][j] = feature.getValue(sample.state, policyAction);
+				samplesArray[i][j] = feature.getScore();
+				
+				NextState ns = new NextState();
+				ns.generateNextState(sample.state, policyAction);
+				
+				feature.updateScore(ns, 0, 0);
+				policyArray[i][j] = feature.getScore();
 			}
 			
-			rewardsArray[i][0] = sample.getReward();
+			rewardsArray[i][0] = sample.reward;
 		}
 		
 		Matrix samplesMatrix = new Matrix(samplesArray);
