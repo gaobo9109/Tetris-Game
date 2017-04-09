@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import com.cs3243.tetris.NextState;
+import com.cs3243.tetris.PlayerSkeleton;
 import com.cs3243.tetris.State;
 import com.cs3243.tetris.features.Feature;
 import com.cs3243.tetris.heuristics.Heuristic;
@@ -49,10 +50,17 @@ public class LSPI {
 
 		for (int i = 0; i < samples.length; i++) {
 			Sample sample = samples[i];
-
-			int[] policyAction = policy.getAction(sample.state);
+			
+			// Create a new state fron nextState
+			
 			NextState nsPolicy = new NextState();
-			nsPolicy.generateNextState(sample.state, policyAction);
+			
+			State s = sample.state;
+			PlayerSkeleton ps = new PlayerSkeleton();
+			s.makeMove(ps.pickMove(s, s.legalMoves(), sample.nextState, hs));
+			
+			int[] policyAction = policy.getAction(sample.nextState);
+			nsPolicy.generateNextState(sample.nextState, policyAction);
 
 			policyArray[i] = policy.getFeatureScores(nsPolicy);
 
@@ -100,11 +108,12 @@ public class LSPI {
 				}
 				System.out.println(features[j].getFeatureWeight());
 			}
-			System.out.println("^^^ GENERATION " + i);
+
+			double results = (new PlayerSkeleton()).playFullGame(lspi.policy.heuristic, false);
+			System.out.println("Generation " + i + " cleared " + results + " rows.");
+			System.out.println("---");
 
 			lspi.nextIteration();
-			
-			
 		}
 	}
 }
