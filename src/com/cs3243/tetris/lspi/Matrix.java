@@ -2,6 +2,8 @@
 
 package com.cs3243.tetris.lspi;
 
+import java.util.Arrays;
+
 public class Matrix {
     private final int M;             // number of rows
     private final int N;             // number of columns
@@ -157,5 +159,13 @@ public class Matrix {
     
     public double get(int row, int column) {
     	return data[row][column];
+    }
+    
+    public double[] getRow(int row) {
+    	return data[row];
+    }
+    
+    public String toString() {
+    	return Arrays.deepToString(data);
     }
 }

@@ -112,7 +112,6 @@ public class Heuristic implements Comparable<Heuristic> {
 	}
 	
 	public double[] getFeatureScores(NextState s) {
-		double score = 0;
 		int[] top = s.getTop();
 		int[][] field = s.getField();
 		int numRows = field.length;

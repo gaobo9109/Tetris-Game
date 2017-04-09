@@ -1,5 +1,7 @@
 package com.cs3243.tetris;
 
+import java.util.Arrays;
+
 /**
  * Generates next state of the game. Useful for calculating score of next state
  * 
@@ -84,7 +86,7 @@ public class NextState {
 		return true;
 	}
 
-	private void copyState(State s) {
+	public void copyState(State s) {
 		for (int i = 0; i < State.ROWS; i++) {
 			for (int j = 0; j < State.COLS; j++) {
 				field[i][j] = s.getField()[i][j];

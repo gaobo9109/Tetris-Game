@@ -1,5 +1,6 @@
 package com.cs3243.tetris;
 import java.awt.Color;
+import java.util.Random;
 
 
 
@@ -168,6 +169,20 @@ public class State {
 	public State() {
 		nextPiece = randomPiece();
 
+	}
+	
+	public static State generateRandomState() {
+		State state = new State();
+		Random random = new Random();
+		
+		for (int c = 0; c < COLS; c++) {
+			state.top[c] = random.nextInt(ROWS);
+			for (int r = 0; r < state.top[c]; r++) {
+				state.field[r][c] = 1;
+			}
+		}
+		
+		return state;
 	}
 	
 	//random integer, returns 0-6
