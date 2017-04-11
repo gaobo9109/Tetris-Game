@@ -4,12 +4,12 @@ import com.cs3243.tetris.NextState;
 import com.cs3243.tetris.State;
 
 public class Sample {
-	State state;
+	NextState state;
 	int[] action;
 	NextState nextState = new NextState();
 	int reward;
 	
-	Sample(State s, int[] a) {
+	Sample(NextState s, int[] a) {
 		state = s;
 		action = a;
 		

@@ -22,13 +22,7 @@ public class LSPI {
 	LSPI(int numberOfRandomSamples) {
 		generateSamples(numberOfRandomSamples);
 
-		Random random = new Random();
 		Heuristic heuristic = new Heuristic();
-		Feature[] features = heuristic.features;
-		for (int i = 0; i < features.length; i++) {
-			Feature feature = features[i];
-			feature.setFeatureWeight(random.nextDouble());
-		}
 		policy = new Policy(heuristic);
 
 		double[][] samplesArray = new double[samples.length][];
@@ -55,9 +49,9 @@ public class LSPI {
 			
 			NextState nsPolicy = new NextState();
 			
-			State s = sample.state;
+			NextState s = sample.state;
 			PlayerSkeleton ps = new PlayerSkeleton();
-			s.makeMove(ps.pickMove(s, s.legalMoves(), sample.nextState, hs));
+			s.makeMove(ps.pickMove(s, s.legalMoves(), sample.nextState, policy.heuristic));
 			
 			int[] policyAction = policy.getAction(sample.nextState);
 			nsPolicy.generateNextState(sample.nextState, policyAction);
@@ -90,7 +84,7 @@ public class LSPI {
 		Random random = new Random();
 
 		for (int i = 0; i < count; i++) {
-			State state = State.generateRandomState();
+			NextState state = NextState.generateRandomState();
 			int[][] moves = state.legalMoves();
 			samples[i] = new Sample(state, moves[random.nextInt(moves.length)]);
 		}

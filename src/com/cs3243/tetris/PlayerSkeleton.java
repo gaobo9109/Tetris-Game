@@ -11,7 +11,7 @@ import com.cs3243.tetris.heuristics.Heuristic;
 public class PlayerSkeleton {
 
 	// implement this function to have a working system
-	public int pickMove(State s, int[][] legalMoves, NextState ns, Heuristic hs) {
+	public int pickMove(NextState s, int[][] legalMoves, NextState ns, Heuristic hs) {
 		double maxScore = Double.NEGATIVE_INFINITY;
 		int maxIndex = 0;
 
@@ -41,12 +41,12 @@ public class PlayerSkeleton {
 	 */
 
 	public double playFullGame(Heuristic hs, boolean graphic) {
-		State s = new State();
+		NextState s = new NextState();
 		NextState ns = new NextState();
 		// Heuristics hs = new Heuristics();
-		if (graphic) {
-			new TFrame(s);
-		}
+//		if (graphic) {
+//			new TFrame(s);
+//		}
 
 		PlayerSkeleton p = new PlayerSkeleton();
 		while (!s.hasLost()) {
@@ -56,20 +56,20 @@ public class PlayerSkeleton {
 	}
 
 	public static void main(String[] args) {
-		State s = new State();
+		NextState s = new NextState();
 		NextState ns = new NextState();
 		Heuristic hs = new Heuristic();
-		new TFrame(s);
+//		new TFrame(s);
 		PlayerSkeleton p = new PlayerSkeleton();
 		while (!s.hasLost()) {
 			s.makeMove(p.pickMove(s, s.legalMoves(), ns, hs));
-			s.draw();
-			s.drawNext(0, 0);
-			try {
-				Thread.sleep(300);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+//			s.draw();
+//			s.drawNext(0, 0);
+//			try {
+//				Thread.sleep(300);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
 		}
 		System.out.println("You have completed " + s.getRowsCleared() + " rows.");
 	}

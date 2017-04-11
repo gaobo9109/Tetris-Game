@@ -14,7 +14,7 @@ public class Policy {
 		this.heuristic = heuristic;
 	}
 
-	public int[] getAction(State state) {
+	public int[] getAction(NextState state) {
 		int[][] legalMoves = state.legalMoves();
 
 		int legalIndex = (new PlayerSkeleton())
