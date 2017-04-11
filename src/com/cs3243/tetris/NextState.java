@@ -45,6 +45,8 @@ public class NextState {
 
 			// from bottom to top of brick
 			for (int h = height + pBottom[nextPiece][orient][i]; h < height + pTop[nextPiece][orient][i]; h++) {
+//				System.out.println(height + pBottom[nextPiece][orient][i]);
+//				System.out.println();
 				field[h][i + slot] = 1;
 			}
 		}
@@ -204,14 +206,22 @@ public class NextState {
 	public static NextState generateRandomState() {
 		NextState state = new NextState();
 		Random random = new Random();
-		boolean isValid = false;
 		
 //		while (!isValid) {
-			for (int c = 0; c < COLS; c++) {
-				for (int r = 0; r < ROWS; r++) {
-					state.field[r][c] = random.nextInt(2);
+		for (int c = 0; c < COLS; c++) {
+			for (int r = 0; r < ROWS; r++) {
+				state.field[r][c] = random.nextInt(2);
+			}
+		}
+		
+		for (int c = 0; c < COLS; c++) {
+			for (int r = ROWS - 2; r >= 0; r--) {
+				if (state.field[r][c] == 1) {
+					state.top[c] = r + 1;
+					break;
 				}
 			}
+		}
 			
 //			isValid = true;
 //			

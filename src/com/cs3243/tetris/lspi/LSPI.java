@@ -49,10 +49,6 @@ public class LSPI {
 			
 			NextState nsPolicy = new NextState();
 			
-			NextState s = sample.state;
-			PlayerSkeleton ps = new PlayerSkeleton();
-			s.makeMove(ps.pickMove(s, s.legalMoves(), sample.nextState, policy.heuristic));
-			
 			int[] policyAction = policy.getAction(sample.nextState);
 			nsPolicy.generateNextState(sample.nextState, policyAction);
 
@@ -91,7 +87,7 @@ public class LSPI {
 	}
 	
 	public static void main(String[] args) {
-		LSPI lspi = new LSPI(100000);
+		LSPI lspi = new LSPI(1000000);
 		
 		for (int i = 0; i < 100; i++) {
 			Feature[] features = lspi.policy.heuristic.features;
