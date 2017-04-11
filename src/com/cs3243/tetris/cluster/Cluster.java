@@ -20,7 +20,7 @@ public class Cluster {
 	private PlayerSkeleton ps;
 	private StateStorage storage;
 
-	private static final int NUM_GAMES = 1;
+	private static final int NUM_GAMES = 3;
 	private static final int NUM_GAMES_TEST_BEST = 5; // Test best heuristic over say 5 games
 
 	public Cluster(String clusterName, int popSize, MetaheuristicTypes metaheuristicType)

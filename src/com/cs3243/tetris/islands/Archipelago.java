@@ -35,13 +35,13 @@ public class Archipelago {
 			
 			executor.execute(c1);
 //			executor.execute(c2);
-			executor.execute(c3);
+//			executor.execute(c3);
 //			executor.execute(c4);
 			
 			executor.shutdown();
 			executor.awaitTermination(1000, TimeUnit.MINUTES);
 			
-			c1.exchangeHeuristics(c3, islandPopulation / 10);
+//			c1.exchangeHeuristics(c3, islandPopulation / 10);
 		}
 	}
 	
