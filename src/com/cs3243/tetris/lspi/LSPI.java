@@ -23,6 +23,20 @@ public class LSPI {
 		generateSamples(numberOfRandomSamples);
 
 		Heuristic heuristic = new Heuristic();
+		heuristic.features[0].setFeatureWeight(-93.02173123251356);
+		heuristic.features[1].setFeatureWeight(-308.24909375997737);
+		heuristic.features[2].setFeatureWeight(-569.9966890295316);
+		heuristic.features[3].setFeatureWeight(-0.5566053775002548);
+		heuristic.features[4].setFeatureWeight(459.7334110849129);
+		heuristic.features[5].setFeatureWeight(-80.920643335677);
+		heuristic.features[6].setFeatureWeight(-25.073988080939912);
+		heuristic.features[7].setFeatureWeight(-562.3724669171518);
+		heuristic.features[8].setFeatureWeight(-691.1628729179465);
+		heuristic.features[9].setFeatureWeight(-2691.7035043803835);
+		heuristic.features[10].setFeatureWeight(80.98441874131163);
+		heuristic.features[11].setFeatureWeight(-723.3118170031345);
+		heuristic.features[12].setFeatureWeight(-8.869080880327157);
+		
 		policy = new Policy(heuristic);
 
 		double[][] samplesArray = new double[samples.length][];
@@ -87,7 +101,7 @@ public class LSPI {
 	}
 	
 	public static void main(String[] args) {
-		LSPI lspi = new LSPI(1000000);
+		LSPI lspi = new LSPI(100000);
 		
 		for (int i = 0; i < 100; i++) {
 			Feature[] features = lspi.policy.heuristic.features;
