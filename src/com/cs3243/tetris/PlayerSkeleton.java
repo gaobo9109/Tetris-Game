@@ -59,6 +59,19 @@ public class PlayerSkeleton {
 		NextState s = new NextState();
 		NextState ns = new NextState();
 		Heuristic hs = new Heuristic();
+		hs.features[0].setFeatureWeight(-93.02173123251356);
+		hs.features[1].setFeatureWeight(-308.24909375997737);
+		hs.features[2].setFeatureWeight(-569.9966890295316);
+		hs.features[3].setFeatureWeight(-0.5566053775002548);
+		hs.features[4].setFeatureWeight(459.7334110849129);
+		hs.features[5].setFeatureWeight(-80.920643335677);
+		hs.features[6].setFeatureWeight(-25.073988080939912);
+		hs.features[7].setFeatureWeight(-562.3724669171518);
+		hs.features[8].setFeatureWeight(-691.1628729179465);
+		hs.features[9].setFeatureWeight(-2691.7035043803835);
+		hs.features[10].setFeatureWeight(80.98441874131163);
+		hs.features[11].setFeatureWeight(-723.3118170031345);
+		hs.features[12].setFeatureWeight(-8.869080880327157);
 //		new TFrame(s);
 		PlayerSkeleton p = new PlayerSkeleton();
 		while (!s.hasLost()) {

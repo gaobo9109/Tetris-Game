@@ -6,14 +6,16 @@ import com.cs3243.tetris.State;
 public class Sample {
 	NextState state;
 	int[] action;
-	NextState nextState = new NextState();
+	NextState nextState;
 	int reward;
 	
 	Sample(NextState s, int[] a) {
 		state = s;
 		action = a;
 		
-		nextState.generateNextState(state, action);
-		reward = nextState.getRowsCleared() - state.getRowsCleared();
+		NextState ns = new NextState();
+		ns.generateNextState(state, action);
+		nextState = ns;
+		reward = ns.getRowsCleared() - state.getRowsCleared();
 	}
 }

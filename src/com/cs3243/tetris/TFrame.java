@@ -17,7 +17,7 @@ import javax.swing.JFrame;
 public class TFrame extends JFrame implements KeyListener{
 	private static final long serialVersionUID = 1L;
 	public TLabel label = new TLabel(300,700);
-	public State s;
+	public NextState s;
 	
 	public int orient, slot;
 	
@@ -27,7 +27,7 @@ public class TFrame extends JFrame implements KeyListener{
 	public int mode = MANUAL;
 	
 	//constructor
-	public TFrame (State s){
+	public TFrame (NextState s){
 		this.s = s;
 		s.label = label;
 		setResizable(false);
@@ -43,7 +43,7 @@ public class TFrame extends JFrame implements KeyListener{
 	}
 	
 	//switches which state is attached to this TFrame
-	public void bindState(State s) {
+	public void bindState(NextState s) {
 		if(s!= null)	s.label = null;
 		this.s = s;
 		s.label = label;
@@ -147,10 +147,10 @@ public class TFrame extends JFrame implements KeyListener{
     }
 	
 	public static void main(String[] args) {
-		State s = new State();
-		TFrame t = new TFrame(s);
-		s.draw();
-		s.drawNext(0,0);
+//		State s = new State();
+//		TFrame t = new TFrame(s);
+//		s.draw();
+//		s.drawNext(0,0);
 		//t.save("picture.png");
 		
 	}

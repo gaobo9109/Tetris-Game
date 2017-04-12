@@ -7,7 +7,7 @@ public class WellSum extends Feature{
 	
     @Override
     public double getScore() {
-        return featureWeight * wellSum ;
+        return featureWeight * wellSum;
     }
 
     @Override

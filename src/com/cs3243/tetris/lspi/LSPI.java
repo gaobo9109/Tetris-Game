@@ -98,24 +98,38 @@ public class LSPI {
 			int[][] moves = state.legalMoves();
 			samples[i] = new Sample(state, moves[random.nextInt(moves.length)]);
 		}
+		
+		// Inject first sample
+		Sample first = new Sample(NextState.generateStateWithOneHole(), new int[]{0, 0});
+		samples[0] = first;
 	}
 	
 	public static void main(String[] args) {
-		LSPI lspi = new LSPI(100000);
+		LSPI lspi = new LSPI(1000000);
 		
+		double oldRMS = 0;
+		double rms = 0;
 		for (int i = 0; i < 100; i++) {
 			Feature[] features = lspi.policy.heuristic.features;
+			
+			oldRMS = rms;
+			rms = 0;
 			
 			for (int j = 0; j < features.length; j++) {
 				if (j == 0 || j == 8 || j == 9 || j == 10) {
 					continue;
 				}
-				System.out.println(features[j].getFeatureWeight());
+				rms = Math.pow(features[j].getFeatureWeight(), 2);
+				// System.out.println(features[j].getFeatureWeight());
 			}
+			
+			rms = Math.sqrt(rms);
+			System.out.println("Difference: " + (Math.abs(rms - oldRMS)));
 
-			double results = (new PlayerSkeleton()).playFullGame(lspi.policy.heuristic, false);
-			System.out.println("Generation " + i + " cleared " + results + " rows.");
-			System.out.println("---");
+			if (i != 0) {
+				double results = (new PlayerSkeleton()).playFullGame(lspi.policy.heuristic, false);
+				System.out.println("Generation " + i + " cleared " + results + " rows.");
+			}
 
 			lspi.nextIteration();
 		}

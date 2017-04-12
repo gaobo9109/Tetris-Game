@@ -12,7 +12,7 @@ import java.util.Random;
  */
 
 public class NextState {
-	private int[][] field = new int[State.ROWS][State.COLS];
+	public int[][] field = new int[State.ROWS][State.COLS];
 	private int[] top = new int[State.COLS];
 	private static int rowsCleared = 0;
 
@@ -56,7 +56,7 @@ public class NextState {
 			top[slot + c] = height + pTop[nextPiece][orient][c];
 		}
 
-		rowsCleared = 0;
+//		rowsCleared = 0;
 
 		// check for full rows - starting at the top
 		for (int r = height + pHeight[nextPiece][orient] - 1; r >= height; r--) {
@@ -70,7 +70,7 @@ public class NextState {
 			}
 			// if the row was full - remove it and slide above stuff down
 			if (full) {
-				rowsCleared++;
+				cleared++;
 
 				// for each column
 				for (int c = 0; c < State.COLS; c++) {
@@ -103,7 +103,7 @@ public class NextState {
 	}
 
 	public int getRowsCleared() {
-		return rowsCleared;
+		return cleared;
 	}
 	
 	public static final int COLS = 10;
@@ -128,7 +128,7 @@ public class NextState {
 	
 	
 	//number of next piece
-	protected int nextPiece;
+	public int nextPiece;
 	
 	
 	
@@ -201,6 +201,28 @@ public class NextState {
 	public NextState() {
 		nextPiece = randomPiece();
 
+	}
+	
+	public static NextState generateStateWithOneHole() {
+		NextState state = new NextState();
+		for (int c = 1; c < COLS; c++) {
+			for (int r = 0; r < 4; r++) {
+				state.field[r][c] = 1;
+			}
+		}
+		
+		for (int c = 0; c < COLS; c++) {
+			for (int r = ROWS - 2; r >= 0; r--) {
+				if (state.field[r][c] == 1) {
+					state.top[c] = r + 1;
+					break;
+				}
+			}
+		}
+		
+		state.nextPiece = 1;
+		
+		return state;
 	}
 	
 	public static NextState generateRandomState() {
