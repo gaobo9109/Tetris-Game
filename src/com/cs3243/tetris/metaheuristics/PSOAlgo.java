@@ -53,7 +53,7 @@ public class PSOAlgo extends Metaheuristic {
 	}
 	
 	@Override
-	public void createNextGen() {
+	public void createNextGen() throws InterruptedException {
 		PSOHeuristic psoHeuristic;
 		
 		// Evaluate fitness and initialize positions if first generation

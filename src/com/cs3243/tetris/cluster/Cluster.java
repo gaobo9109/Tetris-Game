@@ -3,6 +3,9 @@ package com.cs3243.tetris.cluster;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.cs3243.tetris.PlayerSkeleton;
@@ -20,7 +23,7 @@ public class Cluster {
 	private PlayerSkeleton ps;
 	private StateStorage storage;
 
-	private static final int NUM_GAMES = 3;
+	private static final int NUM_GAMES = 1;
 	private static final int NUM_GAMES_TEST_BEST = 5; // Test best heuristic over say 5 games
 
 	public Cluster(String clusterName, int popSize, MetaheuristicTypes metaheuristicType)
@@ -57,20 +60,26 @@ public class Cluster {
 		}
 	}
 
-	public double evaluateFitness() {
+	public double evaluateFitness() throws InterruptedException {
 		double fitnessSum = 0;
 		double maxFitness = 0;
 		double minFitness = Double.POSITIVE_INFINITY;
+		ExecutorService executor = Executors.newFixedThreadPool(popSize);
+		
 		for (int i = 0; i < popSize; i++) {
 			Heuristic hs = population.get(i);
-			double fitness = 0;
-
-			for (int j = 0; j < NUM_GAMES; j++) {
-				fitness += ps.playFullGame(hs, false);
-			}
-			fitness = fitness / NUM_GAMES;
-			hs.setFitness(fitness);
-
+			HeuristicRunner heuristicRunner = new HeuristicRunner();
+			heuristicRunner.setHeuristic(hs);
+			executor.execute(heuristicRunner);
+		}
+		
+		executor.shutdown();
+		executor.awaitTermination(1000, TimeUnit.MINUTES);
+		
+		for (int i = 0; i < popSize; i++) {
+			Heuristic hs = population.get(i);
+			double fitness = hs.getFitness();
+			
 			fitnessSum += fitness;
 			if (fitness > maxFitness)
 				maxFitness = fitness;
@@ -114,5 +123,24 @@ public class Cluster {
 
 	public void immigrateHeuristics(List<Heuristic> heuristics) {
 		population.addAll(heuristics.stream().map(heuristic -> Heuristic.heuristicFactory(metaheuristicType, heuristic)).collect(Collectors.toList()));
+	}
+	
+	public class HeuristicRunner implements Runnable {
+		private PlayerSkeleton playerSkeleton = new PlayerSkeleton();
+		private Heuristic heuristic;
+		
+		public void setHeuristic(Heuristic heuristic) {
+			this.heuristic = heuristic; 
+		}
+		
+		public void run() {
+			double fitness = 0;
+			
+			for (int j = 0; j < NUM_GAMES; j++) {
+				fitness += ps.playFullGame(heuristic, false);
+			}
+			fitness = fitness / NUM_GAMES;
+			heuristic.setFitness(fitness);
+		}
 	}
 }

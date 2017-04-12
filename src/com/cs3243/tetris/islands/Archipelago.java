@@ -20,9 +20,9 @@ public class Archipelago {
 		islandPopulation = totalPopulation / 4;
 		
 		c1 = new Island(new GeneticAlgo(), "c1", islandPopulation, MetaheuristicTypes.GENETIC);
-		c2 = new Island(new GeneticAlgo(), "c2", islandPopulation, MetaheuristicTypes.GENETIC);
+//		c2 = new Island(new GeneticAlgo(), "c2", islandPopulation, MetaheuristicTypes.GENETIC);
 		c3 = new Island(new PSOAlgo(),     "c3", islandPopulation, MetaheuristicTypes.PSO);
-		c4 = new Island(new PSOAlgo(),     "c4", islandPopulation, MetaheuristicTypes.PSO);
+//		c4 = new Island(new PSOAlgo(),     "c4", islandPopulation, MetaheuristicTypes.PSO);
 	}
 
 	public void runAlgorithm() throws InterruptedException{
@@ -35,13 +35,13 @@ public class Archipelago {
 			
 			executor.execute(c1);
 //			executor.execute(c2);
-//			executor.execute(c3);
+			executor.execute(c3);
 //			executor.execute(c4);
 			
 			executor.shutdown();
 			executor.awaitTermination(1000, TimeUnit.MINUTES);
 			
-//			c1.exchangeHeuristics(c3, islandPopulation / 10);
+			c1.exchangeHeuristics(c3, islandPopulation / 10);
 		}
 	}
 	

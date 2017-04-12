@@ -15,7 +15,7 @@ public class GeneticAlgo extends Metaheuristic {
 	 * Keep the top few percent of the population The rest go through
 	 * recombination by roulette wheel selection
 	 */
-	public void createNextGen() {
+	public void createNextGen() throws InterruptedException {
 		if (cluster == null)
 			return;
 

@@ -82,7 +82,7 @@ public class PlayerSkeleton {
 		PlayerSkeleton p = new PlayerSkeleton();
 		
 		double totalScore = 0;
-		double numGames = 100;
+		double numGames = 200;
 		double bestScore = 0;
 		double worstScore = Double.MAX_VALUE;
 		double currentScore;

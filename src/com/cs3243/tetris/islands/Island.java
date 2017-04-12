@@ -18,7 +18,7 @@ public class Island implements Runnable {
 		this.metaheuristic.setCluster(cluster);
 	}
 
-	public void runOneGen() {
+	public void runOneGen() throws InterruptedException {
 		metaheuristic.createNextGen();
 		metaheuristic.getCluster().writeStateToFile();
 	}
@@ -35,6 +35,11 @@ public class Island implements Runnable {
 	}
 
 	public void run() {
-		runOneGen();
+		try {
+			runOneGen();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
