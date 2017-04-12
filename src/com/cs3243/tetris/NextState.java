@@ -16,10 +16,46 @@ public class NextState {
 	private int[] top = new int[State.COLS];
 	private static int rowsCleared = 0;
 
-	private int[][][] pBottom = State.getpBottom();
-	private int[][] pHeight = State.getpHeight();
-	private int[][] pWidth = State.getpWidth();
-	private int[][][] pTop = State.getpTop();
+	
+	//the next several arrays define the piece vocabulary in detail
+	//width of the pieces [piece ID][orientation]
+	public static int[][] pWidth = {
+			{2},
+			{1,4},
+			{2,3,2,3},
+			{2,3,2,3},
+			{2,3,2,3},
+			{3,2},
+			{3,2}
+	};
+	//height of the pieces [piece ID][orientation]
+	public static int[][] pHeight = {
+			{2},
+			{4,1},
+			{3,2,3,2},
+			{3,2,3,2},
+			{3,2,3,2},
+			{2,3},
+			{2,3}
+	};
+	public static int[][][] pBottom = {
+		{{0,0}},
+		{{0},{0,0,0,0}},
+		{{0,0},{0,1,1},{2,0},{0,0,0}},
+		{{0,0},{0,0,0},{0,2},{1,1,0}},
+		{{0,1},{1,0,1},{1,0},{0,0,0}},
+		{{0,0,1},{1,0}},
+		{{1,0,0},{0,1}}
+	};
+	public static int[][][] pTop = {
+		{{2,2}},
+		{{4},{1,1,1,1}},
+		{{3,1},{2,2,2},{3,3},{1,1,2}},
+		{{1,3},{2,1,1},{3,3},{2,2,2}},
+		{{3,2},{2,2,2},{2,3},{1,2,1}},
+		{{1,2,2},{3,2}},
+		{{2,2,1},{2,3}}
+	};
 
 	public boolean generateNextState(NextState s, int[] legalMoves) {
 		int orient = legalMoves[0];
