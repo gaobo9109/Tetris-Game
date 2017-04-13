@@ -3,7 +3,6 @@ package com.cs3243.tetris.metaheuristics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.cs3243.tetris.heuristics.GeneticHeuristic;
 import com.cs3243.tetris.heuristics.Heuristic;
@@ -16,7 +15,7 @@ public class GeneticAlgo extends Metaheuristic {
 	 * Keep the top few percent of the population The rest go through
 	 * recombination by roulette wheel selection
 	 */
-	public void createNextGen() {
+	public void createNextGen() throws InterruptedException {
 		if (cluster == null)
 			return;
 
@@ -28,8 +27,8 @@ public class GeneticAlgo extends Metaheuristic {
 		int numCrossOver = popSize - numKept;
 
 		ArrayList<Heuristic> newPopulation = new ArrayList<Heuristic>();
-		Collections.shuffle(population);
-		newPopulation.addAll(cluster.emigrateHeuristics(numKept));
+		Collections.sort(population, Collections.reverseOrder());
+		newPopulation.addAll(population.subList(0, numKept));
 
 		Heuristic parent1 = null, parent2 = null;
 
@@ -62,11 +61,18 @@ public class GeneticAlgo extends Metaheuristic {
 		cluster.updatePopulation(newPopulation);
 	}
 
-	@Override
-	public void immmigrate(List<Heuristic> newHeuristics) {
-		cluster.extraditeWorstHeuristics(newHeuristics.size());
-		List<Heuristic> newGeneticHeuristics = newHeuristics.stream()
-				.map(newHeuristic -> new GeneticHeuristic(newHeuristic)).collect(Collectors.toList());
-		cluster.immigrateHeuristics(newGeneticHeuristics);
-	}
+//	@Override
+//	public List<Heuristic> emigrateHeuristics(int numToGet) {
+//		return cluster.emigrateHeuristics(numToGet);
+//	}
+//
+//	@Override
+//	public void extraditeWorstHeuristics(int numToRemove) {
+//		cluster.extraditeWorstHeuristics(numToRemove);
+//	}
+//
+//	@Override
+//	public void immigrateHeuristics(List<Heuristic> heuristics) {
+//		cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.GENETIC);
+//	}
 }

@@ -3,6 +3,7 @@ package com.cs3243.tetris.features;
 import java.util.Random;
 
 import com.cs3243.tetris.NextState;
+import com.cs3243.tetris.State;
 
 public abstract class Feature {
 	protected double featureWeight;
@@ -61,6 +62,15 @@ public abstract class Feature {
      * @param s, row, col
      */
 	public abstract void updateScore(NextState s, int row, int col);
+	
+	/**
+     * Updates score of feature. Should be overridden with proper
+     * implementation of scoring 
+     * @param s, row, col
+     */
+	public void updateScore(State s, NextState ns, int row, int col) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/**
      * Resets. Should be overridden with proper

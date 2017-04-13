@@ -1,33 +1,51 @@
 package com.cs3243.tetris.islands;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import com.cs3243.tetris.metaheuristics.GeneticAlgo;
 import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
 import com.cs3243.tetris.metaheuristics.PSOAlgo;
 
 public class Archipelago {
-	private Thread c1;
-	private Thread c2;
-	private Thread c3;
-	private Thread c4;
+	private Island c1;
+	private Island c2;
+	private Island c3;
+	private Island c4;
+	
+	int islandPopulation;
 	
 	public Archipelago(int totalPopulation) throws InstantiationException, IllegalAccessException{
-		int islandPopulation = totalPopulation / 4;
-		int numGens = 1000;
+		islandPopulation = totalPopulation / 4;
 		
-		c1 = new Thread(new Island(new GeneticAlgo(), "c1", islandPopulation, numGens, MetaheuristicTypes.GENETIC), "t1");
-		c2 = new Thread(new Island(new GeneticAlgo(), "c2", islandPopulation, numGens, MetaheuristicTypes.GENETIC), "t2");
-		c3 = new Thread(new Island(new PSOAlgo(),     "c3", islandPopulation, numGens, MetaheuristicTypes.PSO),     "t3");
-		c4 = new Thread(new Island(new PSOAlgo(),     "c4", islandPopulation, numGens, MetaheuristicTypes.PSO),     "t4");
+		c1 = new Island(new GeneticAlgo(), "c1", islandPopulation, MetaheuristicTypes.GENETIC);
+//		c2 = new Island(new GeneticAlgo(), "c2", islandPopulation, MetaheuristicTypes.GENETIC);
+		c3 = new Island(new PSOAlgo(),     "c3", islandPopulation, MetaheuristicTypes.PSO);
+//		c4 = new Island(new PSOAlgo(),     "c4", islandPopulation, MetaheuristicTypes.PSO);
 	}
 
-	public void runAlgorithm(){
-		c1.start();
-		c2.start();
-		c3.start();
-		c4.start();
+	public void runAlgorithm() throws InterruptedException{
+		int numGens = 1000;
+		
+		for (int i = 0; i < numGens; i++) {
+			System.out.println("Generation " + i);
+			
+			ExecutorService executor = Executors.newFixedThreadPool(4);
+			
+			executor.execute(c1);
+//			executor.execute(c2);
+			executor.execute(c3);
+//			executor.execute(c4);
+			
+			executor.shutdown();
+			executor.awaitTermination(1000, TimeUnit.MINUTES);
+			
+			c1.exchangeHeuristics(c3, islandPopulation / 10);
+		}
 	}
 	
-	public static void main(String[] args) throws InstantiationException, IllegalAccessException{
+	public static void main(String[] args) throws InstantiationException, IllegalAccessException, InterruptedException{
 		Archipelago archipelago = new Archipelago(400);
 		archipelago.runAlgorithm();
 	}

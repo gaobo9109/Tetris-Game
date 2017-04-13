@@ -3,7 +3,7 @@ package com.cs3243.tetris.heuristics;
 import com.cs3243.tetris.features.Feature;
 
 public class GeneticHeuristic extends Heuristic {
-	private static final double MUTATION_PROB = 0.02;
+	private static final double MUTATION_PROB = 0.1;
 	private static final double MUTATION_MEAN = 1;
 	private static final double MUTATION_STD = 1;
 
@@ -58,10 +58,5 @@ public class GeneticHeuristic extends Heuristic {
 		}
 
 		return newHeuristics;
-	}
-
-	@Override
-	public Heuristic convertHeuristic() {
-		return this;
 	}
 }

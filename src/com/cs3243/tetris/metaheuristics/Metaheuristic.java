@@ -22,7 +22,8 @@ public abstract class Metaheuristic {
 		return cluster;
 	}
 
-	abstract public void createNextGen();
-
-	abstract public void immmigrate(List<Heuristic> newHeuristics);
+	abstract public void createNextGen() throws InterruptedException;
+//	abstract public List<Heuristic> emigrateHeuristics(int numToGet);
+//	abstract public void extraditeWorstHeuristics(int numToRemove);
+//	abstract public void immigrateHeuristics(List<Heuristic> heuristics);
 }

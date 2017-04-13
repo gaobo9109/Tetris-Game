@@ -3,6 +3,9 @@ package com.cs3243.tetris.cluster;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.cs3243.tetris.PlayerSkeleton;
@@ -15,11 +18,13 @@ public class Cluster {
 	public String clusterName;
 	private String fileName;
 	private ArrayList<Heuristic> population;
+	private MetaheuristicTypes metaheuristicType;
 	private int popSize;
 	private PlayerSkeleton ps;
 	private StateStorage storage;
 
-	private static final int NUM_GAMES = 4;
+	private static final int NUM_GAMES = 1;
+	private static final int NUM_GAMES_TEST_BEST = 5; // Test best heuristic over say 5 games
 
 	public Cluster(String clusterName, int popSize, MetaheuristicTypes metaheuristicType)
 			throws InstantiationException, IllegalAccessException {
@@ -28,7 +33,8 @@ public class Cluster {
 		this.popSize = popSize;
 		storage = new StateStorage();
 		population = new ArrayList<Heuristic>();
-		if (!storage.readStateFromFile(fileName, population))
+		this.metaheuristicType = metaheuristicType;
+		if (!storage.readStateFromFile(fileName, population, metaheuristicType))
 			initPopulation(metaheuristicType);
 		ps = new PlayerSkeleton();
 	}
@@ -47,41 +53,54 @@ public class Cluster {
 
 	private void initPopulation(MetaheuristicTypes metaheuristicType)
 			throws InstantiationException, IllegalAccessException {
+		Heuristic hs;
 		for (int i = 0; i < popSize; i++) {
-			Heuristic hs = Heuristic.heuristicFactory(metaheuristicType);
+			hs = Heuristic.heuristicFactory(metaheuristicType);
 			population.add(hs);
 		}
 	}
 
-	public double evaluateFitness() {
+	public double evaluateFitness() throws InterruptedException {
 		double fitnessSum = 0;
 		double maxFitness = 0;
 		double minFitness = Double.POSITIVE_INFINITY;
+		ExecutorService executor = Executors.newFixedThreadPool(popSize);
+		
 		for (int i = 0; i < popSize; i++) {
 			Heuristic hs = population.get(i);
-			double fitness = 0;
-
-			for (int j = 0; j < NUM_GAMES; j++) {
-				fitness += ps.playFullGame(hs, false);
-			}
-			fitness = fitness / NUM_GAMES;
-			hs.setFitness(fitness);
-
-			// System.out.println("Player fitness: " + fitness);
-			// System.out.println("Player heuristics: " + hs.toString());
-
+			HeuristicRunner heuristicRunner = new HeuristicRunner();
+			heuristicRunner.setHeuristic(hs);
+			executor.execute(heuristicRunner);
+		}
+		
+		executor.shutdown();
+		executor.awaitTermination(1000, TimeUnit.MINUTES);
+		
+		for (int i = 0; i < popSize; i++) {
+			Heuristic hs = population.get(i);
+			double fitness = hs.getFitness();
+			
 			fitnessSum += fitness;
 			if (fitness > maxFitness)
 				maxFitness = fitness;
 			else if (fitness < minFitness)
 				minFitness = fitness;
 		}
+		
+		Collections.sort(population, Collections.reverseOrder());
+		Heuristic bestHeuristic = population.get(0);
+//		double bestFitness = 0;
+//		for (int j = 0; j < NUM_GAMES_TEST_BEST; j++) {
+//			bestFitness += ps.playFullGame(bestHeuristic, false);
+//		}
 
 		System.out.println("Cluster:" + clusterName);
 		System.out.println("Population Statistics");
 		System.out.println("Max fitness: " + maxFitness);
 		System.out.println("Min fitness: " + minFitness);
 		System.out.println("Average fitness: " + fitnessSum / popSize);
+//		System.out.println("Best Heuristic, over " + NUM_GAMES_TEST_BEST + " games: " + bestFitness / NUM_GAMES_TEST_BEST);
+		System.out.println("Best Heuristic: " + bestHeuristic.toString());
 		System.out.println("========================");
 
 		return fitnessSum;
@@ -93,7 +112,7 @@ public class Cluster {
 
 	public List<Heuristic> emigrateHeuristics(int numToGet) {
 		Collections.sort(population, Collections.reverseOrder());
-		return population.subList(0, numToGet).stream().map(heuristic -> heuristic.convertHeuristic())
+		return population.subList(0, numToGet).stream().map(heuristic -> heuristic.clone())
 				.collect(Collectors.toList());
 	}
 
@@ -103,6 +122,25 @@ public class Cluster {
 	}
 
 	public void immigrateHeuristics(List<Heuristic> heuristics) {
-		population.addAll(heuristics);
+		population.addAll(heuristics.stream().map(heuristic -> Heuristic.heuristicFactory(metaheuristicType, heuristic)).collect(Collectors.toList()));
+	}
+	
+	public class HeuristicRunner implements Runnable {
+		private PlayerSkeleton playerSkeleton = new PlayerSkeleton();
+		private Heuristic heuristic;
+		
+		public void setHeuristic(Heuristic heuristic) {
+			this.heuristic = heuristic; 
+		}
+		
+		public void run() {
+			double fitness = 0;
+			
+			for (int j = 0; j < NUM_GAMES; j++) {
+				fitness += ps.playFullGame(heuristic, false);
+			}
+			fitness = fitness / NUM_GAMES;
+			heuristic.setFitness(fitness);
+		}
 	}
 }

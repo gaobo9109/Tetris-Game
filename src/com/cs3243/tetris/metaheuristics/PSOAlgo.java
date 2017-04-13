@@ -2,7 +2,6 @@ package com.cs3243.tetris.metaheuristics;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.cs3243.tetris.cluster.Cluster;
 import com.cs3243.tetris.heuristics.Heuristic;
@@ -54,7 +53,7 @@ public class PSOAlgo extends Metaheuristic {
 	}
 	
 	@Override
-	public void createNextGen() {
+	public void createNextGen() throws InterruptedException {
 		PSOHeuristic psoHeuristic;
 		
 		// Evaluate fitness and initialize positions if first generation
@@ -73,13 +72,21 @@ public class PSOAlgo extends Metaheuristic {
 		cluster.evaluateFitness();
 		
 		updateGlobalBest();
-		System.out.println("Global best for " + cluster.clusterName + ": " + globalBest.getFitness());
 	}
-	
-	@Override
-	public void immmigrate(List<Heuristic> newHeuristics) {
-		cluster.extraditeWorstHeuristics(newHeuristics.size());
-		List<Heuristic> newPSOHeuristics = newHeuristics.stream().map(newHeuristic -> new PSOHeuristic(newHeuristic)).collect(Collectors.toList());
-		cluster.immigrateHeuristics(newPSOHeuristics);
-	}
+
+//	@Override
+//	public List<Heuristic> emigrateHeuristics(int numToGet) {
+//		return cluster.emigrateHeuristics(numToGet);
+//	}
+//
+//	@Override
+//	public void extraditeWorstHeuristics(int numToRemove) {
+//		cluster.extraditeWorstHeuristics(numToRemove);
+//	}
+//
+//	@Override
+//	public void immigrateHeuristics(List<Heuristic> heuristics) {
+//		cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.PSO);
+//		updateGlobalBest();
+//	}
 }
