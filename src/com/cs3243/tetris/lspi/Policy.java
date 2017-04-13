@@ -33,7 +33,7 @@ public class Policy {
 	public int[] getAction(NextState state) {
 		int[][] legalMoves = state.legalMoves();
 		
-		double maxScore = 0;
+		double maxScore = Double.NEGATIVE_INFINITY;
 		int actionIndex = -1;
 		for (int i = 0; i < legalMoves.length; i++) {
 			int[] move = legalMoves[i];

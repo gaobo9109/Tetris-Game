@@ -57,14 +57,17 @@ public class NextState {
 		{{2,2,1},{2,3}}
 	};
 
-	public boolean generateNextState(NextState s, int[] legalMoves) {
-		int orient = legalMoves[0];
-		int slot = legalMoves[1];
+	public boolean generateNextState(NextState s, int[] move) {
+		int orient = move[0];
+		int slot = move[1];
 		int nextPiece = s.getNextPiece();
 
 		copyState(s);
 
 		// height if the first column makes contact
+//		System.out.println(nextPiece);
+//		System.out.println(orient);
+//		System.out.println();
 		int height = top[slot] - pBottom[nextPiece][orient][0];
 		// for each column beyond the first in the piece
 		for (int c = 1; c < pWidth[nextPiece][orient]; c++) {
@@ -136,6 +139,8 @@ public class NextState {
 		for (int i = 0; i < NextState.COLS; i++) {
 			top[i] = s.getTop()[i];
 		}
+		
+		this.nextPiece = s.getNextPiece();
 	}
 
 	public int getRowsCleared() {
