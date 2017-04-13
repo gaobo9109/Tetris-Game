@@ -28,8 +28,8 @@
     We use an agent that greedily picks the best possible next state from a given state,
     by using a heuristic function to approximate the value of a state. To train our heuristic
     function, we use a novel algorithm that is a combination of the well known Genetic Algorithm (GA)
-    and Particle Swarm Algorithm (PSO). Our agent manages to clear 5 million lines on average with a max
-    of 12 million lines, demonstrating that our algorithm is effective.
+    and Particle Swarm Algorithm (PSO). Our agent manages to clear AVERAGE million lines on average with a max
+    of MAX million lines, demonstrating that our algorithm is effective.
 
     \section{Agent Strategy}
     Our agent uses a linear weighted sum of features as the heuristic function for a given state. Given a state and a piece, the agent computes
@@ -46,18 +46,15 @@
         \item Number of Columns With Holes: The number of columns with holes, where a hole
         is defined as an empty square directly beneath a filled square
         \item Height of the highest column
-        \item Number of holes in the entire board: Holes are defined as empty squares
-		that have a filled square somewhere above it
+        \item Number of holes in the entire board
         \item Number of Wells: The number of columns that have a height less than that of the 2
         adjacent columns
         \item Rows cleared: The number of rows cleared for that particular move
         \item Total Column Height: The sum of the heights of all the columns
         \item Total Column Height Difference: The sum of the difference of heights between adjacent columns
-        \item Column Transition: Number of transitions from filled squares to empty squares
-		and from empty squares to filled squares within columns
+        \item Column Transition: Number of adjacent squares in a column with opposite parity (where parity is defined as either full or empty)
         \item Deepest Well: Height of the lowest column
-        \item Row Transition: Number of transitions from filled squares to empty squares
-		and from empty squares to filled squares within rows
+        \item Row Transition: Number of adjacent squares in a row with opposite parity (where parity is defined as either full or empty)
         \item Weighted Block: Sum of value of every square, where a square's value is equal to
 		the row it is in (numbered from the bottom)
         \item Well Sum: Using the same definition of wells as above, this sums up
@@ -76,7 +73,7 @@
 
     \section{Our Algorithm}
 
-    Our algorithm consists of a combination of genetic algorithm and particle swarm
+    Our algorithm consists of a combination of a genetic algorithm and a particle swarm
 	optimization (PSO) algorithm. Each algorithm is run as a separate ‘island’ with
 	a total population of a hundred set of heuristics with different weights.
 	After every generation, a tenth of the population from each ‘island’ will be
