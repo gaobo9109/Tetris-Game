@@ -1,0 +1,95 @@
+\documentclass{article}
+
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+
+\addtolength{\topmargin}{-.375in}
+\addtolength{\textheight}{1.75in}
+
+\usepackage{titling}
+
+% \pretitle{\begin{center}\Huge\bfseries}
+% \posttitle{\par\end{center}\vskip 0.5em}
+% \preauthor{\begin{center}\Large\ttfamily}
+% \postauthor{\end{center}}
+% \predate{\par\large\centering}
+% \postdate{\par}
+
+\title{CS3243 Tutorial 1}
+\author{Varun Gupta(INSERT OTHER NAMES)\\A0147924X}
+\date{26-01-2017}
+
+\begin{document}
+
+	\maketitle
+	\thispagestyle{empty}
+	\vspace{5mm}
+
+    \section{Introduction}
+    Tetris is likely to be one of the world's most famous and popular games.
+    In this report, we describe how we devise an agent to play the game of Tetris.
+    We use an agent that greedily picks the best possible next state from a given state,
+    whilst using a heuristic function to approximate the value of a state. To train our heuristic
+    function, we use a novel algorithm that is a combination of the well known Genetic Algorithm
+    and Particle Swarm Algorithm. Our agent manages to clear 5 million lines on average with a max
+    of 12 million lines, demonstrating that our algorithm is effective.
+
+    \section{Agent Strategy}
+    Our agent uses a linear weighted sum of features as the heuristic function for a given state. Given a state and a piece, the agent computes
+    the heuristic function for all the possible next states, and then greedily picks the next state with
+    the maximum heuristic value.
+
+    //Insert Math equation
+
+    \section{Features}
+    We used the following features for our heuristic function:
+    \begin{itemize}
+        \item Altitude Difference: The difference between the height of the highest
+        column and the height of the lowest column
+        \item Number of Columns With Holes: The number of columns with holes, where a hole
+        is defined as an empty square directly beneath a filled square
+        \item Height of the highest column
+        \item Number of holes in the entire board
+        \item Number of wells: The number of columns that have a height less than that of the 2
+        adjacent columns
+        \item Rows cleared: The number of rows cleared for that particular move
+        \item Total Column Height: The sum of the heights of all the columns
+        \item Total Column Height Difference: The sum of the difference of heights between adjacent columns
+        \item Column Transition:
+        \item Deepest Well:
+        \item Row Transition:
+        \item Weighted Block:
+        \item Sum of all Wells:
+    \end{itemize}
+
+    While running our training algorithms, we noticed that some features were more important an others. (To be continued)
+
+    \section{Our Algorithm}
+
+    (Someone please fill this)
+
+    \section{Experiments and Analysis}
+
+    Diagram 1: Learning
+    Diagram 2: Performance of agent
+
+    Experimentation
+        1. Architecture specifications on which the algorithm was implemented
+        2. The time taken to train
+        3. The performance of the agent
+
+    Analysis
+
+    \section{Scaling to Big Data}
+
+    Talk about parallelising algorithm. Mention MPI
+    Get speedup
+
+    \section{Conclusion}
+
+    \section{References}
+
+
+
+\end{document}
