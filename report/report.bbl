@@ -1,5 +1,11 @@
 \begin{thebibliography}{}
 
+\bibitem[Alam et~al., 2015]{alam2015comparative}
+Alam, M.~N., Das, B., and Pant, V. (2015).
+\newblock A comparative study of metaheuristic optimization approaches for
+  directional overcurrent relays coordination.
+\newblock {\em Electric Power Systems Research}, 128:39--52.
+
 \bibitem[Shi and Eberhart, 1998]{shi1998parameter}
 Shi, Y. and Eberhart, R. (1998).
 \newblock Parameter selection in particle swarm optimization.
