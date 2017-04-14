@@ -8,6 +8,7 @@
 \usepackage{pbox}
 \usepackage{float}
 \usepackage{sectsty}
+\usepackage{caption}
 \graphicspath{ {./resources/} }
 \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 
@@ -35,8 +36,21 @@
 	\vspace{-3cm}
 
 	\begin{center}
-		{\small Varun Gupta \;\;\;\;\;\;\;\;\;  Gao Bo \;\;\;\;\;\; Advay Pal \;\;\;\;\;\;\; Chang Chu-Ming \;\;\;\; Herbert Ilhan Tanujaya}\\
-		{\small A0147924X \;\;\;\;\;\;  A0121585H \;\;\;\; A0144939R \;\;\;\;\;\;\;\; A0124185 \;\;\;\;\;\;\;\;\;\;\;\;\;\; A0144892W \;\;\;\;\;\;\;\;\;\;\;\;\;\;\; }
+		\begin{minipage}{0.19\textwidth}
+			Varun Gupta\\A0147924X
+		\end{minipage}
+		\begin{minipage}{0.19\textwidth}
+			Gao Bo\\A0121585H
+		\end{minipage}
+		\begin{minipage}{0.19\textwidth}
+			Advay Pal\\A0144939R
+		\end{minipage}
+		\begin{minipage}{0.19\textwidth}
+			Chang Chu-Ming\\A0124185J
+		\end{minipage}
+		\begin{minipage}{0.19\textwidth}
+			Herbert Ilhan\\A0144892W
+		\end{minipage}
 	\end{center}
 
     \section{Introduction}
@@ -48,11 +62,10 @@
     and Particle Swarm Algorithm (PSO). Our agent manages to clear \textbf{TODO} million lines on average with a max
     of \textbf{TODO} million lines, demonstrating that our algorithm is effective.
 
-	\vspace{-0.3cm}
     \section{Agent Strategy}
 	\vspace{-0.3cm}
 	Our agent uses a linear weighted sum of features as the heuristic function for
-	a given state(configuration of the board). Given a
+	a given state (configuration of the board). Given a
 	state and a piece, the agent computes the heuristic value for all possible next
 	states, and then greedily picks the next state with the maximum heuristic
 	value. In other words, the next state is chosen by \small \[ \max_{s' \in N(s, p)}
@@ -61,7 +74,6 @@
 	is the score of feature $i$ on state $s'$ and $w_i$ is the weight of feature
 	$i$.
 
-	\vspace{-0.3cm}
     \section{Features}
 	\vspace{-0.3cm}
     We used the following features for our heuristic function:
@@ -73,7 +85,7 @@
 		\item \textbf{Deepest Well} ($DW$): Height of the lowest column
         \item \textbf{Height} ($ColH$): Height of the highest column
 		\item \textbf{Number of Columns With Holes} ($CwH$): The number of columns with holes, where a hole
-		is defined as an empty square directly beneath a filled square
+		is defined as an empty square with a filled square somewhere above it
         \item \textbf{Number of Holes} ($NHole$): Number of holes in the entire board
         \item \textbf{Number of Wells} ($NWell$): Number of columns that have height less than the 2
         adjacent columns
@@ -123,7 +135,7 @@
 	sum of the old velocity, the personal best of that member, and the global best.\\
 
 	\textbf{Rationale behind combination of algorithms} -
-	We first ran PSO and GA individually. Doing so, we realised that while PSO didn't do too well
+	We first ran PSO and GA individually. Doing so, we realised that while PSO didn't do too well,
 	it's fitness sometimes jumped by almost an order of magnitude.
 	On the other hand, GA seemed to keep getting
 	better, but only quite slowly. We hypothesised
@@ -145,8 +157,8 @@
 
 	The hyperparameters of the PSO algorithm consist of $\rho_g$ and $\rho_p$, the constants
 	which determine the effect of the global and personal bests on each iteration
-	of velocity change; and $\omega$, the constant of inertia. Typically \cite{alam2015comparative}, $\rho_g$ and $\rho_p$ are both
-	set to 2.0[1], which leaves $\omega$ to be optimized. A high $\omega$ will favour exploration,
+	of velocity change; and $\omega$, the constant of inertia. Typically, $\rho_g$ and $\rho_p$ are both
+	set to 2.0 \cite{alam2015comparative}, which leaves $\omega$ to be optimized. A high $\omega$ will favour exploration,
 	while a low $\omega$ will favour exploitation. Based on the observations of
 	\cite{shi1998parameter}, we decided to first test values of $\omega$ between 0.6 to 1.2.
 	While initializations with low $\omega$ generally performed better, the results were
@@ -233,7 +245,7 @@
 	of variability in the results of the algorithm. One reason for this is the element
 	of randomness in the algorithm itself, for example, in the mutation amount and threshold
 	in GA and in the initial velocity imparted to a particle in PSO. There is
-	a large amount of randomness in the game of tetris itself, as seen more clearly
+	a large amount of randomness in the game of Tetris itself, as seen more clearly
 	in the section below.
 
 	Using a version of our algorithm that used 2 threads (one per island),
@@ -253,29 +265,25 @@
 
 	We ran the heuristic on \textbf{TODO} games, encapsulated in the following graph:\\
 
-	% \begin{minipage}{0.4\linewith}
-		\begin{figure}[h]
-			\includegraphics[scale=0.3]{heuristic/heuristic}
-			\centering
-			\caption{Performance of our Agent}
-			\label{fig:agent}
-		\end{figure}
-	% \end{minipage}
-
-	% \begin{minipage}{0.4\linewith}
-		\begin{center}
-			\begin{tabular}{ | c | c | c | }
-				\hline
-				Maximum & Minimum & Average \\ \hline
-				0 & 0 & 0 \\ \hline
+	\begin{center}
+		\begin{minipage}{0.4\textwidth}
+			\includegraphics[scale=0.4]{heuristic/heuristic}
+		\end{minipage}\begin{minipage}{0.4\textwidth}
+		% \begin{center}
+		\begin{tabular}{ | c | c | c | }
+			\hline
+			Maximum & Minimum & Average \\ \hline
+			0 & 0 & 0 \\ \hline
 			\end{tabular}\\
-		\end{center}
-	% \end{minipage}
+			% \end{center}
+		\end{minipage}
+		\captionof{figure}{Performance of our Agent}
+	\end{center}
 
 
 
 
-	As can be seen in Figure \ref{fig:agent}, there is a large variability in how
+	As can be seen in Figure $3$, there is a large variability in how
 	well the heuristic performs, hitting a maximum of \textbf{TODO} and a minimum of \textbf{TODO}.
 	This is likely because of the large randomisation within the game of tetris,
 	with the sequences of pieces having a large impact on the performance.
@@ -293,7 +301,7 @@
 	We parallelised our algorithm by running the PSO and GA islands on different cores,
 	as well as by calculating the fitness of each population member on different cores.
 	We did this as the major computational cost the algorithm was incurring came from
-	the calculation of the fitness values, since that involved running entire tetris games. We started both algorithms as two separate jobs on single machines
+	the calculation of the fitness values, since that involved running entire Tetris games. We started both algorithms as two separate jobs on single machines
 	in the NSCC cluster (which provide 12 cores each) at the same time, and allowed them to run for around 20
 	hours before comparing the results. We used the total number of lines cleared
 	in the entire time span as a rough estimate of the total amount of
@@ -307,7 +315,7 @@
 	To conclude, we believe that our agent is quite efficient, having managed to clear \textbf{TODO} lines.
 	We have demonstrated that the use of GA and PSO, albeit with modifications such as
 	information exchange and hyperparameter optimisation, can provide
-	a reasonably effective learning algorithm. Our algorithm also scales very well the number
+	a reasonably effective learning algorithm. Our algorithm also scales very well with the number
 	of machines, thereby demonstrating that we can handle big data. While we believe that this
 	idea can be taken further, and that with further optimisations, this algorithm can do even better,
 	it suffices to say that we are quite satisfied with the results.
