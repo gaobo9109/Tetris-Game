@@ -2,6 +2,11 @@
 
 % \usepackage{fullpage}
 \usepackage{titling}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{ {./resources/} }
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 
 \setlength{\parindent}{0pt}
 \addtolength{\oddsidemargin}{-.875in}
@@ -9,7 +14,7 @@
 \addtolength{\textwidth}{1.75in}
 
 \addtolength{\topmargin}{-.375in}
-\addtolength{\textheight}{1.75in}
+\addtolength{\textheight}{1in}
 
 \title{CS3243 Tetris Project}
 \author{Varun Gupta \and Gao Bo \and Advay Pal \and Chang Chu-Ming \and Herbert Ilhan Tanujaya}
@@ -26,8 +31,8 @@
     We use an agent that greedily picks the best possible next state from a given state,
     by using a heuristic function to approximate the value of a state. To train our heuristic
     function, we use a novel algorithm that is a combination of the well known Genetic Algorithm (GA)
-    and Particle Swarm Algorithm (PSO). Our agent manages to clear AVERAGE million lines on average with a max
-    of MAX million lines, demonstrating that our algorithm is effective.
+    and Particle Swarm Algorithm (PSO). Our agent manages to clear \textbf{TODO} million lines on average with a max
+    of \textbf{TODO} million lines, demonstrating that our algorithm is effective.
 
     \section{Agent Strategy}
 	Our agent uses a linear weighted sum of features as the heuristic function for
@@ -43,23 +48,23 @@
     \section{Features}
     We used the following features for our heuristic function:
     \begin{itemize}
-        \item Altitude Difference: The difference between the height of the highest
+        \item Altitude Difference ($AltD$): The difference between the height of the highest
         column and the height of the lowest column
-        \item Number of Columns With Holes: The number of columns with holes, where a hole
-        is defined as an empty square directly beneath a filled square
-        \item Height of the highest column
-        \item Number of holes in the entire board
-        \item Number of Wells: The number of columns that have a height less than that of the 2
+		\item Column Transition ($ColT$): Number of adjacent squares in a column with opposite parity (where parity is defined as either full or empty)
+		\item Deepest Well ($DW$): Height of the lowest column
+        \item Height ($ColH$): Height of the highest column
+		\item Number of Columns With Holes ($CwH$): The number of columns with holes, where a hole
+		is defined as an empty square directly beneath a filled square
+        \item Number of Holes ($NHole$): Number of holes in the entire board
+        \item Number of Wells ($NWell$): The number of columns that have a height less than that of the 2
         adjacent columns
-        \item Rows cleared: The number of rows cleared for that particular move
-        \item Total Column Height: The sum of the heights of all the columns
-        \item Total Column Height Difference: The sum of the difference of heights between adjacent columns
-        \item Column Transition: Number of adjacent squares in a column with opposite parity (where parity is defined as either full or empty)
-        \item Deepest Well: Height of the lowest column
-        \item Row Transition: Number of adjacent squares in a row with opposite parity (where parity is defined as either full or empty)
-        \item Weighted Block: Sum of value of every square, where a square's value is equal to
+		\item Rows Cleared ($RC$): The number of rows cleared for that particular move
+		\item Row Transition ($RowT$): Number of adjacent squares in a row with opposite parity (where parity is defined as either full or empty)
+        \item Total Column Height ($TColH$): The sum of the heights of all the columns
+        \item Total Column Height Difference ($TColHD$): The sum of the difference of heights between adjacent columns
+        \item Weighted Block ($WB$): Sum of value of every square, where a square's value is equal to
 		the row it is in (numbered from the bottom)
-        \item Well Sum: Using the same definition of wells as above, this sums up
+        \item Well Sum ($WellS$): Using the same definition of wells as above, this sums up
 		the depth of every well
     \end{itemize}
 
@@ -149,45 +154,132 @@
 	different rates of learning. Thus, we ran multiple jobs in parallel and averaged
 	their results to determine which set of hyperparameters work best.
 
-	The hyperparameters of the PSO algorithm consist of  TODO and TODO, the constants
+	The hyperparameters of the PSO algorithm consist of $\rho_g$ and $\rho_p$, the constants
 	which determine the effect of the global and personal bests on each iteration
-	of velocity change; and TODO, the constant of inertia. Typically[CITE], TODO and TODO are both
-	set to 2.0, which leaves TODO to be optimized. A high TODO will favour exploration,
-	while a low TODO will favour exploitation. Based on the observations of Shi and
-	Russell [1], we decided to first test values of TODO between 1.2 to 0.6.
-	While initializations with low TODO generally performed better, the results were
-	not conclusive. Thus, we decided that instead of a fixed TODO, we could vary it
+	of velocity change; and $\omega$, the constant of inertia. Typically[CITE], $\rho_g$ and $\rho_p$ are both
+	set to 2.0, which leaves $\omega$ to be optimized. A high $\omega$ will favour exploration,
+	while a low $\omega$ will favour exploitation. Based on the observations of \cite{shi1998parameter}, we decided to first test values of $\omega$ between 1.2 to 0.6.
+	While initializations with low $\omega$ generally performed better, the results were
+	not conclusive. Thus, we decided that instead of a fixed $\omega$, we could vary it
 	based on how close the population is to the global maximum. This is estimated
-	by taking TODO of the average fitness scores of the population. The formula is as follows:
+	by taking $\log_{10}$ of the average fitness scores of the population. The formula is as follows:
 
-	\textbf{TODO}
+	\begin{center}
+		$\omega = 1.2 - k(\log_{10}\text{(Average Fitness)} - 3)$
+	\end{center}
 
-	We tested different values of k by running multiple jobs for an hour and comparing
+	We tested different values of $k$ by running multiple jobs for an hour and comparing
  	the average of the fitness scores. Through experimentation, we found that the
-	algorithm performs best when k is 0.2.[Some more detail?]
+	algorithm performs best when $k$ is 0.2. The experimental results are shown below.
 
-	[1] Y. Shi and R. C. Eberhart. Parameter selection in particle swarm optimization. 1998, In Evolutionary programming VII (pp. 591-600). Springer Berlin/Heidelberg.
+	Note: The values below are taken across 5 instances with the same hyperparameters.\\
 
+	\underline{Fixing and tuning $\omega$}\\
+	Lower $\omega$ = more exploitation, worse maximum, better average\\
+	Higher $\omega$ = more exploration, better maximum, worse average\\
+
+	\begin{tabular}{ | c | c | c | }
+		\hline
+		$\omega$ & Maximum of Average Fitness & Average of Average fitness \\ \hline
+		0.6 & 44807 & 30935 \\ \hline
+		0.8 & 58192 & 27357 \\ \hline
+		1.0 & 69375 & 26849 \\ \hline
+		1.2 & 72743 & 20381 \\ \hline
+	\end{tabular}\\[0.5em]
+
+	\underline{Varying $\omega$ and tuning $k$}\\
+	Higher $k$ = more varying $\omega$ = stronger transition from exploration to exploitation\\
+	Lower $k$ = less varying $\omega$ = weaker transition from exploration to exploitation\\
+
+	\begin{tabular}{ | c | c | c | }
+		\hline
+		$k$ & Maximum of Average Fitness & Average of Average fitness \\ \hline
+		0.1 & 50260 & 32939 \\ \hline
+		0.15 & 47115 & 30010 \\ \hline
+		0.2 & 74838 & 38478 \\ \hline
+	\end{tabular}
 
     \section{Experiments and Analysis}
 
 	\subsection{Learning Perfomance}
-	Diagram 1: Learning
-	\textbf{TODO}\\
-	Architecture specifications on which the algorithm was implemented - E5-2690 v3 @ 2.60GHz\\
-	The time taken to train - Using a version of our algorithm that used 2 threads (one per island),
+	We ran our learning algorithm on nodes provided by the National Supercomputing Centre.
+	The nodes we ran on had the following architecture specifications: E5-2690 v3 @ 2.60GHz.
+	Using this, the results we obtained were:
+
+	\begin{figure}[h]
+		\includegraphics[scale=0.28]{learning/AlgoMax}
+		\includegraphics[scale=0.28]{learning/AlgoAvg}
+		\centering
+		\caption{Performance of the Learning Algorithm}
+		\label{fig:learning}
+	\end{figure}
+
+	The first figure plots the number of lines cleared by the best heuristic in
+	the Genetic and PSO islands over 47 generations, while the second figure plots
+	the average number of lines cleared by the populations of the Genetic and PSO
+	islands over the same generations. It can be seen that sometimes PSO leads the
+	way in the first figure, producing a good heuristic that Genetic then builds
+	upon. However, this is not always true, and in fact we did observe in other
+	runs of the algorithm that sometimes Genetic also led the way.\\
+	We also compared the results of our algorithm with Naive Genetic and Naive PSO
+	(i.e. we ran them in isolation). The results obtained were:
+
+	\begin{figure}[h]
+		\includegraphics[scale=0.4]{learning/Naive}
+		\centering
+		\caption{Comparison of Learning Algorithm with Naive Genetic/PSO}
+		\label{fig:naive}
+	\end{figure}
+
+	This figure plots the maximum of the average of Genetic and PSO islands for
+	our learning algorithm, and compares it with the averages of Naive Genetic and
+	Naive PSO. It can be seen that our algorithm performed far better, with PSO
+	getting stuck at around 20 thousand lines cleared and Genetic rising very slowly.
+
+	However, we can also observe from Figure \ref{fig:learning} that there is a large amount
+	of variability in the results of the algorithm. One reason for this is the element
+	of randomness in the algorithm itself, for example, in the mutation amount and threshold
+	in Genetic and in the initial velocity imparted to a particle in PSO. There is
+	a large amount of randomness in the game of tetris itself, as seen more clearly
+	in the section analysing our agent's performance.
+
+	Using a version of our algorithm that used 2 threads (one per island),
 	we were able to get to a maximum of around 4 million lines cleared in
 	around a day. Running a parallelised version (see below) we got to a maximum of
 	around 18m in 10 hours.\\
 
 	\subsection{Agent Performance}
-	Diagram 2: Performance of agent
-	\textbf{TODO}
+	The best weights we obtained were:\\
 
-	As can be seen from the histogram above, there is a large variability in how
-	well the heuristic performs. This is likely because of the large randomisation
-	within the game of tetris, with the sequences of pieces having a large impact
-	on the performance.
+	\begin{tabular}{ | c | c | c | c | c | c | c | c | c | c | c | c | c | }
+		\hline
+		$AltD$ & $ColT$ & $DW$ & $ColH$ & $CwH$ & $NHole$ & $NWell$ & $RC$ & $RowT$ & $TColH$ & $TColHD$ & $WB$ & $WellS$ \\ \hline
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	\end{tabular}\\[0.25em]
+
+	We ran the heuristic on \textbf{TODO} games, encapsulated in the following graph:\\
+
+	\begin{figure}[h]
+		\includegraphics[scale=0.4]{heuristic/heuristic}
+		\centering
+		\caption{Performance of our Agent}
+		\label{fig:agent}
+	\end{figure}
+
+	\vspace{-4mm}
+	\begin{center}
+		\begin{tabular}{ | c | c | c | }
+			\hline
+			Maximum & Minimum & Average \\ \hline
+			0 & 0 & 0 \\ \hline
+		\end{tabular}\\
+	\end{center}
+
+	As can be seen in Figure \ref{fig:agent}, there is a large variability in how
+	well the heuristic performs, hitting a maximum of \textbf{TODO} and a minimum of \textbf{TODO}.
+	This is likely because of the large randomisation within the game of tetris,
+	with the sequences of pieces having a large impact on the performance. For example,
+	a long sequence of $S$ and $Z$ pieces is impossible to get through successfully.
 
     \section{Scaling to Big Data}
 	In order to scale to Big Data, we considered how our algorithm performed in the presence
@@ -215,6 +307,10 @@
     \section{Conclusion}
 
 
+
     \section{References}
+	\bibliographystyle{apalike}
+	\bibliography{./resources/bibliography/references}
+
 
 \end{document}
