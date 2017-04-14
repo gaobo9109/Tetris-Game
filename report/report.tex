@@ -20,14 +20,17 @@
 \addtolength{\textheight}{1.7in}
 
 \title{CS3243 Tetris Project}
-\author{Varun Gupta \and Gao Bo \and Advay Pal \and Chang Chu-Ming \and Herbert Ilhan Tanujaya}
-\date{13-04-2017}
+\author{}
+\date{}
 
 \begin{document}
 	\vspace{-4cm}
 	\maketitle
 	\thispagestyle{empty}
-	\vspace{-1cm}
+	\vspace{-2.5cm}
+
+	{\small Varun Gupta \;\;\;\;  Gao Bo \;\;\;\; Advay Pal \;\;\;\; Chang Chu-Ming \;\;\;\; Herbert Ilhan Tanujaya}\\
+	{\small Varun Gupta \;\;\;\;  Gao Bo \;\;\;\; Advay Pal \;\;\;\; Chang Chu-Ming \;\;\;\; Herbert Ilhan Tanujaya}
 
     \section{Introduction}
     Tetris is likely one of the world's most famous and popular games.
@@ -84,14 +87,13 @@
 
     \section{Our Algorithm}
 
-    Our algorithm consists of a combination of a genetic algorithm and particle swarm
-	optimization (PSO) algorithm. We run both of these algorithms on different ‘islands’
+    Our algorithm consists of a combination of a GA and PSO algorithm. We run both of these algorithms on different ‘islands’
 	with population sizes of a 100 each. Each member of our population is a heuristic (set of weights).
 	The key idea is that both of the algorithms run individually, but after each generation, we
 	copy the 10 best heuristics on each island to the other one.\\
 
-	\textbf{Genetic algorithm}\\
-	We use a standard Genetic algorithm with crossover and mutation. A crossover is
+	\textbf{GA}\\
+	We use a standard GA with crossover and mutation. A crossover is
 	done by taking two parent heuristics, and,
 	for every feature, selecting the weight from one of the parents randomly. A
 	mutation is defined as multiplying the current weight of a feature with
@@ -110,24 +112,24 @@
 	\textbf{Rationale behind combination of algorithms}\\
 	We first ran PSO and GA individually. In doing so, we realised that PSO was in general not doing
 	very well, but that it sometimes made a leap and jumped by almost an order of magnitude
-	in terms of lines cleared. On the other hand, Genetic seemed to keep getting
+	in terms of lines cleared. On the other hand, GA seemed to keep getting
 	better, but only quite slowly. Thus we hypothesised
-	that Genetic may be doing more of exploitation, finding the maximum in the local area,
+	that GA may be doing more of exploitation, finding the maximum in the local area,
 	while PSO may have been doing more of exploration, looking for good solutions all over
 	the search space. Hence we thought that perhaps if we combined the two,
-	PSO could lead Genetic to better areas, which Genetic could then drill down into.
+	PSO could lead GA to better areas, which GA could then drill down into.
 	This would allow us to achieve a more balanced trade-off between exploitation
 	and exploration, which we hoped would make our algorithm more efficient.
 
 	\section{Further Optimisation}
-	The hyperparameters for both the genetic algorithm and the PSO algorithm need
+	The hyperparameters for both the GA and the PSO algorithm need
 	to be optimized for our integrated solution to learn at an optimal rate.
 	Given limited time, we decided to focus our attention on the hyperparameters
 	of the PSO algorithm. The rationale behind this is that, since the PSO
 	algorithm looks to be exploring the state space, if we could successfully optimize
 	the PSO algorithm, it would be able to find a solution close to the global
-	maximum and share this information with the Genetic algorithm.
-	The Genetic algorithm would then refine the solution further.\\
+	maximum and share this information with the GA.
+	The GA would then refine the solution further.\\
 
 	The hyperparameters of the PSO algorithm consist of $\rho_g$ and $\rho_p$, the constants
 	which determine the effect of the global and personal bests on each iteration
@@ -192,32 +194,31 @@
 		\label{fig:learning}
 	\end{figure}
 
-	The first figure plots the number of lines cleared by the best heuristic in
-	the Genetic and PSO islands over 47 generations, while the second figure plots
-	the average number of lines cleared by the populations of the Genetic and PSO
-	islands over the same generations. It can be seen that sometimes PSO leads the
-	way in the first figure, producing a good heuristic that Genetic then builds
+	The first figure plots the lines cleared by the best heuristic in
+	the GA and PSO islands over 47 generations, while the second figure plots
+	the average lines cleared by the same populations. It can be seen that sometimes PSO leads the
+	way in the first figure, producing a good heuristic that GA then builds
 	upon. However, this is not always true, and in fact we did observe in other
-	runs of the algorithm that sometimes Genetic also led the way.\\
-	We also compared the results of our algorithm with Naive Genetic and Naive PSO
+	runs of the algorithm that sometimes GA also led the way.\\
+	We also compared the results of our algorithm with Naive GA and Naive PSO
 	(i.e. we ran them in isolation). The results obtained were:
 
 	\begin{figure}[h]
 		\includegraphics[scale=0.3]{learning/Naive}
 		\centering
-		\caption{Comparison of Learning Algorithm with Naive Genetic/PSO}
+		\caption{Comparison of Learning Algorithm with Naive GA/PSO}
 		\label{fig:naive}
 	\end{figure}
 
-	This figure plots the maximum of the average of Genetic and PSO islands for
-	our learning algorithm, and compares it with the averages of Naive Genetic and
+	This figure plots the maximum of the average of GA and PSO islands for
+	our learning algorithm, and compares it with the averages of Naive GA and
 	Naive PSO. It can be seen that our algorithm performed far better, with PSO
-	getting stuck at around 20 thousand lines cleared and Genetic rising very slowly.
+	getting stuck at around 20 thousand lines cleared and GA rising very slowly.
 
 	However, we can also observe from Figure \ref{fig:learning} that there is a large amount
 	of variability in the results of the algorithm. One reason for this is the element
 	of randomness in the algorithm itself, for example, in the mutation amount and threshold
-	in Genetic and in the initial velocity imparted to a particle in PSO. There is
+	in GA and in the initial velocity imparted to a particle in PSO. There is
 	a large amount of randomness in the game of tetris itself, as seen more clearly
 	in the section analysing our agent's performance.
 
@@ -264,10 +265,10 @@
 	of multiple cores. We found that parallelising our algorithms through the use
 	of multithreading lead to a linear speedup, demonstrating that our algorithm scaled very
 	well in the presence of multiple cores. We attribute this to the fact that
-	both Genetic Algorithms and PSO algorithms are embarassingly parallel, which
+	both GA and PSO algorithms are embarassingly parallel, which
 	is why we were able to achieve an optimal speedup quite easily.\\
 
-	We parallelised our algorithm by running the PSO and Genetic islands on different cores,
+	We parallelised our algorithm by running the PSO and GA islands on different cores,
 	and further parallelised it by calculating the fitness of each population member on different cores.
 	We did this as the major computational cost the algorithm was incurring came from
 	the calculation of the fitness values, since that involved running entire tetris games. We started both algorithms as two separate jobs on single machines
