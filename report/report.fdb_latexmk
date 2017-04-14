@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1492139294 "report.tex" "report.pdf" "report" 1492139294
+["pdflatex"] 1492147473 "report.tex" "report.pdf" "report" 1492147473
   "/usr/local/texlive/2016/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
@@ -21,7 +21,10 @@
   "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
+  "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb" 1248133631 32915 7bf7720c61a5b3a7ff25b0964421c9b6 ""
+  "/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls" 1459635588 19821 310da678527a7dfe2a02c88af38079b7 ""
   "/usr/local/texlive/2016/texmf-dist/tex/latex/base/omscmr.fd" 1454284088 2256 80ce1168fb4ce6a85583a9cf8972c013 ""
   "/usr/local/texlive/2016/texmf-dist/tex/latex/base/size10.clo" 1459635588 8292 e897c12e1e886ce77fe26afc5d470886 ""
@@ -30,9 +33,9 @@
   "/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1472350817 1888048 f2c5faed5981a516f406b2ccc20bff71 ""
   "/usr/local/texlive/2016/texmf-var/web2c/pdftex/pdflatex.fmt" 1472350835 3873397 6160ef4d728812cdacf3083c8f2d6944 ""
   "/usr/local/texlive/2016/texmf.cnf" 1463979140 577 2938757e76f31531e65cc647e3507693 ""
-  "report.aux" 1492139294 696 f609000cac419948caa1387806e2aa41 ""
-  "report.tex" 1492139293 11837 9219a7c7d4da8e0e7e128bedfa6e0988 ""
+  "report.aux" 1492147473 866 8a752242ab05885e6e5b038b97e9b609 ""
+  "report.tex" 1492147472 12234 b2fd967d3c06049fdc98942d233999d2 ""
   (generated)
+  "report.log"
   "report.aux"
   "report.pdf"
-  "report.log"

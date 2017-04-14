@@ -1,24 +1,21 @@
 \documentclass{article}
 
+% \usepackage{fullpage}
+\usepackage{titling}
+
+\setlength{\parindent}{0pt}
 \addtolength{\oddsidemargin}{-.875in}
 \addtolength{\evensidemargin}{-.875in}
 \addtolength{\textwidth}{1.75in}
 
 \addtolength{\topmargin}{-.375in}
 \addtolength{\textheight}{1.75in}
-\setlength{\parindent}{0pt}
-
-\usepackage{titling}
-% \usepackage{authblk}
 
 \title{CS3243 Tetris Project}
 \author{Varun Gupta \and Gao Bo \and Advay Pal \and Chang Chu-Ming \and Herbert Ilhan Tanujaya}
-
-
 \date{13-04-2017}
 
 \begin{document}
-
 	\maketitle
 	\thispagestyle{empty}
 	\vspace{5mm}
@@ -33,13 +30,15 @@
     of MAX million lines, demonstrating that our algorithm is effective.
 
     \section{Agent Strategy}
-    Our agent uses a linear weighted sum of features as the heuristic function for a given state. Given a state and a piece, the agent computes
-    the heuristic value for all possible next states, and then greedily picks the next state with
-    the maximum heuristic value.
-
-	\begin{center}
-		$\sum w_i \times f_i(s)$
-	\end{center}
+	Our agent uses a linear weighted sum of features as the heuristic function for
+	a given state. Here, a state is defined by the field of the board. Given a
+	state and a piece, the agent computes the heuristic value for all possible next
+	states, and then greedily picks the next state with the maximum heuristic
+	value. In other words, the next state is chosen by \[ \max_{s' \in N(s, p)}
+	\left\{ \sum w_i f_i(s') \right\}, \] where $s$ is the original state, $N(s,
+	p)$ is the set of all possible next states from $s$ and a piece $p$, $f_i(s')$
+	is the score of feature $i$ on state $s'$ and $w_i$ is the weight of feature
+	$i$.
 
     \section{Features}
     We used the following features for our heuristic function:
@@ -97,8 +96,8 @@
 		\item Evaluate fitness of each set of heuristics
 		\item Keep top half of population and cross-over the rest
 		\item Random mutation of each feature of crossed-over heuristics with
-		probability of a tenth
-		\item Migration of a tenth of the population to PSO island
+		probability 0.1
+		\item Migrate 0.1 of the population to PSO island
 	\end{enumerate}
 	We keep the top half of the population to ensure that each set of heuristics
 	that perform well will remain within the population. The mutation introduces
@@ -217,7 +216,5 @@
 
 
     \section{References}
-
-
 
 \end{document}
