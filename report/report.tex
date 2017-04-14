@@ -1,29 +1,32 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 
 % \usepackage{fullpage}
 \usepackage{titling}
 \usepackage{amsmath}
 \usepackage{graphicx}
-\graphicspath{ {./resources/} }
 \usepackage{etoolbox}
+\graphicspath{ {./resources/} }
 \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 
-\setlength{\parindent}{0pt}
-\addtolength{\oddsidemargin}{-.875in}
-\addtolength{\evensidemargin}{-.875in}
-\addtolength{\textwidth}{1.75in}
+\setlength{\droptitle}{-5em}
 
-\addtolength{\topmargin}{-.375in}
-\addtolength{\textheight}{1in}
+\setlength{\parindent}{0pt}
+\addtolength{\oddsidemargin}{-1in}
+\addtolength{\evensidemargin}{-1in}
+\addtolength{\textwidth}{2in}
+
+\addtolength{\topmargin}{-1in}
+\addtolength{\textheight}{1.7in}
 
 \title{CS3243 Tetris Project}
 \author{Varun Gupta \and Gao Bo \and Advay Pal \and Chang Chu-Ming \and Herbert Ilhan Tanujaya}
 \date{13-04-2017}
 
 \begin{document}
+	\vspace{-4cm}
 	\maketitle
 	\thispagestyle{empty}
-	\vspace{5mm}
+	\vspace{-1cm}
 
     \section{Introduction}
     Tetris is likely one of the world's most famous and popular games.
@@ -36,7 +39,7 @@
 
     \section{Agent Strategy}
 	Our agent uses a linear weighted sum of features as the heuristic function for
-	a given state. Here, a state is defined by the field of the board. Given a
+	a given state. Here, a state is defined by the configuration of the board. Given a
 	state and a piece, the agent computes the heuristic value for all possible next
 	states, and then greedily picks the next state with the maximum heuristic
 	value. In other words, the next state is chosen by \[ \max_{s' \in N(s, p)}
@@ -48,23 +51,24 @@
     \section{Features}
     We used the following features for our heuristic function:
     \begin{itemize}
-        \item Altitude Difference ($AltD$): The difference between the height of the highest
+		\setlength\itemsep{-1mm}
+        \item \textbf{Altitude Difference} ($AltD$): The difference between the height of the highest
         column and the height of the lowest column
-		\item Column Transition ($ColT$): Number of adjacent squares in a column with opposite parity (where parity is defined as either full or empty)
-		\item Deepest Well ($DW$): Height of the lowest column
-        \item Height ($ColH$): Height of the highest column
-		\item Number of Columns With Holes ($CwH$): The number of columns with holes, where a hole
+		\item \textbf{Column Transition} ($ColT$): Number of adjacent squares in a column with opposite parity (where parity is defined as either full or empty)
+		\item \textbf{Deepest Well} ($DW$): Height of the lowest column
+        \item \textbf{Height} ($ColH$): Height of the highest column
+		\item \textbf{Number of Columns With Holes} ($CwH$): The number of columns with holes, where a hole
 		is defined as an empty square directly beneath a filled square
-        \item Number of Holes ($NHole$): Number of holes in the entire board
-        \item Number of Wells ($NWell$): The number of columns that have a height less than that of the 2
+        \item \textbf{Number of Holes} ($NHole$): Number of holes in the entire board
+        \item \textbf{Number of Wells} ($NWell$): The number of columns that have a height less than that of the 2
         adjacent columns
-		\item Rows Cleared ($RC$): The number of rows cleared for that particular move
-		\item Row Transition ($RowT$): Number of adjacent squares in a row with opposite parity (where parity is defined as either full or empty)
-        \item Total Column Height ($TColH$): The sum of the heights of all the columns
-        \item Total Column Height Difference ($TColHD$): The sum of the difference of heights between adjacent columns
-        \item Weighted Block ($WB$): Sum of value of every square, where a square's value is equal to
+		\item \textbf{Rows Cleared} ($RC$): The number of rows cleared for that particular move
+		\item \textbf{Row Transition} ($RowT$): Number of adjacent squares in a row with opposite parity
+        \item \textbf{Total Column Height} ($TColH$): The sum of the heights of all the columns
+        \item \textbf{Total Column Height Difference} ($TColHD$): The sum of the difference of heights between adjacent columns
+        \item \textbf{Weighted Block} ($WB$): Sum of value of every square, where a square's value is equal to
 		the row it is in (numbered from the bottom)
-        \item Well Sum ($WellS$): Using the same definition of wells as above, this sums up
+        \item \textbf{Well Sum} ($WellS$): Using the same definition of wells as above, this sums up
 		the depth of every well
     \end{itemize}
 
@@ -75,7 +79,7 @@
 	Rows Cleared would have the largest positive weights, to predispose the algorithm
 	towards clearing more rows. However, the weight for this heuristic varied wildly
 	between positive and negative, indicating that perhaps sometimes the algorithm
-	preferred to not greedily pick moves that were clearing rows, but rather chose
+	preferred to not greedily pick moves that were clearing rows, choosing instead
 	to maintain an even surface at the top.
 
     \section{Our Algorithm}
@@ -85,49 +89,33 @@
 	with population sizes of a 100 each. Each member of our population is a heuristic (set of weights).
 	The key idea is that both of the algorithms run individually, but after each generation, we
 	copy the 10 best heuristics on each island to the other one.\\
-	\newline
-	We will first describe the working principle
-	of the Genetic and the PSO algorithms. Subsequently, we will
-	discuss the rationale behind why we chose to juxtapose these two different
-	algorithms in our search for the best heuristic, as well as how we did so.\\
 
-	Genetic algorithm\\
-	For this algorithm, a crossover is done by taking two parent heuristics, and
-	for every feature selecting the weight from one of the parents randomly. A
+	\textbf{Genetic algorithm}\\
+	We use a standard Genetic algorithm with crossover and mutation. A crossover is
+	done by taking two parent heuristics, and,
+	for every feature, selecting the weight from one of the parents randomly. A
 	mutation is defined as multiplying the current weight of a feature with
 	a value normally distributed with a mean of 1 and a standard deviation of 1.\\
 	Each generation of our genetic algorithm consists of the following sequence of steps
-	\begin{enumerate}
-		\item Evaluate fitness of each set of heuristics
-		\item Keep top half of population and cross-over the rest
-		\item Random mutation of each feature of crossed-over heuristics with
-		probability 0.1
-		\item Migrate 0.1 of the population to PSO island
-	\end{enumerate}
+	Parents are chosen based on fitness, with fitter population members having a higher
+	probability of being chosen.\\
 	We keep the top half of the population to ensure that each set of heuristics
-	that perform well will remain within the population. The mutation introduces
+	that perform well will remain within the population and replace the bottom half with
+	new members. The mutation introduces
 	some randomness to the genetic algorithm to avoid being trapped within a local
 	maximum.\\
 
-	PSO algorithm\\
-	The PSO algorithm treats every heuristic as a point in 13-dimensional space.
+	\textbf{PSO algorithm}\\
+	Again, we use a standard PSO algorith which treats every heuristic as a point in 13-dimensional space.
 	This is the position of the heuristic. Each heuristic also has a velocity,
 	a vector in the 13-dimensional space, which is added to the position to get
-	new population members.
-	Each generation of our PSO algorithm consists of the following sequence of steps
-	\begin{enumerate}
-		\item Set velocity of each member to a linear weighted sum of the old velocity,
-		the personal best of that member, and the global best
-		\item Get new position of each member by adding its velocity to the current
-		position
-		\item Evaluate fitness of each set of heuristics
-		\item Migration of a tenth of the population to PSO island
-	\end{enumerate}
+	new population members. New velocities are computed by taking a linear weighted
+	sum of the old velocity, the personal best of that member, and the global best.\\
 	For PSO, it is almost certain that every member of the population is mutated
 	in every generation since weighted velocity is very unlikely to be 0.\\
 
-	Rationale behind combination of algorithms\\
-	We ran PSO and GA individually. In doing so, we realised that PSO was in general not doing
+	\textbf{Rationale behind combination of algorithms}\\
+	We first ran PSO and GA individually. In doing so, we realised that PSO was in general not doing
 	very well, but that it sometimes made a leap and jumped by almost an order of magnitude
 	in terms of lines cleared. On the other hand, Genetic seemed to keep getting
 	better, but only quite slowly. From these experimental results, we hypothesised
@@ -145,14 +133,9 @@
 	of the PSO algorithm. The rationale behind this is that while the genetic
 	algorithm learns at a steady rate, the PSO algorithm tends to make large jumps
 	in progress and can explore larger swaths of the search-space in a shorter
-	time. We felt that if we successfully could optimize the PSO algorithm, it would be able to
+	time. We felt that if we could successfully optimize the PSO algorithm, it would be able to
 	find a solution close to the global maximum and share this information with the genetic algorithm.
 	The genetic algorithm would then refine the solution further.
-
-	One of the issues that we observed is that even with the same set of hyperparameters,
-	different initializations of random variables such as mutation can lead to
-	different rates of learning. Thus, we ran multiple jobs in parallel and averaged
-	their results to determine which set of hyperparameters work best.
 
 	The hyperparameters of the PSO algorithm consist of $\rho_g$ and $\rho_p$, the constants
 	which determine the effect of the global and personal bests on each iteration
@@ -202,8 +185,8 @@
     \section{Experiments and Analysis}
 
 	\subsection{Learning Perfomance}
-	We ran our learning algorithm on nodes provided by the National Supercomputing Centre.
-	The nodes we ran on had the following architecture specifications: E5-2690 v3 @ 2.60GHz.
+	We ran our learning algorithm on nodes provided by the National Supercomputing Centre cluster.
+	The nodes we used had the following architecture specifications: E5-2690 v3 @ 2.60GHz.
 	Using this, the results we obtained were:
 
 	\begin{figure}[h]
@@ -225,7 +208,7 @@
 	(i.e. we ran them in isolation). The results obtained were:
 
 	\begin{figure}[h]
-		\includegraphics[scale=0.4]{learning/Naive}
+		\includegraphics[scale=0.3]{learning/Naive}
 		\centering
 		\caption{Comparison of Learning Algorithm with Naive Genetic/PSO}
 		\label{fig:naive}
@@ -260,7 +243,7 @@
 	We ran the heuristic on \textbf{TODO} games, encapsulated in the following graph:\\
 
 	\begin{figure}[h]
-		\includegraphics[scale=0.4]{heuristic/heuristic}
+		\includegraphics[scale=0.3]{heuristic/heuristic}
 		\centering
 		\caption{Performance of our Agent}
 		\label{fig:agent}
@@ -292,10 +275,7 @@
 	We parallelised our algorithm by running the PSO and Genetic islands on different cores,
 	and further parallelised it by calculating the fitness of each population member on different cores.
 	We did this as the major computational cost the algorithm was incurring came from
-	the calculation of the fitness values, since that involved running entire tetris games.
-
-	To demonstrate the effect of parallelisation, we recorded the speedup of our algorithm when run
-	on multiple cores. We started both algorithms as two separate jobs on single machines
+	the calculation of the fitness values, since that involved running entire tetris games. We started both algorithms as two separate jobs on single machines
 	in the NSCC cluster (which provide 12 cores each) at the same time, and allowed them to run for around 20
 	hours before comparing the results. We used the total number of lines cleared
 	in the entire time span as a rough estimate of the total amount of
