@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex report"] 1492166782 "report.aux" "report.bbl" "report" 1492167509
+["bibtex report"] 1492167675 "report.aux" "report.bbl" "report" 1492167676
   "./resources/bibliography/references.bib" 1492155352 247 3b456fef8433dd042fd01a604c47f416 ""
   "/usr/local/texlive/2016/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "report.aux" 1492167509 1447 6639c2ece1ec729fc651a4f1aa425291 ""
+  "report.aux" 1492167676 1447 745bacdeeeeb4141c1da2cf6b7a7e6a9 ""
   "report.bcf" 0 -1 0 ""
   (generated)
   "report.bbl"
   "report.blg"
-["pdflatex"] 1492167508 "report.tex" "report.pdf" "report" 1492167509
+["pdflatex"] 1492167675 "report.tex" "report.pdf" "report" 1492167676
   "/usr/local/texlive/2016/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -68,14 +68,14 @@
   "/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1472350817 1888048 f2c5faed5981a516f406b2ccc20bff71 ""
   "/usr/local/texlive/2016/texmf-var/web2c/pdftex/pdflatex.fmt" 1472350835 3873397 6160ef4d728812cdacf3083c8f2d6944 ""
   "/usr/local/texlive/2016/texmf.cnf" 1463979140 577 2938757e76f31531e65cc647e3507693 ""
-  "report.aux" 1492167509 1447 6639c2ece1ec729fc651a4f1aa425291 ""
-  "report.bbl" 1492166782 271 23a532ef6ca8fec680fd2db416409478 "bibtex report"
-  "report.tex" 1492167506 15038 7324bda3681b4a10bc3ca5dad1c680a8 ""
+  "report.aux" 1492167676 1447 745bacdeeeeb4141c1da2cf6b7a7e6a9 ""
+  "report.bbl" 1492167675 271 23a532ef6ca8fec680fd2db416409478 "bibtex report"
+  "report.tex" 1492167673 15057 df4d861b2233a0d3d651c552446bcd21 ""
   "resources/heuristic/heuristic.png" 1492155912 100537 11b0e11ad2bbe279c78786ea63530a3c ""
   "resources/learning/AlgoAvg.png" 1492150716 131348 b27c8717e37e7bf035c56a47e27ae403 ""
   "resources/learning/AlgoMax.png" 1492150936 116368 6f24083b411adab8f7c14b5446cfb536 ""
   "resources/learning/Naive.png" 1492151832 105813 f4ed1ab984b63a8976111fcdf4948182 ""
   (generated)
   "report.aux"
-  "report.log"
   "report.pdf"
+  "report.log"

@@ -71,15 +71,15 @@
         \item \textbf{Well Sum} ($WellS$): Sums up the depth of every well
     \end{itemize}
 
-    While running our training algorithms, we noticed that some features were more
-	important than others. In particular, the algorithm assigned highly negative
-	weights to Column Transition and Well Sum, while assigning highly positive
-	weights to Number of Wells. This was slightly unexpected as we thought that
-	Rows Cleared would have the largest positive weights, to predispose the algorithm
-	towards clearing more rows. However, the weight for this heuristic varied wildly
-	between positive and negative, indicating that perhaps sometimes the algorithm
-	preferred to not greedily pick moves that were clearing rows, choosing instead
-	to maintain an even surface at the top.
+    % While running our training algorithms, we noticed that some features were more
+	% important than others. In particular, the algorithm assigned highly negative
+	% weights to Column Transition and Well Sum, while assigning highly positive
+	% weights to Number of Wells. This was slightly unexpected as we thought that
+	% Rows Cleared would have the largest positive weights, to predispose the algorithm
+	% towards clearing more rows. However, the weight for this heuristic varied wildly
+	% between positive and negative, indicating that perhaps sometimes the algorithm
+	% preferred to not greedily pick moves that were clearing rows, choosing instead
+	% to maintain an even surface at the top.
 
     \section{Our Algorithm}
 
@@ -110,8 +110,8 @@
 	We first ran PSO and GA individually. In doing so, we realised that PSO was in general not doing
 	very well, but that it sometimes made a leap and jumped by almost an order of magnitude
 	in terms of lines cleared. On the other hand, Genetic seemed to keep getting
-	better, but only quite slowly. From these experimental results, we hypothesised
-	that Genetic may have been doing more of exploitation, finding the maximum in the local area,
+	better, but only quite slowly. Thus we hypothesised
+	that Genetic may be doing more of exploitation, finding the maximum in the local area,
 	while PSO may have been doing more of exploration, looking for good solutions all over
 	the search space. Hence we thought that perhaps if we combined the two,
 	PSO could lead Genetic to better areas, which Genetic could then drill down into.
