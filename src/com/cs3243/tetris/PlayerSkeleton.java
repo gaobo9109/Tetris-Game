@@ -81,7 +81,7 @@ public class PlayerSkeleton {
 		}
 		
 		double totalScore = 0;
-		int numGames = 100;
+		int numGames = 12;
 		double bestScore = 0;
 		double worstScore = Double.MAX_VALUE;
 		double currentScore;
@@ -92,22 +92,24 @@ public class PlayerSkeleton {
 			heuristics[i] = hs.clone();
 		}
 		
-		ExecutorService executor = Executors.newFixedThreadPool(numGames);
-		
-		for (int i = 0; i < numGames; i++) {
-			HeuristicRunner heuristicRunner = new HeuristicRunner(heuristics[i], numGames);
-			executor.execute(heuristicRunner);
-		}
-		
-		executor.shutdown();
-		executor.awaitTermination(1000, TimeUnit.MINUTES);
-		
-		for (int i = 0; i < numGames; i++) {
-			currentScore = heuristics[i].getFitness();
-			System.out.println(currentScore);
-			totalScore += currentScore;
-			bestScore = bestScore > currentScore ? bestScore : currentScore;
-			worstScore = worstScore < currentScore ? worstScore : currentScore;
+		for (int i = 0; i < numGames / 12; i++) {
+			ExecutorService executor = Executors.newFixedThreadPool(numGames);
+			
+			for (int j = 0; j < 12; j++) {
+				HeuristicRunner heuristicRunner = new HeuristicRunner(heuristics[12 * i + j], 1);
+				executor.execute(heuristicRunner);
+			}
+			
+			executor.shutdown();
+			executor.awaitTermination(1000, TimeUnit.MINUTES);
+			
+			for (int j = 0; j < 12; j++) {
+				currentScore = heuristics[12 * i + j].getFitness();
+				System.out.println(currentScore);
+				totalScore += currentScore;
+				bestScore = bestScore > currentScore ? bestScore : currentScore;
+				worstScore = worstScore < currentScore ? worstScore : currentScore;
+			}
 		}
 		
 		System.out.println();
