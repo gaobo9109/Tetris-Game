@@ -239,174 +239,174 @@ public class PlayerSkeleton {
 	}
 	/* CLUSTER */
 
-	public class Cluster {
-
-		public String clusterName;
-		private String fileName;
-		private ArrayList<Heuristic> population;
-		private MetaheuristicTypes metaheuristicType;
-		private int popSize;
-		private PlayerSkeleton ps;
-		private StateStorage storage;
-
-		private static final int NUM_GAMES = 1;
-
-		public Cluster(String clusterName, int popSize, MetaheuristicTypes metaheuristicType)
-				throws InstantiationException, IllegalAccessException {
-			this.clusterName = clusterName;
-			this.fileName = clusterName + ".csv";
-			this.popSize = popSize;
-			storage = new StateStorage();
-			population = new ArrayList<Heuristic>();
-			this.metaheuristicType = metaheuristicType;
-			if (!storage.readStateFromFile(fileName, population, metaheuristicType))
-				initPopulation(metaheuristicType);
-			ps = new PlayerSkeleton();
-		}
-
-		public int getPopSize() {
-			return popSize;
-		}
-
-		public ArrayList<Heuristic> getPopulation() {
-			return population;
-		}
-
-		public void updatePopulation(ArrayList<Heuristic> population) {
-			this.population = population;
-		}
-
-		private void initPopulation(MetaheuristicTypes metaheuristicType)
-				throws InstantiationException, IllegalAccessException {
-			Heuristic hs;
-			for (int i = 0; i < popSize; i++) {
-				hs = PlayerSkeleton.heuristicFactory(metaheuristicType);
-				population.add(hs);
-			}
-		}
-
-		public double evaluateFitness() throws InterruptedException {
-			double fitnessSum = 0;
-			double maxFitness = 0;
-			double minFitness = Double.POSITIVE_INFINITY;
-			ExecutorService executor = Executors.newFixedThreadPool(popSize);
-
-			for (int i = 0; i < popSize; i++) {
-				Heuristic hs = population.get(i);
-				HeuristicRunner heuristicRunner = new HeuristicRunner();
-				heuristicRunner.setHeuristic(hs);
-				executor.execute(heuristicRunner);
-			}
-
-			executor.shutdown();
-			executor.awaitTermination(1000, TimeUnit.MINUTES);
-
-			for (int i = 0; i < popSize; i++) {
-				Heuristic hs = population.get(i);
-				double fitness = hs.getFitness();
-
-				fitnessSum += fitness;
-				if (fitness > maxFitness)
-					maxFitness = fitness;
-				else if (fitness < minFitness)
-					minFitness = fitness;
-			}
-
-			Collections.sort(population, Collections.reverseOrder());
-			Heuristic bestHeuristic = population.get(0);
-			// double bestFitness = 0;
-			// for (int j = 0; j < NUM_GAMES_TEST_BEST; j++) {
-			// bestFitness += ps.playFullGame(bestHeuristic, false);
-			// }
-
-			System.out.println("Cluster:" + clusterName);
-			System.out.println("Population Statistics");
-			System.out.println("Max fitness: " + maxFitness);
-			System.out.println("Min fitness: " + minFitness);
-			System.out.println("Average fitness: " + fitnessSum / popSize);
-			// System.out.println("Best Heuristic, over " + NUM_GAMES_TEST_BEST
-			// + " games: " + bestFitness / NUM_GAMES_TEST_BEST);
-			System.out.println("Best Heuristic: " + bestHeuristic.toString());
-			System.out.println("========================");
-
-			return fitnessSum;
-		}
-
-		public void writeStateToFile() {
-			storage.writeStateToFile(population, fileName);
-		}
-
-		public List<Heuristic> emigrateHeuristics(int numToGet) {
-			Collections.sort(population, Collections.reverseOrder());
-			return population.subList(0, numToGet).stream().map(heuristic -> heuristic.clone())
-					.collect(Collectors.toList());
-		}
-
-		public void extraditeWorstHeuristics(int numToRemove) {
-			Collections.sort(population);
-			population.removeAll(population.subList(0, numToRemove));
-		}
-
-		public void immigrateHeuristics(List<Heuristic> heuristics) {
-			population.addAll(
-					heuristics.stream().map(heuristic -> PlayerSkeleton.heuristicFactory(metaheuristicType, heuristic))
-							.collect(Collectors.toList()));
-		}
-
-		public class HeuristicRunner implements Runnable {
-			private Heuristic heuristic;
-
-			public void setHeuristic(Heuristic heuristic) {
-				this.heuristic = heuristic;
-			}
-
-			public void run() {
-				double fitness = 0;
-
-				for (int j = 0; j < NUM_GAMES; j++) {
-					fitness += ps.playFullGame(heuristic, false);
-				}
-				fitness = fitness / NUM_GAMES;
-				heuristic.setFitness(fitness);
-			}
-		}
-	}
-	/* HEURISTICS */
-
-	public class GeneticHeuristic extends Heuristic {
-		private static final double MUTATION_PROB = 0.1;
-		private static final double MUTATION_MEAN = 1;
-		private static final double MUTATION_STD = 1;
-
-		public GeneticHeuristic() {
-			super();
-		}
-
-		public GeneticHeuristic(Heuristic heuristic) {
-			super();
-			this.features = heuristic.features;
-			this.fitness = heuristic.fitness;
-		}
-
-		/**
-		 * Mutate all features of heuristic
-		 */
-		public void mutate() {
-			for (Feature feature : features) {
-				mutateFeature(feature);
-			}
-		}
-
-		private void mutateFeature(Feature feature) {
-			boolean mutate = random.nextDouble() < MUTATION_PROB;
-			if (mutate) {
-				feature.setFeatureWeight(
-						feature.getFeatureWeight() * (random.nextGaussian() * MUTATION_STD + MUTATION_MEAN));
-			}
-		}
-
-	}
-
+//	public class Cluster {
+//
+//		public String clusterName;
+//		private String fileName;
+//		private ArrayList<Heuristic> population;
+//		private MetaheuristicTypes metaheuristicType;
+//		private int popSize;
+//		private PlayerSkeleton ps;
+//		private StateStorage storage;
+//
+//		private static final int NUM_GAMES = 1;
+//
+//		public Cluster(String clusterName, int popSize, MetaheuristicTypes metaheuristicType)
+//				throws InstantiationException, IllegalAccessException {
+//			this.clusterName = clusterName;
+//			this.fileName = clusterName + ".csv";
+//			this.popSize = popSize;
+//			storage = new StateStorage();
+//			population = new ArrayList<Heuristic>();
+//			this.metaheuristicType = metaheuristicType;
+//			if (!storage.readStateFromFile(fileName, population, metaheuristicType))
+//				initPopulation(metaheuristicType);
+//			ps = new PlayerSkeleton();
+//		}
+//
+//		public int getPopSize() {
+//			return popSize;
+//		}
+//
+//		public ArrayList<Heuristic> getPopulation() {
+//			return population;
+//		}
+//
+//		public void updatePopulation(ArrayList<Heuristic> population) {
+//			this.population = population;
+//		}
+//
+//		private void initPopulation(MetaheuristicTypes metaheuristicType)
+//				throws InstantiationException, IllegalAccessException {
+//			Heuristic hs;
+//			for (int i = 0; i < popSize; i++) {
+//				hs = PlayerSkeleton.heuristicFactory(metaheuristicType);
+//				population.add(hs);
+//			}
+//		}
+//
+//		public double evaluateFitness() throws InterruptedException {
+//			double fitnessSum = 0;
+//			double maxFitness = 0;
+//			double minFitness = Double.POSITIVE_INFINITY;
+//			ExecutorService executor = Executors.newFixedThreadPool(popSize);
+//
+//			for (int i = 0; i < popSize; i++) {
+//				Heuristic hs = population.get(i);
+//				HeuristicRunner heuristicRunner = new HeuristicRunner();
+//				heuristicRunner.setHeuristic(hs);
+//				executor.execute(heuristicRunner);
+//			}
+//
+//			executor.shutdown();
+//			executor.awaitTermination(1000, TimeUnit.MINUTES);
+//
+//			for (int i = 0; i < popSize; i++) {
+//				Heuristic hs = population.get(i);
+//				double fitness = hs.getFitness();
+//
+//				fitnessSum += fitness;
+//				if (fitness > maxFitness)
+//					maxFitness = fitness;
+//				else if (fitness < minFitness)
+//					minFitness = fitness;
+//			}
+//
+//			Collections.sort(population, Collections.reverseOrder());
+//			Heuristic bestHeuristic = population.get(0);
+//			// double bestFitness = 0;
+//			// for (int j = 0; j < NUM_GAMES_TEST_BEST; j++) {
+//			// bestFitness += ps.playFullGame(bestHeuristic, false);
+//			// }
+//
+//			System.out.println("Cluster:" + clusterName);
+//			System.out.println("Population Statistics");
+//			System.out.println("Max fitness: " + maxFitness);
+//			System.out.println("Min fitness: " + minFitness);
+//			System.out.println("Average fitness: " + fitnessSum / popSize);
+//			// System.out.println("Best Heuristic, over " + NUM_GAMES_TEST_BEST
+//			// + " games: " + bestFitness / NUM_GAMES_TEST_BEST);
+//			System.out.println("Best Heuristic: " + bestHeuristic.toString());
+//			System.out.println("========================");
+//
+//			return fitnessSum;
+//		}
+//
+//		public void writeStateToFile() {
+//			storage.writeStateToFile(population, fileName);
+//		}
+//
+//		public List<Heuristic> emigrateHeuristics(int numToGet) {
+//			Collections.sort(population, Collections.reverseOrder());
+//			return population.subList(0, numToGet).stream().map(heuristic -> heuristic.clone())
+//					.collect(Collectors.toList());
+//		}
+//
+//		public void extraditeWorstHeuristics(int numToRemove) {
+//			Collections.sort(population);
+//			population.removeAll(population.subList(0, numToRemove));
+//		}
+//
+//		public void immigrateHeuristics(List<Heuristic> heuristics) {
+//			population.addAll(
+//					heuristics.stream().map(heuristic -> PlayerSkeleton.heuristicFactory(metaheuristicType, heuristic))
+//							.collect(Collectors.toList()));
+//		}
+//
+//		public class HeuristicRunner implements Runnable {
+//			private Heuristic heuristic;
+//
+//			public void setHeuristic(Heuristic heuristic) {
+//				this.heuristic = heuristic;
+//			}
+//
+//			public void run() {
+//				double fitness = 0;
+//
+//				for (int j = 0; j < NUM_GAMES; j++) {
+//					fitness += ps.playFullGame(heuristic, false);
+//				}
+//				fitness = fitness / NUM_GAMES;
+//				heuristic.setFitness(fitness);
+//			}
+//		}
+//	}
+//	/* HEURISTICS */
+//
+//	public class GeneticHeuristic extends Heuristic {
+//		private static final double MUTATION_PROB = 0.1;
+//		private static final double MUTATION_MEAN = 1;
+//		private static final double MUTATION_STD = 1;
+//
+//		public GeneticHeuristic() {
+//			super();
+//		}
+//
+//		public GeneticHeuristic(Heuristic heuristic) {
+//			super();
+//			this.features = heuristic.features;
+//			this.fitness = heuristic.fitness;
+//		}
+//
+//		/**
+//		 * Mutate all features of heuristic
+//		 */
+//		public void mutate() {
+//			for (Feature feature : features) {
+//				mutateFeature(feature);
+//			}
+//		}
+//
+//		private void mutateFeature(Feature feature) {
+//			boolean mutate = random.nextDouble() < MUTATION_PROB;
+//			if (mutate) {
+//				feature.setFeatureWeight(
+//						feature.getFeatureWeight() * (random.nextGaussian() * MUTATION_STD + MUTATION_MEAN));
+//			}
+//		}
+//
+//	}
+//
 	/**
 	 * Defines features. Performs linear mix of features to generate final
 	 * score.
@@ -548,414 +548,414 @@ public class PlayerSkeleton {
 			return line.toString();
 		}
 	}
-
-	public class PSOHeuristic extends Heuristic {
-		private final double BOUND_HIGH = -1;
-		private final double BOUND_LOW = 1;
-		private final double BOUND_RANGE = BOUND_HIGH - BOUND_LOW;
-
-		private double[] personalBestWeights;
-		private double personalBestFitness;
-		private double[] vel = new double[numFeatures];
-
-		public PSOHeuristic() {
-			super();
-			personalBestWeights = getWeights(this.features);
-			personalBestFitness = 0;
-			initVels();
-		}
-
-		public PSOHeuristic(Heuristic heuristic) {
-			this.features = heuristic.features;
-			this.fitness = heuristic.fitness;
-
-			personalBestWeights = getWeights(this.features);
-			personalBestFitness = this.fitness;
-			initVels();
-		}
-
-		private double[] getWeights(Feature[] features) {
-			double[] weights = Arrays.stream(features).mapToDouble(feature -> feature.getFeatureWeight()).toArray();
-			return weights;
-		}
-
-		/**
-		 * Initialize velocity: vi ~ U(-BOUND_RANGE, BOUND_RANGE)
-		 */
-		private void initVels() {
-			for (int i = 0; i < numFeatures; i++) {
-				vel[i] = random.nextDouble() * BOUND_RANGE * 2 - BOUND_RANGE;
-			}
-		}
-
-		/**
-		 * Update position of particle by adding its velocity
-		 */
-		public void updatePos() {
-			for (int i = 0; i < numFeatures; i++) {
-				features[i].setFeatureWeight(features[i].getFeatureWeight() + vel[i]);
-			}
-		}
-
-		/**
-		 * Update a particles velocity taking into account its personal best and
-		 * the global best
-		 */
-		public void updateVel(double omega, double rhop, double rhog, Heuristic globalBest) {
-			Feature[] globalBestFeatures = globalBest.features;
-			double rp, rg;
-
-			for (int i = 0; i < numFeatures; i++) {
-				rp = random.nextDouble();
-				rg = random.nextDouble();
-
-				vel[i] = omega * vel[i] + rhop * rp * (personalBestWeights[i] - features[i].getFeatureWeight())
-						+ rhog * rg * (globalBestFeatures[i].getFeatureWeight() - features[i].getFeatureWeight());
-			}
-		}
-
-		@Override
-		public void setFitness(double fitness) {
-			super.setFitness(fitness);
-
-			if (fitness > this.personalBestFitness) {
-				this.personalBestFitness = fitness;
-				this.personalBestWeights = getWeights(this.features);
-			}
-		}
-
-		public double[] getPersonalBestWeights() {
-			return this.personalBestWeights;
-		}
-	}
-
-	public class StateStorage {
-		private BufferedWriter fw;
-		private BufferedReader fr;
-
-		public void writeStateToFile(ArrayList<Heuristic> population, String fileName) {
-			try {
-				fw = new BufferedWriter(new FileWriter(fileName));
-				for (Heuristic hs : population) {
-					fw.write(hs.toString());
-				}
-			} catch (Exception e) {
-				System.out.println("Error in CsvFileWriter!");
-				e.printStackTrace();
-			} finally {
-				try {
-					fw.flush();
-					fw.close();
-				} catch (IOException e) {
-					System.out.println("Error while flushing/closing fileWriter!");
-					e.printStackTrace();
-				}
-			}
-		}
-
-		/**
-		 * Load saved feature weights from file. If file does not exist, create
-		 * new set of feature weights
-		 * 
-		 * @param file
-		 *            name
-		 * @return ArrayList of Heuristic
-		 */
-
-		public boolean readStateFromFile(String fileName, ArrayList<Heuristic> population,
-				MetaheuristicTypes metaheuristicType) {
-
-			boolean fileExist = new File(fileName).isFile();
-			if (!fileExist) {
-				System.out.println("File not found, creating new heuristic sets");
-				return false;
-			}
-
-			String line = "";
-			try {
-				System.out.println("Loading heuristic from file...");
-				fr = new BufferedReader(new FileReader(fileName));
-				Feature[] features;
-
-				while ((line = fr.readLine()) != null) {
-					String[] tokens = line.split(",");
-					Heuristic hs = new Heuristic();
-					features = hs.getFeatures();
-
-					if (tokens.length == features.length) {
-						for (int i = 0; i < features.length; i++) {
-							double weight = Double.parseDouble(tokens[i]);
-							features[i].setFeatureWeight(weight);
-						}
-						population.add(PlayerSkeleton.heuristicFactory(metaheuristicType, hs));
-					}
-				}
-				System.out.println("Number of heuristic is " + population.size());
-			} catch (Exception e) {
-				System.out.println("Error in csv FileReader!");
-				e.printStackTrace();
-			} finally {
-				try {
-					fr.close();
-				} catch (IOException e) {
-					System.out.println("Error while closing fileReader!");
-					e.printStackTrace();
-				}
-			}
-			return true;
-		}
-	}
-	/* ISLANDS */
-
-	public class Archipelago {
-		private Island c1;
-		private Island c3;
-
-		int islandPopulation;
-
-		public Archipelago(int totalPopulation) throws InstantiationException, IllegalAccessException {
-			islandPopulation = totalPopulation / 4;
-
-			c1 = new Island(new GeneticAlgo(), "c1", islandPopulation, MetaheuristicTypes.GENETIC);
-			// c2 = new Island(new GeneticAlgo(), "c2", islandPopulation,
-			// MetaheuristicTypes.GENETIC);
-			c3 = new Island(new PSOAlgo(), "c3", islandPopulation, MetaheuristicTypes.PSO);
-			// c4 = new Island(new PSOAlgo(), "c4", islandPopulation,
-			// MetaheuristicTypes.PSO);
-		}
-
-		public void runAlgorithm() throws InterruptedException {
-			int numGens = 1000;
-
-			for (int i = 0; i < numGens; i++) {
-				System.out.println("Generation " + i);
-
-				ExecutorService executor = Executors.newFixedThreadPool(4);
-
-				executor.execute(c1);
-				// executor.execute(c2);
-				executor.execute(c3);
-				// executor.execute(c4);
-
-				executor.shutdown();
-				executor.awaitTermination(1000, TimeUnit.MINUTES);
-
-				c1.exchangeHeuristics(c3, islandPopulation / 10);
-			}
-		}
-	}
-
-	public class Island implements Runnable {
-		private Metaheuristic metaheuristic;
-		private Cluster cluster;
-
-		public Island(Metaheuristic metaheuristic, String clusterName, int populationSize,
-				MetaheuristicTypes metaheuristicType) throws InstantiationException, IllegalAccessException {
-			this.cluster = new Cluster(clusterName, populationSize, metaheuristicType);
-			this.metaheuristic = metaheuristic;
-			this.metaheuristic.setCluster(cluster);
-		}
-
-		public void runOneGen() throws InterruptedException {
-			metaheuristic.createNextGen();
-			metaheuristic.getCluster().writeStateToFile();
-		}
-
-		public void exchangeHeuristics(Island island, int numToExchange) {
-			List<Heuristic> thisBestHeuristics = this.cluster.emigrateHeuristics(numToExchange);
-			List<Heuristic> otherBestHeuristics = island.cluster.emigrateHeuristics(numToExchange);
-
-			this.cluster.extraditeWorstHeuristics(numToExchange);
-			island.cluster.extraditeWorstHeuristics(numToExchange);
-
-			this.cluster.immigrateHeuristics(otherBestHeuristics);
-			island.cluster.immigrateHeuristics(thisBestHeuristics);
-		}
-
-		public void run() {
-			try {
-				runOneGen();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	/* METAHEURISTICS */
-
-	public class GeneticAlgo extends Metaheuristic {
-		double FRAC_PARENTS_KEPT = 0.5;
-
-		@Override
-		/*
-		 * Keep the top few percent of the population The rest go through
-		 * recombination by roulette wheel selection
-		 */
-		public void createNextGen() throws InterruptedException {
-			if (cluster == null)
-				return;
-
-			int popSize = cluster.getPopSize();
-			ArrayList<Heuristic> population = cluster.getPopulation();
-			double fitnessSum = cluster.evaluateFitness();
-
-			int numKept = (int) (popSize * FRAC_PARENTS_KEPT);
-			int numCrossOver = popSize - numKept;
-
-			ArrayList<Heuristic> newPopulation = new ArrayList<Heuristic>();
-			Collections.sort(population, Collections.reverseOrder());
-			newPopulation.addAll(population.subList(0, numKept));
-
-			Heuristic parent1 = null, parent2 = null;
-
-			for (int i = 0; i < numCrossOver; i++) {
-				for (int j = 0; j < 2; j++) {
-					double partialSum = 0;
-					double cutoff = rand.nextDouble() * fitnessSum;
-					int k = 0;
-
-					// If rand.nextDouble is so close to 1 that cutoff rounds
-					// off to fitnessSum, k will become popSize, hence the k <
-					// popSize check
-					while (partialSum <= cutoff & k < popSize) {
-						partialSum += population.get(k).getFitness();
-						k++;
-					}
-
-					if (j == 0) {
-						parent1 = population.get(k - 1);
-					} else {
-						parent2 = population.get(k - 1);
-					}
-				}
-
-				GeneticHeuristic child = PlayerSkeleton.crossover((GeneticHeuristic) parent1,
-						(GeneticHeuristic) parent2);
-				child.mutate();
-				newPopulation.add(child);
-			}
-
-			cluster.updatePopulation(newPopulation);
-		}
-
-		// @Override
-		// public List<Heuristic> emigrateHeuristics(int numToGet) {
-		// return cluster.emigrateHeuristics(numToGet);
-		// }
-		//
-		// @Override
-		// public void extraditeWorstHeuristics(int numToRemove) {
-		// cluster.extraditeWorstHeuristics(numToRemove);
-		// }
-		//
-		// @Override
-		// public void immigrateHeuristics(List<Heuristic> heuristics) {
-		// cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.GENETIC);
-		// }
-	}
-
-	public abstract class Metaheuristic {
-		protected Random rand = new Random();
-		protected Cluster cluster = null;
-
-
-		public void setCluster(Cluster cluster) {
-			this.cluster = cluster;
-		}
-
-		public Cluster getCluster() {
-			return cluster;
-		}
-
-		abstract public void createNextGen() throws InterruptedException;
-		// abstract public List<Heuristic> emigrateHeuristics(int numToGet);
-		// abstract public void extraditeWorstHeuristics(int numToRemove);
-		// abstract public void immigrateHeuristics(List<Heuristic> heuristics);
-	}
-
-	public class PSOAlgo extends Metaheuristic {
-		private final double OMEGA = 0.6;
-		private final double RHOP = 1.4;
-		private final double RHOG = 2.0;
-
-		Heuristic globalBest;
-		ArrayList<Heuristic> population;
-
-		int popSize;
-		int numFeatures;
-
-		@Override
-		public void setCluster(Cluster cluster) {
-			this.cluster = cluster;
-
-			population = this.cluster.getPopulation();
-			popSize = this.cluster.getPopSize();
-			numFeatures = this.cluster.getPopulation().get(0).getNumFeatures();
-			globalBest = new Heuristic();
-
-			// Cannot evaluate fitness here because setCluster is called during
-			// instantiation of Island and it will delay the main thread
-			// cluster.evaluateFitness();
-			// initPositions();
-		}
-
-		/**
-		 * Initialize personal bests with current fitness for each heuristic
-		 * Update global best to be best over all the current personal bests
-		 */
-		private void initPositions() {
-			globalBest.setFitness(0);
-			updateGlobalBest();
-		}
-
-		/**
-		 * Update global best
-		 */
-		private void updateGlobalBest() {
-			for (Heuristic heuristic : population) {
-				if (heuristic.getFitness() > globalBest.getFitness()) {
-					globalBest = heuristic.clone();
-				}
-			}
-		}
-
-		@Override
-		public void createNextGen() throws InterruptedException {
-			PSOHeuristic psoHeuristic;
-
-			// Evaluate fitness and initialize positions if first generation
-			if (globalBest == null) {
-				cluster.evaluateFitness();
-				initPositions();
-			}
-
-			// Move every particle
-			for (Heuristic heuristic : population) {
-				psoHeuristic = ((PSOHeuristic) heuristic);
-				psoHeuristic.updateVel(OMEGA, RHOP, RHOG, globalBest);
-				psoHeuristic.updatePos();
-			}
-
-			cluster.evaluateFitness();
-
-			updateGlobalBest();
-		}
-
-		// @Override
-		// public List<Heuristic> emigrateHeuristics(int numToGet) {
-		// return cluster.emigrateHeuristics(numToGet);
-		// }
-		//
-		// @Override
-		// public void extraditeWorstHeuristics(int numToRemove) {
-		// cluster.extraditeWorstHeuristics(numToRemove);
-		// }
-		//
-		// @Override
-		// public void immigrateHeuristics(List<Heuristic> heuristics) {
-		// cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.PSO);
-		// updateGlobalBest();
-		// }
-	}
+//
+//	public class PSOHeuristic extends Heuristic {
+//		private final double BOUND_HIGH = -1;
+//		private final double BOUND_LOW = 1;
+//		private final double BOUND_RANGE = BOUND_HIGH - BOUND_LOW;
+//
+//		private double[] personalBestWeights;
+//		private double personalBestFitness;
+//		private double[] vel = new double[numFeatures];
+//
+//		public PSOHeuristic() {
+//			super();
+//			personalBestWeights = getWeights(this.features);
+//			personalBestFitness = 0;
+//			initVels();
+//		}
+//
+//		public PSOHeuristic(Heuristic heuristic) {
+//			this.features = heuristic.features;
+//			this.fitness = heuristic.fitness;
+//
+//			personalBestWeights = getWeights(this.features);
+//			personalBestFitness = this.fitness;
+//			initVels();
+//		}
+//
+//		private double[] getWeights(Feature[] features) {
+//			double[] weights = Arrays.stream(features).mapToDouble(feature -> feature.getFeatureWeight()).toArray();
+//			return weights;
+//		}
+//
+//		/**
+//		 * Initialize velocity: vi ~ U(-BOUND_RANGE, BOUND_RANGE)
+//		 */
+//		private void initVels() {
+//			for (int i = 0; i < numFeatures; i++) {
+//				vel[i] = random.nextDouble() * BOUND_RANGE * 2 - BOUND_RANGE;
+//			}
+//		}
+//
+//		/**
+//		 * Update position of particle by adding its velocity
+//		 */
+//		public void updatePos() {
+//			for (int i = 0; i < numFeatures; i++) {
+//				features[i].setFeatureWeight(features[i].getFeatureWeight() + vel[i]);
+//			}
+//		}
+//
+//		/**
+//		 * Update a particles velocity taking into account its personal best and
+//		 * the global best
+//		 */
+//		public void updateVel(double omega, double rhop, double rhog, Heuristic globalBest) {
+//			Feature[] globalBestFeatures = globalBest.features;
+//			double rp, rg;
+//
+//			for (int i = 0; i < numFeatures; i++) {
+//				rp = random.nextDouble();
+//				rg = random.nextDouble();
+//
+//				vel[i] = omega * vel[i] + rhop * rp * (personalBestWeights[i] - features[i].getFeatureWeight())
+//						+ rhog * rg * (globalBestFeatures[i].getFeatureWeight() - features[i].getFeatureWeight());
+//			}
+//		}
+//
+//		@Override
+//		public void setFitness(double fitness) {
+//			super.setFitness(fitness);
+//
+//			if (fitness > this.personalBestFitness) {
+//				this.personalBestFitness = fitness;
+//				this.personalBestWeights = getWeights(this.features);
+//			}
+//		}
+//
+//		public double[] getPersonalBestWeights() {
+//			return this.personalBestWeights;
+//		}
+//	}
+//
+//	public class StateStorage {
+//		private BufferedWriter fw;
+//		private BufferedReader fr;
+//
+//		public void writeStateToFile(ArrayList<Heuristic> population, String fileName) {
+//			try {
+//				fw = new BufferedWriter(new FileWriter(fileName));
+//				for (Heuristic hs : population) {
+//					fw.write(hs.toString());
+//				}
+//			} catch (Exception e) {
+//				System.out.println("Error in CsvFileWriter!");
+//				e.printStackTrace();
+//			} finally {
+//				try {
+//					fw.flush();
+//					fw.close();
+//				} catch (IOException e) {
+//					System.out.println("Error while flushing/closing fileWriter!");
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//
+//		/**
+//		 * Load saved feature weights from file. If file does not exist, create
+//		 * new set of feature weights
+//		 * 
+//		 * @param file
+//		 *            name
+//		 * @return ArrayList of Heuristic
+//		 */
+//
+//		public boolean readStateFromFile(String fileName, ArrayList<Heuristic> population,
+//				MetaheuristicTypes metaheuristicType) {
+//
+//			boolean fileExist = new File(fileName).isFile();
+//			if (!fileExist) {
+//				System.out.println("File not found, creating new heuristic sets");
+//				return false;
+//			}
+//
+//			String line = "";
+//			try {
+//				System.out.println("Loading heuristic from file...");
+//				fr = new BufferedReader(new FileReader(fileName));
+//				Feature[] features;
+//
+//				while ((line = fr.readLine()) != null) {
+//					String[] tokens = line.split(",");
+//					Heuristic hs = new Heuristic();
+//					features = hs.getFeatures();
+//
+//					if (tokens.length == features.length) {
+//						for (int i = 0; i < features.length; i++) {
+//							double weight = Double.parseDouble(tokens[i]);
+//							features[i].setFeatureWeight(weight);
+//						}
+//						population.add(PlayerSkeleton.heuristicFactory(metaheuristicType, hs));
+//					}
+//				}
+//				System.out.println("Number of heuristic is " + population.size());
+//			} catch (Exception e) {
+//				System.out.println("Error in csv FileReader!");
+//				e.printStackTrace();
+//			} finally {
+//				try {
+//					fr.close();
+//				} catch (IOException e) {
+//					System.out.println("Error while closing fileReader!");
+//					e.printStackTrace();
+//				}
+//			}
+//			return true;
+//		}
+//	}
+//	/* ISLANDS */
+//
+//	public class Archipelago {
+//		private Island c1;
+//		private Island c3;
+//
+//		int islandPopulation;
+//
+//		public Archipelago(int totalPopulation) throws InstantiationException, IllegalAccessException {
+//			islandPopulation = totalPopulation / 4;
+//
+//			c1 = new Island(new GeneticAlgo(), "c1", islandPopulation, MetaheuristicTypes.GENETIC);
+//			// c2 = new Island(new GeneticAlgo(), "c2", islandPopulation,
+//			// MetaheuristicTypes.GENETIC);
+//			c3 = new Island(new PSOAlgo(), "c3", islandPopulation, MetaheuristicTypes.PSO);
+//			// c4 = new Island(new PSOAlgo(), "c4", islandPopulation,
+//			// MetaheuristicTypes.PSO);
+//		}
+//
+//		public void runAlgorithm() throws InterruptedException {
+//			int numGens = 1000;
+//
+//			for (int i = 0; i < numGens; i++) {
+//				System.out.println("Generation " + i);
+//
+//				ExecutorService executor = Executors.newFixedThreadPool(4);
+//
+//				executor.execute(c1);
+//				// executor.execute(c2);
+//				executor.execute(c3);
+//				// executor.execute(c4);
+//
+//				executor.shutdown();
+//				executor.awaitTermination(1000, TimeUnit.MINUTES);
+//
+//				c1.exchangeHeuristics(c3, islandPopulation / 10);
+//			}
+//		}
+//	}
+//
+//	public class Island implements Runnable {
+//		private Metaheuristic metaheuristic;
+//		private Cluster cluster;
+//
+//		public Island(Metaheuristic metaheuristic, String clusterName, int populationSize,
+//				MetaheuristicTypes metaheuristicType) throws InstantiationException, IllegalAccessException {
+//			this.cluster = new Cluster(clusterName, populationSize, metaheuristicType);
+//			this.metaheuristic = metaheuristic;
+//			this.metaheuristic.setCluster(cluster);
+//		}
+//
+//		public void runOneGen() throws InterruptedException {
+//			metaheuristic.createNextGen();
+//			metaheuristic.getCluster().writeStateToFile();
+//		}
+//
+//		public void exchangeHeuristics(Island island, int numToExchange) {
+//			List<Heuristic> thisBestHeuristics = this.cluster.emigrateHeuristics(numToExchange);
+//			List<Heuristic> otherBestHeuristics = island.cluster.emigrateHeuristics(numToExchange);
+//
+//			this.cluster.extraditeWorstHeuristics(numToExchange);
+//			island.cluster.extraditeWorstHeuristics(numToExchange);
+//
+//			this.cluster.immigrateHeuristics(otherBestHeuristics);
+//			island.cluster.immigrateHeuristics(thisBestHeuristics);
+//		}
+//
+//		public void run() {
+//			try {
+//				runOneGen();
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
+//	/* METAHEURISTICS */
+//
+//	public class GeneticAlgo extends Metaheuristic {
+//		double FRAC_PARENTS_KEPT = 0.5;
+//
+//		@Override
+//		/*
+//		 * Keep the top few percent of the population The rest go through
+//		 * recombination by roulette wheel selection
+//		 */
+//		public void createNextGen() throws InterruptedException {
+//			if (cluster == null)
+//				return;
+//
+//			int popSize = cluster.getPopSize();
+//			ArrayList<Heuristic> population = cluster.getPopulation();
+//			double fitnessSum = cluster.evaluateFitness();
+//
+//			int numKept = (int) (popSize * FRAC_PARENTS_KEPT);
+//			int numCrossOver = popSize - numKept;
+//
+//			ArrayList<Heuristic> newPopulation = new ArrayList<Heuristic>();
+//			Collections.sort(population, Collections.reverseOrder());
+//			newPopulation.addAll(population.subList(0, numKept));
+//
+//			Heuristic parent1 = null, parent2 = null;
+//
+//			for (int i = 0; i < numCrossOver; i++) {
+//				for (int j = 0; j < 2; j++) {
+//					double partialSum = 0;
+//					double cutoff = rand.nextDouble() * fitnessSum;
+//					int k = 0;
+//
+//					// If rand.nextDouble is so close to 1 that cutoff rounds
+//					// off to fitnessSum, k will become popSize, hence the k <
+//					// popSize check
+//					while (partialSum <= cutoff & k < popSize) {
+//						partialSum += population.get(k).getFitness();
+//						k++;
+//					}
+//
+//					if (j == 0) {
+//						parent1 = population.get(k - 1);
+//					} else {
+//						parent2 = population.get(k - 1);
+//					}
+//				}
+//
+//				GeneticHeuristic child = PlayerSkeleton.crossover((GeneticHeuristic) parent1,
+//						(GeneticHeuristic) parent2);
+//				child.mutate();
+//				newPopulation.add(child);
+//			}
+//
+//			cluster.updatePopulation(newPopulation);
+//		}
+//
+//		// @Override
+//		// public List<Heuristic> emigrateHeuristics(int numToGet) {
+//		// return cluster.emigrateHeuristics(numToGet);
+//		// }
+//		//
+//		// @Override
+//		// public void extraditeWorstHeuristics(int numToRemove) {
+//		// cluster.extraditeWorstHeuristics(numToRemove);
+//		// }
+//		//
+//		// @Override
+//		// public void immigrateHeuristics(List<Heuristic> heuristics) {
+//		// cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.GENETIC);
+//		// }
+//	}
+//
+//	public abstract class Metaheuristic {
+//		protected Random rand = new Random();
+//		protected Cluster cluster = null;
+//
+//
+//		public void setCluster(Cluster cluster) {
+//			this.cluster = cluster;
+//		}
+//
+//		public Cluster getCluster() {
+//			return cluster;
+//		}
+//
+//		abstract public void createNextGen() throws InterruptedException;
+//		// abstract public List<Heuristic> emigrateHeuristics(int numToGet);
+//		// abstract public void extraditeWorstHeuristics(int numToRemove);
+//		// abstract public void immigrateHeuristics(List<Heuristic> heuristics);
+//	}
+//
+//	public class PSOAlgo extends Metaheuristic {
+//		private final double OMEGA = 0.6;
+//		private final double RHOP = 1.4;
+//		private final double RHOG = 2.0;
+//
+//		Heuristic globalBest;
+//		ArrayList<Heuristic> population;
+//
+//		int popSize;
+//		int numFeatures;
+//
+//		@Override
+//		public void setCluster(Cluster cluster) {
+//			this.cluster = cluster;
+//
+//			population = this.cluster.getPopulation();
+//			popSize = this.cluster.getPopSize();
+//			numFeatures = this.cluster.getPopulation().get(0).getNumFeatures();
+//			globalBest = new Heuristic();
+//
+//			// Cannot evaluate fitness here because setCluster is called during
+//			// instantiation of Island and it will delay the main thread
+//			// cluster.evaluateFitness();
+//			// initPositions();
+//		}
+//
+//		/**
+//		 * Initialize personal bests with current fitness for each heuristic
+//		 * Update global best to be best over all the current personal bests
+//		 */
+//		private void initPositions() {
+//			globalBest.setFitness(0);
+//			updateGlobalBest();
+//		}
+//
+//		/**
+//		 * Update global best
+//		 */
+//		private void updateGlobalBest() {
+//			for (Heuristic heuristic : population) {
+//				if (heuristic.getFitness() > globalBest.getFitness()) {
+//					globalBest = heuristic.clone();
+//				}
+//			}
+//		}
+//
+//		@Override
+//		public void createNextGen() throws InterruptedException {
+//			PSOHeuristic psoHeuristic;
+//
+//			// Evaluate fitness and initialize positions if first generation
+//			if (globalBest == null) {
+//				cluster.evaluateFitness();
+//				initPositions();
+//			}
+//
+//			// Move every particle
+//			for (Heuristic heuristic : population) {
+//				psoHeuristic = ((PSOHeuristic) heuristic);
+//				psoHeuristic.updateVel(OMEGA, RHOP, RHOG, globalBest);
+//				psoHeuristic.updatePos();
+//			}
+//
+//			cluster.evaluateFitness();
+//
+//			updateGlobalBest();
+//		}
+//
+//		// @Override
+//		// public List<Heuristic> emigrateHeuristics(int numToGet) {
+//		// return cluster.emigrateHeuristics(numToGet);
+//		// }
+//		//
+//		// @Override
+//		// public void extraditeWorstHeuristics(int numToRemove) {
+//		// cluster.extraditeWorstHeuristics(numToRemove);
+//		// }
+//		//
+//		// @Override
+//		// public void immigrateHeuristics(List<Heuristic> heuristics) {
+//		// cluster.immigrateHeuristics(heuristics, MetaheuristicTypes.PSO);
+//		// updateGlobalBest();
+//		// }
+//	}
 	/* FEATURES */
 
 	public class AltitudeDiff extends Feature {
@@ -1428,58 +1428,58 @@ public class PlayerSkeleton {
 	}
 
 	/* STATIC METHODS */
-	protected static final Random random = new Random();
-
-	/**
-	 * Cross-over two heuristics
-	 * 
-	 * @param hs1
-	 * @param hs2
-	 * @return new heuristic as a result of cross-over
-	 */
-	public static GeneticHeuristic crossover(GeneticHeuristic hs1, GeneticHeuristic hs2) {
-		GeneticHeuristic newHeuristics = (new PlayerSkeleton()).new GeneticHeuristic();
-
-		// double ft1 = hs1.getFitness();
-		// double ft2 = hs2.getFitness();
-		// double weightage = (ft1 != 0 || ft2 != 0) ? ft1 / (ft1 + ft2) :
-		// 0.5;
-
-		for (int i = 0; i < hs1.getFeatures().length; i++) {
-			double hs1Weight = hs1.getFeatures()[i].getFeatureWeight();
-			double hs2Weight = hs2.getFeatures()[i].getFeatureWeight();
-			// double newWeight = weightage * hs1Weight + (1 - weightage) *
-			// hs2Weight;
-			// newHeuristics.getFeatures()[i].setFeatureWeight(newWeight);
-			newHeuristics.getFeatures()[i].setFeatureWeight(random.nextDouble() < 0.5 ? hs1Weight : hs2Weight);
-		}
-
-		return newHeuristics;
-	}
-
-	public static Heuristic heuristicFactory(MetaheuristicTypes metaheuristicType) {
-		switch (metaheuristicType) {
-		case GENETIC:
-			return (new PlayerSkeleton()).new GeneticHeuristic();
-		case PSO:
-			return (new PlayerSkeleton()).new PSOHeuristic();
-		default:
-			throw new IllegalArgumentException();
-		}
-	}
-
-	public static Heuristic heuristicFactory(MetaheuristicTypes metaheuristicType, Heuristic heuristic) {
-		switch (metaheuristicType) {
-		case GENETIC:
-			return (new PlayerSkeleton()).new GeneticHeuristic(heuristic);
-		case PSO:
-			return (new PlayerSkeleton()).new PSOHeuristic(heuristic);
-		default:
-			throw new IllegalArgumentException();
-		}
-	}
-
-	public enum MetaheuristicTypes {
-		GENETIC, PSO
-	}
+//	protected static final Random random = new Random();
+//
+//	/**
+//	 * Cross-over two heuristics
+//	 * 
+//	 * @param hs1
+//	 * @param hs2
+//	 * @return new heuristic as a result of cross-over
+//	 */
+//	public static GeneticHeuristic crossover(GeneticHeuristic hs1, GeneticHeuristic hs2) {
+//		GeneticHeuristic newHeuristics = (new PlayerSkeleton()).new GeneticHeuristic();
+//
+//		// double ft1 = hs1.getFitness();
+//		// double ft2 = hs2.getFitness();
+//		// double weightage = (ft1 != 0 || ft2 != 0) ? ft1 / (ft1 + ft2) :
+//		// 0.5;
+//
+//		for (int i = 0; i < hs1.getFeatures().length; i++) {
+//			double hs1Weight = hs1.getFeatures()[i].getFeatureWeight();
+//			double hs2Weight = hs2.getFeatures()[i].getFeatureWeight();
+//			// double newWeight = weightage * hs1Weight + (1 - weightage) *
+//			// hs2Weight;
+//			// newHeuristics.getFeatures()[i].setFeatureWeight(newWeight);
+//			newHeuristics.getFeatures()[i].setFeatureWeight(random.nextDouble() < 0.5 ? hs1Weight : hs2Weight);
+//		}
+//
+//		return newHeuristics;
+//	}
+//
+//	public static Heuristic heuristicFactory(MetaheuristicTypes metaheuristicType) {
+//		switch (metaheuristicType) {
+//		case GENETIC:
+//			return (new PlayerSkeleton()).new GeneticHeuristic();
+//		case PSO:
+//			return (new PlayerSkeleton()).new PSOHeuristic();
+//		default:
+//			throw new IllegalArgumentException();
+//		}
+//	}
+//
+//	public static Heuristic heuristicFactory(MetaheuristicTypes metaheuristicType, Heuristic heuristic) {
+//		switch (metaheuristicType) {
+//		case GENETIC:
+//			return (new PlayerSkeleton()).new GeneticHeuristic(heuristic);
+//		case PSO:
+//			return (new PlayerSkeleton()).new PSOHeuristic(heuristic);
+//		default:
+//			throw new IllegalArgumentException();
+//		}
+//	}
+//
+//	public enum MetaheuristicTypes {
+//		GENETIC, PSO
+//	}
 }
