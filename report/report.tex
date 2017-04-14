@@ -6,12 +6,13 @@
 
 \addtolength{\topmargin}{-.375in}
 \addtolength{\textheight}{1.75in}
+\setlength{\parindent}{0pt}
 
 \usepackage{titling}
 % \usepackage{authblk}
 
 \title{CS3243 Tetris Project}
-% \author{Varun Gupta \and Gao Bo \and Advay Pal \and Chang Chu-Ming \and Herbert Ilhan Tanujaya}
+\author{Varun Gupta \and Gao Bo \and Advay Pal \and Chang Chu-Ming \and Herbert Ilhan Tanujaya}
 
 
 \date{13-04-2017}
@@ -36,7 +37,9 @@
     the heuristic value for all possible next states, and then greedily picks the next state with
     the maximum heuristic value.
 
-    //Insert Math equation
+	\begin{center}
+		$\sum w_i \times f_i(s)$
+	\end{center}
 
     \section{Features}
     We used the following features for our heuristic function:
@@ -73,14 +76,13 @@
 
     \section{Our Algorithm}
 
-    Our algorithm consists of a combination of a genetic algorithm and a particle swarm
-	optimization (PSO) algorithm. Each algorithm is run as a separate ‘island’ with
-	a total population of a hundred set of heuristics with different weights.
-	After every generation, a tenth of the population from each ‘island’ will be
-	migrated to the other ‘island’. A generation is defined as a sequence of crossover
-	and mutation for the genetic algorithm, and as an update of the velocity and
-	position of the PSO algorithm. We will first describe the working principle
-	behind the genetic algorithm and the PSO algorithm. Subsequently, we will
+    Our algorithm consists of a combination of genetic algorithm and particle swarm
+	optimization (PSO) algorithm. We run both of these algorithms on populations of
+	100 sets of weights. The algorithms are run on what we call ‘islands’. The idea
+	is that both of the algorithms run individually, but after each generation, we
+	copy the 10 best heuristics on each island to the other one.\\
+	We will first describe the working principle
+	of the Genetic and the PSO algorithms. Subsequently, we will
 	discuss the rationale behind why we chose to juxtapose these two different
 	algorithms in our search for the best set of heuristics.\\
 
@@ -89,13 +91,35 @@
 	\begin{enumerate}
 		\item Evaluate fitness of each set of heuristics
 		\item Keep top half of population and cross-over the rest
-		\item Random mutation of each feature of crossed-over heuristics with probability of a tenth
+		\item Random mutation of each feature of crossed-over heuristics with
+		probability of a tenth
 		\item Migration of a tenth of the population to PSO island
 	\end{enumerate}
-	We keep the top half of the population to ensure that each set of heuristics that perform well will remain within the population. The mutation introduces some randomness to the genetic algorithm to avoid being trapped within a local maximum. The probability of mutation is set at ten percent to
-	PSO algorithm\\
+	We keep the top half of the population to ensure that each set of heuristics
+	that perform well will remain within the population. The mutation introduces
+	some randomness to the genetic algorithm to avoid being trapped within a local
+	maximum. The probability of mutation is set at ten percent.\\
 
-	Rationale behind combination of algorithms
+	PSO algorithm\\
+	Each generation of our PSO algorithm consists of the following sequence of steps
+	\begin{enumerate}
+		\item Set velocity of each member to a linear weighted sum of the old velocity,
+		the personal best of that member, and the global best
+		\item Get new position of each member by adding its velocity to the current
+		position
+		\item Evaluate fitness of each set of heuristics
+		\item Migration of a tenth of the population to PSO island
+	\end{enumerate}
+
+	Rationale behind combination of algorithms\\
+	We ran PSO and GA individually. In doing so, we realised that PSO was in general not doing
+	very well, but sometimes it made a leap and jumped by almost an order of magnitude
+	in terms of lines cleared. On the other hand, Genetic seems to keep getting
+	better, but only quite slowly. From these experimental results, we gathered
+	that Genetic was doing more of exploitation, finding the maximum in the local area,
+	while PSO was carrying out exploration, looking for good solutions all over
+	the search space. Hence we thought, that perhaps if we combined the two, then
+	PSO could lead Genetic to better areas, which Genetic then drills down into.
 
     \section{Experiments and Analysis}
 
@@ -110,22 +134,27 @@
     Analysis
 
     \section{Scaling to Big Data}
-	We parallelised our algorithm by running PSO and GA islands on different cores, and
-	futher by calculating the fitness of each population member on different cores. This is made possible
-	as we ran our algorithm on the NSCC cluster, which contains 12 cores per compute node.
+	We parallelised our algorithm by running the PSO and Genetic islands on different cores, and
+	futher by calculating the fitness of each population member on different cores.
+	We then ran our algorithm on the NSCC cluster, which provides 12 cores per
+	compute node.
 
-	Parallelisation provides significant speedup to our algorithm. Previously, when we were running the algorithm
-	on single thread, the time taken to compute the fitness values for the entire population of heuristic can take
-	up to 2 hours towards the later stage. Parallelisation allows us to distribute such time-consuming computation
-	across multiple cores, effetively reducing the computation time by an order of magnitude.
+	To demonstrate the effect of parallelisation, we compared the speed performance
+	of two versions of the algorithm, single-threaded and multi-threaded version,
+	sharing the same set of parameters. We started both algorithms as two separate jobs
+	on the NSCC cluster at the same time, and allowed them to run for around 20
+	hours before comparing the results. We used the total number of lines cleared
+	in the entire time span as the baseline for comparison of the total amount of
+	cpu time used. Our results showed that the single-threaded algorithm cleared
+	a total of $158182993$ lines, while the multi-threaded version cleared a total
+	of $1899941699$ lines. This shows that parallelisation provides about 12 times speedup,
+	on the setup we used, demonstrating that we can achieve linear speedup by parallelising
+	our algorithm.
 
-	To demonstrate the effect of parallelisation, we compared the speed performance of two versions of the algorithm,
-	single-threaded and multi-threaded version, sharing same set of parameters. We started both algorithms as two separate jobs on the NSCC cluster
-	at the same time, and allowed them to run for around 20 hours before comparing the results. The baseline for comparison
-	is the total number of lines cleared in the entire time span (Explanation for choosing this??).
-	The single-threaded algorithm clears a total of $158182993$ lines, while the multi-threaded version clears a total of $1899941699$ lines. The result shows that parallelisation provides
-	about 12 times speedup, demonstrating that our we can achieve linear speedup by parallelising our program.
-
+	The major computational cost we were incurring was in the calculation of fitness
+	values for each member of the population, as this involved running an entire
+	tetris game for them. By parallelising this, we achieved significant speedup,
+	reducing the computation time by an order of magnitude.
 
 
 

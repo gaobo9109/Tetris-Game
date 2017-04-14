@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.cs3243.tetris.PlayerSkeleton;
 import com.cs3243.tetris.StateStorage;
 import com.cs3243.tetris.heuristics.Heuristic;
+import com.cs3243.tetris.heuristics.HeuristicRunner;
 import com.cs3243.tetris.metaheuristics.Metaheuristic.MetaheuristicTypes;
 
 public class Cluster {
@@ -20,7 +21,6 @@ public class Cluster {
 	private ArrayList<Heuristic> population;
 	private MetaheuristicTypes metaheuristicType;
 	private int popSize;
-	private PlayerSkeleton ps;
 	private StateStorage storage;
 
 	private static final int NUM_GAMES = 1;
@@ -36,7 +36,6 @@ public class Cluster {
 		this.metaheuristicType = metaheuristicType;
 		if (!storage.readStateFromFile(fileName, population, metaheuristicType))
 			initPopulation(metaheuristicType);
-		ps = new PlayerSkeleton();
 	}
 
 	public int getPopSize() {
@@ -68,8 +67,7 @@ public class Cluster {
 		
 		for (int i = 0; i < popSize; i++) {
 			Heuristic hs = population.get(i);
-			HeuristicRunner heuristicRunner = new HeuristicRunner();
-			heuristicRunner.setHeuristic(hs);
+			HeuristicRunner heuristicRunner = new HeuristicRunner(hs, NUM_GAMES);
 			executor.execute(heuristicRunner);
 		}
 		
@@ -123,24 +121,5 @@ public class Cluster {
 
 	public void immigrateHeuristics(List<Heuristic> heuristics) {
 		population.addAll(heuristics.stream().map(heuristic -> Heuristic.heuristicFactory(metaheuristicType, heuristic)).collect(Collectors.toList()));
-	}
-	
-	public class HeuristicRunner implements Runnable {
-		private PlayerSkeleton playerSkeleton = new PlayerSkeleton();
-		private Heuristic heuristic;
-		
-		public void setHeuristic(Heuristic heuristic) {
-			this.heuristic = heuristic; 
-		}
-		
-		public void run() {
-			double fitness = 0;
-			
-			for (int j = 0; j < NUM_GAMES; j++) {
-				fitness += ps.playFullGame(heuristic, false);
-			}
-			fitness = fitness / NUM_GAMES;
-			heuristic.setFitness(fitness);
-		}
 	}
 }

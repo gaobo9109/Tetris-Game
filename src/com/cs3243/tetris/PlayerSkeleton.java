@@ -4,9 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.cs3243.tetris.features.Feature;
 import com.cs3243.tetris.heuristics.Heuristic;
+import com.cs3243.tetris.heuristics.HeuristicRunner;
 
 /**
  * Player Skeleton Methods for playing game
@@ -61,9 +65,7 @@ public class PlayerSkeleton {
 		return s.getRowsCleared();
 	}
 
-	public static void main(String[] args) throws IOException {
-//		State s = new State();
-//		NextState ns = new NextState();
+	public static void main(String[] args) throws IOException, InterruptedException {
 		Heuristic hs = new Heuristic();
 		BufferedReader fr = new BufferedReader(new FileReader("heuristic.txt"));
 		
@@ -78,17 +80,30 @@ public class PlayerSkeleton {
 			features[i].setFeatureWeight(weight);
 		}
 		
-//		new TFrame(s);
-		PlayerSkeleton p = new PlayerSkeleton();
-		
 		double totalScore = 0;
-		double numGames = 200;
+		int numGames = 100;
 		double bestScore = 0;
 		double worstScore = Double.MAX_VALUE;
 		double currentScore;
 		
+		Heuristic[] heuristics = new Heuristic[numGames];
+		
 		for (int i = 0; i < numGames; i++) {
-			currentScore = p.playFullGame(hs, false);
+			heuristics[i] = hs.clone();
+		}
+		
+		ExecutorService executor = Executors.newFixedThreadPool(numGames);
+		
+		for (int i = 0; i < numGames; i++) {
+			HeuristicRunner heuristicRunner = new HeuristicRunner(heuristics[i], numGames);
+			executor.execute(heuristicRunner);
+		}
+		
+		executor.shutdown();
+		executor.awaitTermination(1000, TimeUnit.MINUTES);
+		
+		for (int i = 0; i < numGames; i++) {
+			currentScore = heuristics[i].getFitness();
 			System.out.println(currentScore);
 			totalScore += currentScore;
 			bestScore = bestScore > currentScore ? bestScore : currentScore;
@@ -100,21 +115,6 @@ public class PlayerSkeleton {
 		System.out.println("Best score: " + bestScore);
 		System.out.println("Worst score: " + worstScore);
 		System.out.println("Average score: " + totalScore / numGames);
-		
-//		while (!s.hasLost()) {
-//			s.makeMove(p.pickMove(s, s.legalMoves(), ns, hs));
-//			if (s.getRowsCleared() % 10000 == 0) {
-//				System.out.println(s.getRowsCleared());
-//			}
-//			s.draw();
-//			s.drawNext(0, 0);
-//			try {
-//				Thread.sleep(300);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		System.out.println("You have completed " + s.getRowsCleared() + " rows.");
 	}
 
 }
