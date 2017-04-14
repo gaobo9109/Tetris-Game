@@ -40,6 +40,12 @@ INPUT /usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 INPUT /usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/pbox/pbox.sty
+INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/pbox/pbox.sty
+INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/tools/calc.sty
+INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/tools/calc.sty
+INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/base/ifthen.sty
+INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/base/ifthen.sty
 INPUT report.aux
 INPUT report.aux
 OUTPUT report.aux

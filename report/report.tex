@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{etoolbox}
+\usepackage{pbox}
 \graphicspath{ {./resources/} }
 \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 
@@ -122,18 +123,18 @@
 	The hyperparameters for both the genetic algorithm and the PSO algorithm need
 	to be optimized for our integrated solution to learn at an optimal rate.
 	Given limited time, we decided to focus our attention on the hyperparameters
-	of the PSO algorithm. The rationale behind this is that while the genetic
-	algorithm learns at a steady rate, the PSO algorithm tends to make large jumps
-	in progress and can explore larger swaths of the search-space in a shorter
-	time. We felt that if we could successfully optimize the PSO algorithm, it would be able to
-	find a solution close to the global maximum and share this information with the genetic algorithm.
-	The genetic algorithm would then refine the solution further.
+	of the PSO algorithm. The rationale behind this is that, since the PSO
+	algorithm looks to be exploring the state space, if we could successfully optimize
+	the PSO algorithm, it would be able to find a solution close to the global
+	maximum and share this information with the Genetic algorithm.
+	The Genetic algorithm would then refine the solution further.\\
 
 	The hyperparameters of the PSO algorithm consist of $\rho_g$ and $\rho_p$, the constants
 	which determine the effect of the global and personal bests on each iteration
-	of velocity change; and $\omega$, the constant of inertia. Typically[CITE], $\rho_g$ and $\rho_p$ are both
+	of velocity change; and $\omega$, the constant of inertia. Typically \textbf{TODO}, $\rho_g$ and $\rho_p$ are both
 	set to 2.0, which leaves $\omega$ to be optimized. A high $\omega$ will favour exploration,
-	while a low $\omega$ will favour exploitation. Based on the observations of \cite{shi1998parameter}, we decided to first test values of $\omega$ between 1.2 to 0.6.
+	while a low $\omega$ will favour exploitation. Based on the observations of
+	\cite{shi1998parameter}, we decided to first test values of $\omega$ between 0.6 to 1.2.
 	While initializations with low $\omega$ generally performed better, the results were
 	not conclusive. Thus, we decided that instead of a fixed $\omega$, we could vary it
 	based on how close the population is to the global maximum. This is estimated
@@ -145,35 +146,37 @@
 
 	We tested different values of $k$ by running multiple jobs for an hour and comparing
  	the average of the fitness scores. Through experimentation, we found that the
-	algorithm performs best when $k$ is 0.2. The experimental results are shown below.
+	algorithm performs best when $k$ is 0.2.\\
 
-	Note: The values below are taken across 5 instances with the same hyperparameters.\\
+	% Note: The values below are taken across 5 instances with the same hyperparameters.\\
 
-	\underline{Fixing and tuning $\omega$}\\
-	Lower $\omega$ = more exploitation, worse maximum, better average\\
-	Higher $\omega$ = more exploration, better maximum, worse average\\
+	% \twocolumn
+	% \underline{Fixing and tuning $\omega$}\\
+	% Lower $\omega$ = more exploitation, worse maximum, better average\\
+	% Higher $\omega$ = more exploration, better maximum, worse average\\
 
-	\begin{tabular}{ | c | c | c | }
-		\hline
-		$\omega$ & Maximum of Average Fitness & Average of Average fitness \\ \hline
-		0.6 & 44807 & 30935 \\ \hline
-		0.8 & 58192 & 27357 \\ \hline
-		1.0 & 69375 & 26849 \\ \hline
-		1.2 & 72743 & 20381 \\ \hline
-	\end{tabular}\\[0.5em]
+	% \begin{tabular}{ | c | c | c | }
+	% 	\hline
+	% 	$\omega$ & \parbox{3cm}{\centering Maximum of \\Average Fitness} & \pbox{20cm}{Average of \\Average Fitness} \\[2ex] \hline
+	% 	0.6 & 44807 & 30935 \\ \hline
+	% 	0.8 & 58192 & 27357 \\ \hline
+	% 	1.0 & 69375 & 26849 \\ \hline
+	% 	1.2 & 72743 & 20381 \\ \hline
+	% \end{tabular}
 
-	\underline{Varying $\omega$ and tuning $k$}\\
-	Higher $k$ = more varying $\omega$ = stronger transition from exploration to exploitation\\
-	Lower $k$ = less varying $\omega$ = weaker transition from exploration to exploitation\\
+	% \underline{Varying $\omega$ and tuning $k$}\\
+	% Higher $k$ = more varying $\omega$ = stronger transition from exploration to exploitation\\
+	% Lower $k$ = less varying $\omega$ = weaker transition from exploration to exploitation\\
+	%
+	% \begin{tabular}{ | c | c | c c c | c | c | }
+	% 	\hline
+	% 	$k$ & \parbox{3cm}{\centering Maximum of \\Average Fitness} & \pbox{20cm}{Average of \\Average Fitness} & & $\omega$ & \parbox{3cm}{\centering Maximum of \\Average Fitness} & \pbox{20cm}{Average of \\Average Fitness} \\ \hline
+	% 	0.1 & 50260 & 32939 & & 0.6 & 44807 & 30935 \\ \hline
+	% 	0.15 & 47115 & 30010 & & 0.8 & 58192 & 27357 \\ \hline
+	% 	0.2 & 74838 & 38478 & & 1.0 & 69375 & 26849\\ \hline
+	% \end{tabular}
 
-	\begin{tabular}{ | c | c | c | }
-		\hline
-		$k$ & Maximum of Average Fitness & Average of Average fitness \\ \hline
-		0.1 & 50260 & 32939 \\ \hline
-		0.15 & 47115 & 30010 \\ \hline
-		0.2 & 74838 & 38478 \\ \hline
-	\end{tabular}
-
+	% \onecolumn
     \section{Experiments and Analysis}
 
 	\subsection{Learning Perfomance}
