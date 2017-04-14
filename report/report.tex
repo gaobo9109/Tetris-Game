@@ -52,24 +52,23 @@
     We used the following features for our heuristic function:
     \begin{itemize}
 		\setlength\itemsep{-1mm}
-        \item \textbf{Altitude Difference} ($AltD$): The difference between the height of the highest
-        column and the height of the lowest column
+        \item \textbf{Altitude Difference} ($AltD$): Difference between height of the highest
+        and the lowest column
 		\item \textbf{Column Transition} ($ColT$): Number of adjacent squares in a column with opposite parity (where parity is defined as either full or empty)
 		\item \textbf{Deepest Well} ($DW$): Height of the lowest column
         \item \textbf{Height} ($ColH$): Height of the highest column
 		\item \textbf{Number of Columns With Holes} ($CwH$): The number of columns with holes, where a hole
 		is defined as an empty square directly beneath a filled square
         \item \textbf{Number of Holes} ($NHole$): Number of holes in the entire board
-        \item \textbf{Number of Wells} ($NWell$): The number of columns that have a height less than that of the 2
+        \item \textbf{Number of Wells} ($NWell$): Number of columns that have height less than the 2
         adjacent columns
-		\item \textbf{Rows Cleared} ($RC$): The number of rows cleared for that particular move
+		\item \textbf{Rows Cleared} ($RC$): Number of rows cleared for that particular move
 		\item \textbf{Row Transition} ($RowT$): Number of adjacent squares in a row with opposite parity
         \item \textbf{Total Column Height} ($TColH$): The sum of the heights of all the columns
         \item \textbf{Total Column Height Difference} ($TColHD$): The sum of the difference of heights between adjacent columns
-        \item \textbf{Weighted Block} ($WB$): Sum of value of every square, where a square's value is equal to
+        \item \textbf{Weighted Block} ($WB$): Sum of value of every filled square, where a square's value is equal to
 		the row it is in (numbered from the bottom)
-        \item \textbf{Well Sum} ($WellS$): Using the same definition of wells as above, this sums up
-		the depth of every well
+        \item \textbf{Well Sum} ($WellS$): Sums up the depth of every well
     \end{itemize}
 
     While running our training algorithms, we noticed that some features were more
@@ -95,24 +94,17 @@
 	done by taking two parent heuristics, and,
 	for every feature, selecting the weight from one of the parents randomly. A
 	mutation is defined as multiplying the current weight of a feature with
-	a value normally distributed with a mean of 1 and a standard deviation of 1.\\
-	Each generation of our genetic algorithm consists of the following sequence of steps
-	Parents are chosen based on fitness, with fitter population members having a higher
-	probability of being chosen.\\
-	We keep the top half of the population to ensure that each set of heuristics
+	a value normally distributed with a mean of 1 and a standard deviation of 1. Parents are chosen based on fitness, with fitter population members having a higher
+	probability of being chosen. We keep the top half of the population to ensure that each set of heuristics
 	that perform well will remain within the population and replace the bottom half with
-	new members. The mutation introduces
-	some randomness to the genetic algorithm to avoid being trapped within a local
-	maximum.\\
+	new members.\\
 
 	\textbf{PSO algorithm}\\
-	Again, we use a standard PSO algorith which treats every heuristic as a point in 13-dimensional space.
+	Again, we use a standard PSO algorithm which treats every heuristic as a point in 13-dimensional space.
 	This is the position of the heuristic. Each heuristic also has a velocity,
 	a vector in the 13-dimensional space, which is added to the position to get
 	new population members. New velocities are computed by taking a linear weighted
 	sum of the old velocity, the personal best of that member, and the global best.\\
-	For PSO, it is almost certain that every member of the population is mutated
-	in every generation since weighted velocity is very unlikely to be 0.\\
 
 	\textbf{Rationale behind combination of algorithms}\\
 	We first ran PSO and GA individually. In doing so, we realised that PSO was in general not doing
